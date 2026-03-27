@@ -242,6 +242,7 @@ def run_eval_harvest(
         "--episodes", str(eval_episodes),
         "--seed-start", str(eval_seed_start),
         "--model", model_path,
+        "--model-id", model_id,
         "--output", str(output_data),
         "--claims", str(claims),
     ]
@@ -274,7 +275,7 @@ def run_eval_metrics(workspace: Path, cycle: int, dry_run: bool) -> bool:
 def run_train_harvest(
     workspace: Path, cycle: int, model_path: str,
     train_episodes: int, claims: int,
-    dry_run: bool,
+    dry_run: bool, model_id: str = DEFAULT_MODEL_ID,
 ) -> bool:
     phase = PHASE_TRAIN_HARVEST
     if _phase_done(workspace, cycle, phase):
@@ -290,6 +291,7 @@ def run_train_harvest(
         "--episodes", str(train_episodes),
         "--seed-start", str(seed_start),
         "--model", model_path,
+        "--model-id", model_id,
         "--output", str(output_data),
         "--claims", str(claims),
     ]
@@ -526,7 +528,7 @@ def main():
         # Phase 3: Training harvest
         ok = run_train_harvest(
             workspace, cycle, prev_model_path,
-            args.train_episodes, args.claims, args.dry_run)
+            args.train_episodes, args.claims, args.dry_run, model_id=args.model_id)
         if not ok and not args.dry_run:
             print(f"!! Cycle {cycle} train harvest failed — aborting.")
             sys.exit(1)

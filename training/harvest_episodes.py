@@ -170,6 +170,12 @@ def main():
         default=None,
         help="Path to saved LoRA checkpoint (uses heuristic if omitted)",
     )
+    parser.add_argument(
+        "--model-id",
+        type=str,
+        default="unsloth/Qwen2.5-1.5B-Instruct",
+        help="HuggingFace base model ID to load before applying LoRA (must match training --model-id).",
+    )
     args = parser.parse_args()
 
     # Ensure output directory exists
@@ -185,7 +191,7 @@ def main():
         # Always load the base model first, then apply LoRA adapter.
         # DO NOT use unsloth.FastLanguageModel.from_pretrained for saved checkpoints
         # as it causes an infinite hang (known bug with GSPO-trained adapters).
-        base_model_id = "unsloth/Qwen2.5-1.5B-Instruct"
+        base_model_id = args.model_id
         harvest_tokenizer = AutoTokenizer.from_pretrained(base_model_id)
 
         print("[INFO] Loading base model...")
