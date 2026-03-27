@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+.venv_wsl/
+*.egg-info/
+dist/
+build/
+
+# Training artifacts (large — use HF Hub / git-lfs instead)
+data/*.jsonl
+checkpoints*/
+checkpoints_v2/
+*.safetensors
+*.bin
+*.gguf
+unsloth_compiled_cache/
+phase_markers/
+
+# Logs
+*.log
+probe.log
+rewards_log.jsonl
+harvest_pid.txt
+
+# Secrets
+.env
+*.env.*
+secrets.toml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp

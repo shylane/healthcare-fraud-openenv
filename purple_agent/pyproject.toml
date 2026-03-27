@@ -1,0 +1,20 @@
+[project]
+name = "healthcare-fraud-purple-agent"
+version = "0.1.0"
+description = "AgentBeats Purple Agent — GSPO-trained healthcare fraud detector"
+requires-python = ">=3.11"
+dependencies = [
+    "a2a-sdk>=0.2.0",
+    "uvicorn>=0.30.0",
+    "httpx>=0.27.0",
+    "pydantic>=2.0.0",
+    "transformers>=4.50.0",
+    "torch>=2.0.0",
+    "accelerate>=0.34.0",
+    "peft>=0.12.0",
+    # unsloth installed separately in Dockerfile (git source)
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

@@ -1,0 +1,20 @@
+# AgentBeats Leaderboard Submission
+# Submit by pushing this file after filling in agent IDs.
+# Or use Quick Submit on the AgentBeats leaderboard page.
+
+[green_agent]
+# Fill in after registering on agentbeats.dev
+agentbeats_id = ""
+# env = { HF_TOKEN = "${HF_TOKEN}" }   # uncomment if env data is gated
+
+[[participants]]
+# Fill in after registering on agentbeats.dev
+agentbeats_id = ""
+name = "healthcare-fraud-rl-agent"
+# env = { HF_TOKEN = "${HF_TOKEN}" }
+
+[config]
+num_episodes = 5
+claims_per_episode = 20
+fraud_rate = 0.15
+seed = 42

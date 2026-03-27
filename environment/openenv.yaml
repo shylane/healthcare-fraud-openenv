@@ -1,0 +1,19 @@
+spec_version: 1
+name: healthcare-claims-fraud
+display_name: "Healthcare Claims Fraud Detection"
+description: >
+  A sequential decision-making environment where an LLM agent reviews healthcare
+  insurance claims and decides whether to approve, flag, investigate, deny, or
+  request more information. The environment simulates realistic fraud patterns
+  including upcoding, phantom billing, duplicate claims, and provider collusion.
+  Designed for training LLM agents via GRPO/GSPO reinforcement learning.
+type: space
+runtime: fastapi
+app: server.app:app
+port: 8000
+tags:
+  - healthcare
+  - fraud-detection
+  - rl-environment
+  - llm-native
+  - sequential-decision-making
