@@ -378,7 +378,7 @@ def _run_probe_health_check(log_path: Path, max_steps: int) -> bool:
 
     # 4. Loss is present and finite
     loss = last.get("loss", float("nan"))
-    checks.append(("Loss is finite", loss == loss and loss > 0))  # finite and positive
+    checks.append(("Loss is finite", loss == loss and loss != float("inf")))  # GRPO loss is typically negative
 
     # 5. Individual reward functions all fired (non-NaN)
     fn_names = [
@@ -387,13 +387,14 @@ def _run_probe_health_check(log_path: Path, max_steps: int) -> bool:
         "warmup_investigation_reward", "investigation_bonus_reward",
     ]
     for fn in fn_names:
-        key = f"rewards/{fn}"
+        # rewards are logged with /mean suffix in rewards_log.jsonl
+        key = f"rewards/{fn}/mean"
         if key in last:
             val = last[key]
             checks.append((f"{fn} fired", val == val))  # NaN check
 
     # 6. correctness_reward not stuck at extreme
-    corr_key = "rewards/correctness_reward"
+    corr_key = "rewards/correctness_reward/mean"
     if corr_key in last:
         corr = last[corr_key]
         # Stuck at -10 = always approving fraud. Stuck at 0 = no gradient.
