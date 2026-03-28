@@ -4,7 +4,7 @@
 # =============================================================================
 # Usage: bash scripts/setup_vastai.sh
 #
-# Tested on: RTX 3090 24GB, Ubuntu 22.04, CUDA 12.1
+# Tested on: RTX 3090 24GB, Ubuntu 22.04
 # Expected runtime: 5-10 minutes (mostly downloading weights)
 # =============================================================================
 set -euo pipefail
@@ -13,7 +13,7 @@ set -euo pipefail
 # 0. Clone repo if not already present (run this from /workspace)
 # ---------------------------------------------------------------------------
 REPO_URL="https://github.com/shylane/healthcare-fraud-openenv.git"
-if [ ! -f "training/train_gspo_v2.py" ]; then
+if [ ! -d ".git" ]; then
     echo "[0/6] Cloning repo into current directory..."
     git clone "$REPO_URL" .
 else
@@ -50,24 +50,34 @@ fi
 source "$VENV/bin/activate"
 
 # ---------------------------------------------------------------------------
-# 3. Install Unsloth (installs torch/triton/etc for current CUDA)
+# 3. Detect CUDA capability and install all training deps in one uv pass
 # ---------------------------------------------------------------------------
-echo "[3/6] Installing Unsloth + dependencies..."
-# colab-new = no JupyterLab overhead, installs correct torch for detected CUDA
-uv pip install "unsloth[colab-new] @ git+https://github.com/unslothai/unsloth.git"
+echo "[3/6] Detecting CUDA driver and selecting wheel index..."
 
-# ---------------------------------------------------------------------------
-# 4. Install TRL 0.29.1 (GSPO importance_sampling_level support)
-# ---------------------------------------------------------------------------
-echo "[4/6] Installing TRL 0.29.1 + training deps..."
+# Map driver major version → PyTorch CUDA wheel index
+#   Driver >= 570  →  cu128  (CUDA 12.8+)
+#   Driver >= 545  →  cu124  (CUDA 12.4-12.7)
+#   Driver >= 525  →  cu121  (CUDA 12.1-12.3)
+#   fallback       →  cu121
+DRIVER_MAJOR=$(nvidia-smi --query-gpu=driver_version --format=csv,noheader 2>/dev/null \
+    | head -1 | cut -d'.' -f1 || echo "0")
+if   [ "${DRIVER_MAJOR:-0}" -ge 570 ]; then TORCH_INDEX="https://download.pytorch.org/whl/cu128"
+elif [ "${DRIVER_MAJOR:-0}" -ge 545 ]; then TORCH_INDEX="https://download.pytorch.org/whl/cu124"
+else                                         TORCH_INDEX="https://download.pytorch.org/whl/cu121"
+fi
+echo "  Driver major: ${DRIVER_MAJOR:-unknown}  →  wheel index: $TORCH_INDEX"
+
+echo "[4/6] Installing Unsloth + TRL 0.29.1 + training deps..."
+# Only hard pin: trl==0.29.1 (needs importance_sampling_level field).
+# Everything else (torch, transformers, torchao, unsloth_zoo, peft, accelerate)
+# resolved by uv from the detected torch wheel index — no manual version juggling.
 uv pip install \
     "trl==0.29.1" \
+    "unsloth[colab-new] @ git+https://github.com/unslothai/unsloth.git" \
     "datasets>=2.20.0" \
-    "accelerate>=1.4.0" \
-    "peft>=0.12.0" \
-    "transformers>=4.56.2" \
     "scipy>=1.13.0" \
-    "numpy>=1.26.0"
+    "numpy>=1.26.0" \
+    --extra-index-url "$TORCH_INDEX"
 
 # ---------------------------------------------------------------------------
 # 5. Verify installation
@@ -79,7 +89,8 @@ checks = []
 
 try:
     import torch
-    checks.append(f"torch {torch.__version__} | CUDA: {torch.cuda.is_available()} | GPU: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'N/A'}")
+    gpu = torch.cuda.get_device_name(0) if torch.cuda.is_available() else "N/A"
+    checks.append(f"torch {torch.__version__} | CUDA: {torch.cuda.is_available()} | GPU: {gpu}")
 except Exception as e:
     checks.append(f"torch FAILED: {e}")
 
@@ -92,15 +103,15 @@ except Exception as e:
 try:
     import trl
     from trl.trainer.grpo_config import GRPOConfig
-    cfg = GRPOConfig.__dataclass_fields__
-    has_iss = "importance_sampling_level" in cfg
+    has_iss = "importance_sampling_level" in GRPOConfig.__dataclass_fields__
     checks.append(f"trl {trl.__version__} | importance_sampling_level: {has_iss}")
 except Exception as e:
     checks.append(f"trl FAILED: {e}")
 
 try:
     from transformers import AutoTokenizer
-    checks.append("transformers OK")
+    import transformers
+    checks.append(f"transformers {transformers.__version__} OK")
 except Exception as e:
     checks.append(f"transformers FAILED: {e}")
 
