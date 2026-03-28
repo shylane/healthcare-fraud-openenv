@@ -95,11 +95,18 @@ import torch; torch.cuda.empty_cache()
 "
 
 # ----- Probe 6: GRPO 20-step training -----
+# Use probe-safe memory budget: group-size 8, completion 256, batch 1.
+# Full-scale defaults (group-size 12, completion 384, batch 2) are used in
+# the actual training runs; probe only needs to confirm GRPO executes at all.
+export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 check "grpo_probe" python training/train_gspo_v2.py \
     --cycle 1 \
     --data /tmp/probe_harvest.jsonl \
     --output-dir /tmp/probe_ckpt \
-    --max-steps 20
+    --max-steps 20 \
+    --group-size 8 \
+    --max-completion-length 256 \
+    --per-device-batch 1
 
 check "rewards_logged" python -c "
 import json, os
