@@ -9,6 +9,18 @@
 # =============================================================================
 set -euo pipefail
 
+# ---------------------------------------------------------------------------
+# 0. Clone repo if not already present (run this from /workspace)
+# ---------------------------------------------------------------------------
+REPO_URL="https://github.com/shylane/healthcare-fraud-openenv.git"
+if [ ! -f "training/train_gspo_v2.py" ]; then
+    echo "[0/6] Cloning repo into current directory..."
+    git clone "$REPO_URL" .
+else
+    echo "[0/6] Repo already present — pulling latest..."
+    git pull --ff-only || echo "  (pull skipped — local changes present)"
+fi
+
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 echo "=== Healthcare Fraud GSPO Setup ==="
 echo "Project root: $PROJECT_ROOT"

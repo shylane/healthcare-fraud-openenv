@@ -238,7 +238,7 @@ def run_eval_harvest(
     log = workspace / "logs" / f"eval_harvest_cycle{cycle-1}.log"
 
     cmd = [
-        PYTHON_CMD, "scripts/harvest_episodes.py",
+        PYTHON_CMD, "training/harvest_episodes.py",
         "--episodes", str(eval_episodes),
         "--seed-start", str(eval_seed_start),
         "--model", model_path,
@@ -263,7 +263,7 @@ def run_eval_metrics(workspace: Path, cycle: int, dry_run: bool) -> bool:
     data = workspace / "data" / f"eval_after_cycle{cycle-1}.jsonl"
     log = workspace / "logs" / f"eval_metrics_cycle{cycle-1}.log"
 
-    cmd = [PYTHON_CMD, "scripts/eval_metrics.py", "--data", str(data)]
+    cmd = [PYTHON_CMD, "training/eval_metrics.py", "--data", str(data)]
     rc = run_command(cmd, log, f"Eval metrics (cycle {cycle-1})", workspace,
                      timeout_hours=0.5, dry_run=dry_run)
     if rc == 0:
@@ -287,7 +287,7 @@ def run_train_harvest(
     log = workspace / "logs" / f"harvest_train_cycle{cycle}.log"
 
     cmd = [
-        PYTHON_CMD, "scripts/harvest_episodes.py",
+        PYTHON_CMD, "training/harvest_episodes.py",
         "--episodes", str(train_episodes),
         "--seed-start", str(seed_start),
         "--model", model_path,
@@ -318,7 +318,7 @@ def run_train(
     log = workspace / "logs" / f"train_cycle{cycle}.log"
 
     cmd = [
-        PYTHON_CMD, "scripts/train_gspo_v2.py",
+        PYTHON_CMD, "training/train_gspo_v2.py",
         "--cycle", str(cycle),
         "--data", str(data),
         "--output-dir", str(output_dir),
@@ -353,7 +353,7 @@ def run_cycle1_heuristic_harvest(
     log = workspace / "logs" / "harvest_train_cycle1.log"
 
     cmd = [
-        PYTHON_CMD, "scripts/harvest_episodes.py",
+        PYTHON_CMD, "training/harvest_episodes.py",
         "--episodes", str(episodes),
         "--seed-start", "0",
         "--output", str(output_data),
@@ -382,7 +382,7 @@ def run_cycle1_train(
     log = workspace / "logs" / "train_cycle1.log"
 
     cmd = [
-        PYTHON_CMD, "scripts/train_gspo_v2.py",
+        PYTHON_CMD, "training/train_gspo_v2.py",
         "--cycle", "1",
         "--data", str(data),
         "--output-dir", str(output_dir),
