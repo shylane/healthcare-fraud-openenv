@@ -109,14 +109,16 @@ check "grpo_probe" python training/train_gspo_v2.py \
     --per-device-batch 1
 
 check "rewards_logged" python -c "
-import json, os
-log = '/tmp/probe_ckpt/rewards_log.jsonl'
-assert os.path.exists(log), f'Missing {log}'
+import json, os, glob
+# train_gspo_v2.py saves under <output-dir>/cycle_<N>/rewards_log.jsonl
+candidates = glob.glob('/tmp/probe_ckpt/**/rewards_log.jsonl', recursive=True)
+assert candidates, f'No rewards_log.jsonl found under /tmp/probe_ckpt/'
+log = candidates[0]
 lines = open(log).readlines()
-assert len(lines) > 0, 'Empty rewards_log'
+assert len(lines) > 0, f'Empty rewards_log: {log}'
 rec = json.loads(lines[0])
 assert any(k for k in rec if 'reward' in k.lower()), f'No reward keys: {list(rec.keys())}'
-print(f'Rewards log OK: {len(lines)} entries, keys={list(rec.keys())[:4]}')
+print(f'Rewards log OK: {log}, {len(lines)} entries, keys={list(rec.keys())[:4]}')
 "
 
 echo ""

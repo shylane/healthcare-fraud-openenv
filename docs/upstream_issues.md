@@ -45,48 +45,67 @@ if position_ids.shape[-1] > 1:
 
 ---
 
-## 2. unsloth — `matmul_lora` dtype mismatch under torch AMP autocast
+## 2. unsloth — dtype mismatch in LoRA kernels due to PyTorch 2.4 AMP API change
 
 **Library**: `unsloth` (latest as of March 2026)
-**File**: `unsloth/kernels/utils.py`, function `matmul_lora`, ~line 1043
-**Affects**: LoRA fine-tuning with `bf16=True` / `torch.amp.autocast` when `X` arrives
-in float32 (e.g. after a residual add that didn't cast).
+**Files**: `unsloth/kernels/utils.py` (decorator definition), `unsloth/kernels/fast_lora.py`
+  (forward/backward of `LoRA_MLP` and `LoRA_W`)
+**Affects**: LoRA fine-tuning with `load_in_4bit=True` + `bf16=True` on PyTorch >= 2.4.
 
-### Symptom
+### Symptoms
+Forward:
 ```
 RuntimeError: self and mat2 must have the same dtype, but got Half and Float
 ```
-Triggered in `LoRA_MLP.forward` → `matmul_lora` during GRPO training step.
-
-### Root cause
-```python
-def matmul_lora(X, W, W_quant, A, B, s, out=None):
-    dtype = X.dtype          # ← captures X dtype (may be float32 under autocast)
-    ...
-    out = torch_matmul(X, W.t(), out=out)  # autocast → out is float16
-    if A is not None:
-        XA = torch_matmul(X, A.to(dtype))  # dtype=float32 → XA is float32
-        out.addmm_(XA, B.to(dtype), ...)   # FAIL: out=float16, mat2=float32
+Backward:
 ```
-`torch.amp.autocast` silently downcasts the weight matmul output to float16, but
-`dtype = X.dtype` was captured before autocast applied, so the LoRA branch uses the
-wrong dtype for `A`, `B`, and `XA`.
-
-### Minimal fix (applied locally)
-Replace the LoRA block to derive dtype from `out` (post-matmul, post-autocast):
-```python
-    if A is not None:
-        lora_dtype = out.dtype          # use actual output dtype, not X.dtype
-        A, B = A.t(), B.t()
-        XA = torch_matmul(X.to(lora_dtype), A.to(lora_dtype))
-        out.addmm_(XA, B.to(lora_dtype), alpha=s)
+RuntimeError: self and mat2 must have the same dtype, but got Float and Half
 ```
+Triggered in `LoRA_MLP.forward`/`backward` and related kernels.
+
+### Root cause (PyTorch 2.4 API regression)
+`unsloth` relies on `@torch.cuda.amp.custom_fwd` / `@torch.cuda.amp.custom_bwd`
+(deprecated in PyTorch 2.4). The old API **automatically cast float inputs to the
+autocast dtype** (float16) inside the forward, ensuring `X.dtype == float16` for all
+saved activations.
+
+The new API `torch.amp.custom_fwd(device_type='cuda')` with `cast_inputs=None` (the
+default) does **not** cast inputs. So `X` stays float32 in the forward/backward, but
+all matmul outputs inside the autocast context are float16. This creates a cascading
+dtype mismatch:
+
+```python
+# In utils.py — these decorators now have different semantics:
+torch_amp_custom_fwd = torch.amp.custom_fwd(device_type="cuda")  # BUG: no cast_inputs
+
+# In fast_lora.py forward:
+dtype = X.dtype         # = float32 (not cast by new decorator)
+out = torch_matmul(X, W.t())   # autocast → float16
+XA = X @ A.to(dtype)           # float32 @ float32 → float16 (autocast!)
+out.addmm_(XA, B.to(dtype))    # FAIL: out=float16, mat2=float32
+
+# In fast_lora.py backward (LoRA_MLP):
+dtype = X.dtype         # = float32 (X saved as float32)
+d_downA = empty_like(downA.to(dtype))  # → float32
+h = matmul_lora(dY, ...)       # → float16 (autocast)
+dY @ downB.t()                 # float32 @ float32 → float16 (autocast!)
+d_downA.addmm_(h.t(), dY @ downB.t())  # FAIL: float32.addmm_(float16, float16)
+```
+
+### Fix (applied locally to `utils.py`)
+```python
+# Restore old cast_inputs behaviour explicitly:
+torch_amp_custom_fwd = torch.amp.custom_fwd(device_type="cuda", cast_inputs=torch.float16)
+```
+This ensures X is cast to float16 before the forward body runs (and saved as float16),
+making all downstream dtype assumptions consistent — exactly as the old API behaved.
 
 ### Notes
 - Reproducible with `unsloth/Qwen2.5-1.5B-Instruct` + `load_in_4bit=True` + `bf16=True`
-  GRPO training.
-- The bug is latent in full forward passes but only surfaces during backward/generation
-  when autocast context is active.
+  GRPO training on PyTorch 2.11.0+cu128.
+- The same root cause produces TWO different error messages depending on which
+  addmm_ operation is hit first (forward vs backward).
+- Upstream fix needed in `utils.py` at the `torch_amp_custom_fwd` definition site.
 
 ---
 
