@@ -83,8 +83,10 @@ uv pip install \
     --extra-index-url "$TORCH_INDEX" \
     --index-strategy unsafe-best-match
 
-echo "  Pinning trl==0.29.1 (importance_sampling_level support)..."
-uv pip install --force-reinstall "trl==0.29.1" \
+echo "  Pinning trl==0.29.1 + transformers==5.3.0..."
+# trl==0.29.1   → needed for importance_sampling_level in GRPOConfig
+# transformers==5.3.0  → 5.4.0 added auto_docstring which unsloth exec() context lacks
+uv pip install --force-reinstall "trl==0.29.1" "transformers==5.3.0" \
     --extra-index-url "$TORCH_INDEX" \
     --index-strategy unsafe-best-match
 
