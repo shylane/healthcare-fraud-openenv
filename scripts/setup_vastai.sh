@@ -76,6 +76,7 @@ echo "[4/6] Installing Unsloth + training deps..."
 #             doesn't go through unsloth's trainer wrapper, so they coexist fine.
 uv pip install \
     "unsloth[colab-new] @ git+https://github.com/unslothai/unsloth.git" \
+    "torchvision" \
     "datasets>=2.20.0" \
     "scipy>=1.13.0" \
     "numpy>=1.26.0" \
