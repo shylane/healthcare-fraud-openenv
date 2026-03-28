@@ -77,7 +77,8 @@ uv pip install \
     "datasets>=2.20.0" \
     "scipy>=1.13.0" \
     "numpy>=1.26.0" \
-    --extra-index-url "$TORCH_INDEX"
+    --extra-index-url "$TORCH_INDEX" \
+    --index-strategy unsafe-best-match
 
 # ---------------------------------------------------------------------------
 # 5. Verify installation
