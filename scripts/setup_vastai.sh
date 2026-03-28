@@ -13,6 +13,13 @@ set -euo pipefail
 # 0. Clone repo if not already present (run this from /workspace)
 # ---------------------------------------------------------------------------
 REPO_URL="https://github.com/shylane/healthcare-fraud-openenv.git"
+
+# Ensure build tools available for Triton JIT compilation (not in CUDA runtime images)
+if ! command -v gcc &>/dev/null; then
+    echo "[pre] Installing build tools (gcc/g++ for Triton)..."
+    apt-get install -y -qq gcc g++ 2>/dev/null || true
+fi
+
 if [ ! -d ".git" ]; then
     echo "[0/6] Cloning repo into current directory..."
     git clone "$REPO_URL" .
