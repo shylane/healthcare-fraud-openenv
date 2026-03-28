@@ -39,7 +39,10 @@ if position_ids.shape[-1] > 1:
 ### Notes
 - Does NOT affect full-sequence (prefill) forward passes — only triggered on the
   single-token generation steps inside KV-cache mode.
-- Reproducible with `unsloth/Qwen2.5-1.5B-Instruct` + GRPO probe (20 steps, batch 4).
+- Reproducible with `unsloth/Qwen2.5-1.5B-Instruct` and `unsloth/Qwen3-1.7B` +
+  GRPO probe (20 steps, batch 4).
+- The same bug exists in `unsloth/models/qwen3.py` (`Qwen3Attention_fast_forward_inference`
+  ~line 305), same fix applies.
 - Related unsloth issue: likely the same root cause as fast-inference shape reports
   filed against `Mistral` and `Qwen2` in the unsloth repo.
 
