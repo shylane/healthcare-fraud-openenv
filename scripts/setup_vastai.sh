@@ -67,16 +67,23 @@ else                                         TORCH_INDEX="https://download.pytor
 fi
 echo "  Driver major: ${DRIVER_MAJOR:-unknown}  →  wheel index: $TORCH_INDEX"
 
-echo "[4/6] Installing Unsloth + TRL 0.29.1 + training deps..."
-# Only hard pin: trl==0.29.1 (needs importance_sampling_level field).
-# Everything else (torch, transformers, torchao, unsloth_zoo, peft, accelerate)
-# resolved by uv from the detected torch wheel index — no manual version juggling.
+echo "[4/6] Installing Unsloth + training deps..."
+# Two-pass install strategy:
+#   Pass 1 — let uv resolve unsloth + all its deps freely (installs trl <= 0.24)
+#   Pass 2 — force-reinstall trl==0.29.1 (needed for importance_sampling_level)
+#             unsloth-zoo's trl<0.24 constraint is a packaging artefact; at
+#             runtime our training script uses trl.GRPOTrainer directly and
+#             doesn't go through unsloth's trainer wrapper, so they coexist fine.
 uv pip install \
-    "trl==0.29.1" \
     "unsloth[colab-new] @ git+https://github.com/unslothai/unsloth.git" \
     "datasets>=2.20.0" \
     "scipy>=1.13.0" \
     "numpy>=1.26.0" \
+    --extra-index-url "$TORCH_INDEX" \
+    --index-strategy unsafe-best-match
+
+echo "  Pinning trl==0.29.1 (importance_sampling_level support)..."
+uv pip install --force-reinstall "trl==0.29.1" \
     --extra-index-url "$TORCH_INDEX" \
     --index-strategy unsafe-best-match
 
