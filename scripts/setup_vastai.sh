@@ -59,6 +59,9 @@ source "$VENV/bin/activate"
 # ---------------------------------------------------------------------------
 # 3. Detect CUDA capability and install all training deps in one uv pass
 # ---------------------------------------------------------------------------
+# Disable unsloth telemetry (avoids DNS failures crashing model load in flaky networks)
+export UNSLOTH_DISABLE_STATISTICS=1
+
 echo "[3/6] Detecting CUDA driver and selecting wheel index..."
 
 # Map driver major version → PyTorch CUDA wheel index
