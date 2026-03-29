@@ -485,6 +485,15 @@ _MODEL_CONFIGS: dict[str, dict] = {
     # Use --max-completion-length 768 and --group-size 8 with thinking enabled.
     # IMPORTANT: use temperature >= 0.6 (greedy causes repetition loops in think).
     # EOS tokens: 151645 (<|im_end|>), 151643 (<|endoftext|>), 151668 (</think>).
+    # Full bf16 — faster inference (no dequant), better gradient quality.
+    # Uses ~3.4 GB vs 0.85 GB for 4-bit; needs ~16 GB VRAM with group_size=24.
+    "Qwen/Qwen3-1.7B": {
+        "load_in_4bit": False,
+        "dtype": "bfloat16",
+        "eos_token_ids": [151645, 151643, 151668],
+        "lora_targets": ["q_proj", "k_proj", "v_proj", "o_proj",
+                         "gate_proj", "up_proj", "down_proj"],
+    },
     "unsloth/Qwen3-1.7B": {
         "load_in_4bit": True,
         "eos_token_ids": [151645, 151643, 151668],  # add </think> as EOS
@@ -648,9 +657,12 @@ def main() -> None:
         model_source = args.model_id
 
     print(f"Loading model from: {model_source}")
+    _dtype_str = model_cfg.get("dtype", None)
+    _dtype = getattr(torch, _dtype_str) if isinstance(_dtype_str, str) else _dtype_str
     model, tokenizer = FastLanguageModel.from_pretrained(
         model_source,
         load_in_4bit=model_cfg["load_in_4bit"],
+        dtype=_dtype,
         max_seq_length=args.max_seq_length if args.max_seq_length > 0 else max(2048, args.max_completion_length + 1600),
     )
 
@@ -704,7 +716,7 @@ def main() -> None:
         save_steps=25,
         save_total_limit=4,       # keep last 4 (covers ~100 steps of fallback)
         bf16=True,
-        gradient_checkpointing=True,
+        gradient_checkpointing=True,  # re-enabled: bf16 activations larger, need the ~2GB VRAM savings
         torch_compile=False,
         report_to="wandb" if args.wandb else "none",
         run_name=f"gspo-cycle{args.cycle}-{args.model_id.split('/')[-1]}",

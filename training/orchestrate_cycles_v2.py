@@ -345,7 +345,7 @@ def run_train(
         cmd.append("--wandb")
 
     rc = run_command(cmd, log, f"GSPO Train (cycle {cycle})", workspace,
-                     timeout_hours=16.0, dry_run=dry_run)
+                     timeout_hours=20.0, dry_run=dry_run)
     if rc == 0:
         _mark_phase_done(workspace, cycle, phase)
         return True
@@ -419,7 +419,7 @@ def run_cycle1_train(
         cmd.append("--wandb")
 
     rc = run_command(cmd, log, "GSPO Train (cycle 1)", workspace,
-                     timeout_hours=16.0, dry_run=dry_run)
+                     timeout_hours=20.0, dry_run=dry_run)
     if rc == 0:
         _mark_phase_done(workspace, 1, phase)
         return True
