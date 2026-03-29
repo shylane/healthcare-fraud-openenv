@@ -230,7 +230,8 @@ def memory_reward(completions, **kwargs):
 
 
 def conciseness_reward(completions, **kwargs):
-    """Stratified conciseness — thinks freely, output must be tight. Range: [-1.5, +0.6]."""
+    """Penalise bloat only -- no short-output reward (prevents short-APPROVE hack).
+    Range: [-1.5, +0.1]. Closure bonus kept as incentive to close </think>."""
     rewards = []
     for completion in completions:
         text = _to_text(completion)
@@ -246,11 +247,9 @@ def conciseness_reward(completions, **kwargs):
             output_section = text
             closure_bonus = 0.0
         n = len(output_section.split())
-        if n <= 60:
-            base = 0.5
-        elif n <= 100:
-            base = 0.1
-        elif n <= 150:
+        if n <= 200:
+            base = 0.0    # acceptable range, no reward/penalty
+        elif n <= 400:
             base = -0.5
         else:
             base = -1.5
@@ -316,21 +315,25 @@ class RewardLogger(TrainerCallback):
     def on_log(self, args, state, control, logs=None, **kwargs):
         if logs is None:
             return
-        reward_entries = {
-            k: v for k, v in logs.items()
-            if k.startswith("rewards/") or k in ("reward", "reward_std",
-                                                   "kl", "loss", "grad_norm")
+        # Capture ALL TRL metrics: rewards, completion stats, timing, KL, clip ratios, etc.
+        _SKIP = {"total_flos", "train_loss", "train_runtime",
+                 "train_samples_per_second", "train_steps_per_second"}
+        entry = {
+            "step": state.global_step,
+            "epoch": state.epoch,
+            "ts": datetime.utcnow().isoformat(),
         }
-        if reward_entries:
-            entry = {
-                "step": state.global_step,
-                "epoch": state.epoch,
-                "ts": datetime.utcnow().isoformat(),
-                **reward_entries,
-            }
+        for k, v in logs.items():
+            if k not in _SKIP:
+                try:
+                    entry[k] = float(v) if not isinstance(v, (int, float, str, bool)) else v
+                except (TypeError, ValueError):
+                    entry[k] = str(v)
+        has_reward = any(k.startswith(("rewards/", "reward", "completion", "kl", "clip", "step_time", "num_token"))
+                        for k in entry)
+        if has_reward or "loss" in entry:
             with open(self.log_path, "a", encoding="utf-8") as f:
                 f.write(json.dumps(entry) + "\n")
-
 
 # ---------------------------------------------------------------------------
 # Probe health check
@@ -562,6 +565,12 @@ def main() -> None:
                         help="Per-device batch size (3090 default=2).")
     parser.add_argument("--grad-accum", type=int, default=8,
                         help="Gradient accumulation steps (3090 default=8).")
+    parser.add_argument("--lora-rank", type=int, default=16,
+                        help="LoRA rank (default 16; use 32 to double capacity).")
+    parser.add_argument("--num-iterations", type=int, default=2,
+                        help="GRPO num_iterations: gradient updates per generation (default 2).")
+    parser.add_argument("--max-seq-length", type=int, default=0,
+                        help="Model max sequence length (0 = auto: completion+1600, min 2048).")
     args = parser.parse_args()
 
     model_cfg = _MODEL_CONFIGS.get(args.model_id, {
@@ -642,7 +651,7 @@ def main() -> None:
     model, tokenizer = FastLanguageModel.from_pretrained(
         model_source,
         load_in_4bit=model_cfg["load_in_4bit"],
-        max_seq_length=2048,
+        max_seq_length=args.max_seq_length if args.max_seq_length > 0 else max(2048, args.max_completion_length + 1600),
     )
 
     # If resuming an interrupted run, do NOT add a new LoRA — the checkpoint
@@ -650,13 +659,13 @@ def main() -> None:
     if not resume_from_checkpoint:
         model = FastLanguageModel.get_peft_model(
             model,
-            r=16,
-            lora_alpha=32,
+            r=args.lora_rank,
+            lora_alpha=args.lora_rank * 2,
             target_modules=model_cfg["lora_targets"],
             lora_dropout=0,
             bias="none",
         )
-        print("Added fresh LoRA adapters (r=16, alpha=32).")
+        print(f"Added fresh LoRA adapters (r={args.lora_rank}, alpha={args.lora_rank * 2}).")
     else:
         print("Resuming with existing LoRA from checkpoint.")
 
@@ -676,8 +685,8 @@ def main() -> None:
     training_config = GRPOConfig(
         output_dir=output_dir,
         importance_sampling_level="sequence",  # GSPO
-        num_iterations=2,
-        beta=0.001,
+        num_iterations=args.num_iterations,
+        beta=0.04,  # was 0.001, near-zero KL caused policy diverge to KL=27
         epsilon=0.2,
         epsilon_high=0.28,
         num_generations=args.group_size,

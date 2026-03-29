@@ -306,7 +306,9 @@ def run_train_harvest(
 def run_train(
     workspace: Path, cycle: int, base_cycle_path: str | None,
     model_id: str, dry_run: bool, group_size: int,
-    max_completion_length: int, wandb: bool,
+    max_completion_length: int, wandb: bool, max_steps: int = 0,
+    lora_rank: int = 16, num_iterations: int = 2,
+    lr: float = 5e-6, max_seq_length: int = 0,
 ) -> bool:
     phase = PHASE_TRAIN
     if _phase_done(workspace, cycle, phase):
@@ -327,13 +329,23 @@ def run_train(
         "--max-completion-length", str(max_completion_length),
         "--auto-resume",        # always safe: resumes if interrupted, noop if fresh
     ]
+    if max_steps > 0:
+        cmd += ["--max-steps", str(max_steps)]
+    if lr != 5e-6:
+        cmd += ["--lr", str(lr)]
+    if lora_rank != 16:
+        cmd += ["--lora-rank", str(lora_rank)]
+    if num_iterations != 2:
+        cmd += ["--num-iterations", str(num_iterations)]
+    if max_seq_length > 0:
+        cmd += ["--max-seq-length", str(max_seq_length)]
     if base_cycle_path:
         cmd += ["--base-cycle", base_cycle_path]
     if wandb:
         cmd.append("--wandb")
 
     rc = run_command(cmd, log, f"GSPO Train (cycle {cycle})", workspace,
-                     timeout_hours=6.0, dry_run=dry_run)
+                     timeout_hours=16.0, dry_run=dry_run)
     if rc == 0:
         _mark_phase_done(workspace, cycle, phase)
         return True
@@ -370,7 +382,9 @@ def run_cycle1_heuristic_harvest(
 
 def run_cycle1_train(
     workspace: Path, model_id: str, dry_run: bool,
-    group_size: int, max_completion_length: int, wandb: bool,
+    group_size: int, max_completion_length: int, wandb: bool, max_steps: int = 0,
+    lora_rank: int = 16, num_iterations: int = 2,
+    lr: float = 5e-6, max_seq_length: int = 0,
 ) -> bool:
     phase = PHASE_TRAIN
     if _phase_done(workspace, 1, phase):
@@ -391,11 +405,21 @@ def run_cycle1_train(
         "--max-completion-length", str(max_completion_length),
         "--auto-resume",
     ]
+    if max_steps > 0:
+        cmd += ["--max-steps", str(max_steps)]
+    if lr != 5e-6:
+        cmd += ["--lr", str(lr)]
+    if lora_rank != 16:
+        cmd += ["--lora-rank", str(lora_rank)]
+    if num_iterations != 2:
+        cmd += ["--num-iterations", str(num_iterations)]
+    if max_seq_length > 0:
+        cmd += ["--max-seq-length", str(max_seq_length)]
     if wandb:
         cmd.append("--wandb")
 
     rc = run_command(cmd, log, "GSPO Train (cycle 1)", workspace,
-                     timeout_hours=6.0, dry_run=dry_run)
+                     timeout_hours=16.0, dry_run=dry_run)
     if rc == 0:
         _mark_phase_done(workspace, 1, phase)
         return True
@@ -425,6 +449,16 @@ def main():
     parser.add_argument("--dry-run", action="store_true",
                         help="Print plan without executing.")
     parser.add_argument("--wandb", action="store_true")
+    parser.add_argument("--max-steps-per-cycle", type=int, default=0,
+                        help="Cap training steps per cycle (0 = full schedule).")
+    parser.add_argument("--lr", type=float, default=5e-6,
+                        help="Learning rate (default 5e-6 for RL).")
+    parser.add_argument("--lora-rank", type=int, default=16,
+                        help="LoRA rank (default 16).")
+    parser.add_argument("--num-iterations", type=int, default=2,
+                        help="GRPO num_iterations: gradient updates per generation (default 2).")
+    parser.add_argument("--max-seq-length", type=int, default=0,
+                        help="Model max_seq_length (0 = auto-compute).")
     args = parser.parse_args()
 
     workspace = Path(args.workspace)
@@ -486,7 +520,11 @@ def main():
         # Train
         ok = run_cycle1_train(
             workspace, args.model_id, args.dry_run,
-            args.group_size, args.max_completion_length, args.wandb)
+            args.group_size, args.max_completion_length, args.wandb,
+            max_steps=args.max_steps_per_cycle,
+            lora_rank=args.lora_rank, num_iterations=args.num_iterations,
+        lr=args.lr,
+            max_seq_length=args.max_seq_length)
         if not ok and not args.dry_run:
             print("!! Cycle 1 training failed — aborting.")
             sys.exit(1)
@@ -544,6 +582,10 @@ def main():
             group_size=args.group_size,
             max_completion_length=args.max_completion_length,
             wandb=args.wandb,
+            max_steps=args.max_steps_per_cycle,
+            lora_rank=args.lora_rank, num_iterations=args.num_iterations,
+        lr=args.lr,
+            max_seq_length=args.max_seq_length,
         )
         if not ok and not args.dry_run:
             print(f"!! Cycle {cycle} training failed — aborting.")
