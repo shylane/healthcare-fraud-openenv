@@ -1063,7 +1063,11 @@ def main() -> None:
     training_config = GRPOConfig(
         output_dir=output_dir,
         importance_sampling_level="sequence",  # GSPO: sequence-level IS ratio
-        loss_type="luspo",                     # clean GSPO (TRL ≥0.29.1); default="dapo" is a hybrid
+        # loss_type="luspo": NOT supported by Unsloth compiled trainer (raises ValueError).
+        # Unsloth overrides compute_loss with its own implementation that supports:
+        # grpo/bnpo/dr_grpo/dapo/cispo/sapo.  "dapo" is TRL's default and is fine here —
+        # the key stability fix is best-checkpoint merge (not luspo vs dapo).
+        loss_type="dapo",
         mask_truncated_completions=True,       # exclude clipped completions from gradient (reduces collapse noise)
         num_iterations=args.num_iterations,
         beta=0.04,  # was 0.001, near-zero KL caused policy diverge to KL=27
