@@ -335,6 +335,52 @@ class RewardLogger(TrainerCallback):
             with open(self.log_path, "a", encoding="utf-8") as f:
                 f.write(json.dumps(entry) + "\n")
 
+class CollapseEarlyStop(TrainerCallback):
+    """Stop training early when the policy has collapsed to save compute.
+
+    Two collapse modes detected:
+    - Length explosion: clipped_ratio >= 0.99 for ``patience`` consecutive logs
+      (all completions hitting max_completion_length — zero group variance)
+    - Reward freeze: frac_reward_zero_std >= 1.0 for ``patience`` consecutive logs
+      (every completion in each group has identical reward — nothing to learn)
+
+    When triggered, sets control.should_training_stop = True so the trainer
+    exits cleanly (exit 0), preserving the last saved checkpoint.
+    """
+
+    def __init__(self, patience: int = 20):
+        # patience in log steps (logging_steps=5, so 20 logs = 100 training steps)
+        self.patience = patience
+        self._clip_streak = 0
+        self._zero_std_streak = 0
+
+    def on_log(self, args, state, control, logs=None, **kwargs):
+        if not logs:
+            return
+        clip = logs.get("completions/clipped_ratio", 0.0)
+        zero_std = logs.get("frac_reward_zero_std", 0.0)
+
+        if clip >= 0.99:
+            self._clip_streak += 1
+            self._zero_std_streak = 0
+        elif zero_std >= 1.0:
+            self._zero_std_streak += 1
+            self._clip_streak = 0
+        else:
+            self._clip_streak = 0
+            self._zero_std_streak = 0
+
+        if self._clip_streak >= self.patience:
+            print(f"\n[EARLY STOP] clipped_ratio=100% for {self._clip_streak} consecutive "
+                  f"log steps (step {state.global_step}) — length explosion detected, stopping.")
+            control.should_training_stop = True
+
+        if self._zero_std_streak >= self.patience:
+            print(f"\n[EARLY STOP] frac_reward_zero_std=1.0 for {self._zero_std_streak} "
+                  f"consecutive log steps (step {state.global_step}) — zero learning signal, stopping.")
+            control.should_training_stop = True
+
+
 # ---------------------------------------------------------------------------
 # Probe health check
 # ---------------------------------------------------------------------------
@@ -744,7 +790,7 @@ def main() -> None:
         ],
         train_dataset=dataset,
         processing_class=tokenizer,
-        callbacks=[RewardLogger(log_path)],
+        callbacks=[RewardLogger(log_path), CollapseEarlyStop(patience=20)],
     )
 
     # Store globally for signal handler access
