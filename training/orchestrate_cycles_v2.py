@@ -331,8 +331,7 @@ def run_train(
     ]
     if max_steps > 0:
         cmd += ["--max-steps", str(max_steps)]
-    if lr != 5e-6:
-        cmd += ["--lr", str(lr)]
+    cmd += ["--lr", str(lr)]  # always pass; train script default differs
     if lora_rank != 16:
         cmd += ["--lora-rank", str(lora_rank)]
     if num_iterations != 2:
@@ -407,8 +406,7 @@ def run_cycle1_train(
     ]
     if max_steps > 0:
         cmd += ["--max-steps", str(max_steps)]
-    if lr != 5e-6:
-        cmd += ["--lr", str(lr)]
+    cmd += ["--lr", str(lr)]  # always pass; train script default differs
     if lora_rank != 16:
         cmd += ["--lora-rank", str(lora_rank)]
     if num_iterations != 2:

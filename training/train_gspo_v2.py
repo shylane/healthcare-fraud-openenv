@@ -717,6 +717,7 @@ def main() -> None:
         save_total_limit=4,       # keep last 4 (covers ~100 steps of fallback)
         bf16=True,
         gradient_checkpointing=True,  # re-enabled: bf16 activations larger, need the ~2GB VRAM savings
+        max_grad_norm=1.0,            # clip gradient spikes (saw norm=4.2 before collapse)
         torch_compile=False,
         report_to="wandb" if args.wandb else "none",
         run_name=f"gspo-cycle{args.cycle}-{args.model_id.split('/')[-1]}",

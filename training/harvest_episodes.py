@@ -216,12 +216,14 @@ def main():
             """Generate a decision using the trained model."""
             # Wrap in conversational format to apply ChatML template
             messages = [{"role": "user", "content": prompt}]
-            inputs = harvest_tokenizer.apply_chat_template(
+            raw = harvest_tokenizer.apply_chat_template(
                 messages, tokenize=True, add_generation_prompt=True, return_tensors="pt"
-            ).to("cuda")
+            )
+            # transformers >=4.47 returns BatchEncoding; older returns tensor
+            input_ids = raw["input_ids"].to("cuda") if hasattr(raw, "input_ids") else raw.to("cuda")
             with torch.no_grad():
                 outputs = harvest_model.generate(
-                    inputs,
+                    input_ids,
                     max_new_tokens=150,  # Match training budget
                     temperature=0.7,
                     do_sample=True, repetition_penalty=1.15,
@@ -229,7 +231,7 @@ def main():
                     pad_token_id=harvest_tokenizer.pad_token_id,
                 )
             # Decode only the generated tokens (exclude input prompt tokens)
-            input_length = inputs.shape[1]
+            input_length = input_ids.shape[1]
             return harvest_tokenizer.decode(outputs[0][input_length:], skip_special_tokens=True)
 
         policy_fn = model_policy
