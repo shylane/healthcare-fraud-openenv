@@ -136,9 +136,35 @@ def _extract_decision(text) -> str | None:
     return None
 
 
+_NEGATION_RE = re.compile(
+    r"\b(no|not|none|never|without|absent|negative|deny|denies|undetected|unlikely|"
+    r"doesn't|don't|isn't|wasn't|weren't|hasn't|haven't|hadn't|"
+    r"no\s+evidence|no\s+sign|no\s+indication)\b",
+    re.IGNORECASE,
+)
+
+
+def _is_affirmative(text: str, pattern: str) -> bool:
+    """Return True only if pattern is found WITHOUT a preceding negation.
+
+    Splits on sentence boundaries and checks a ±60-char window around each
+    match for negation words.  This prevents the model from farming bingo
+    rewards by mentioning indicators in a denial context
+    ("no prior fraud detected" should NOT count as hitting prior_fraud).
+    """
+    for sentence in re.split(r'[.!?;]|\n', text):
+        m = re.search(pattern, sentence, re.IGNORECASE)
+        if m:
+            start = max(0, m.start() - 60)
+            end = min(len(sentence), m.end() + 60)
+            window = sentence[start:end]
+            if not _NEGATION_RE.search(window):
+                return True
+    return False
+
+
 # ---------------------------------------------------------------------------
-# Reward functions (identical to v1 Rev 4 — do not change reward logic here)
-# All 8 functions kept in place; changes only to infrastructure around them.
+# Reward functions
 # ---------------------------------------------------------------------------
 
 def correctness_reward(completions, **kwargs):
@@ -163,14 +189,29 @@ def correctness_reward(completions, **kwargs):
     return rewards
 
 
+_FIELD_RE = re.compile(
+    r"\b([A-Z]\d{2,}\.?\d*|CPT\s*\d{5}|ICD-?\d+|\d+\.?\d*\s*%|\$\s*[\d,]+\.?\d*)\b",
+    re.IGNORECASE,
+)
+
+
 def reasoning_reward(completions, **kwargs):
-    """Conditional on correctness. Range: [-1, +1]."""
+    """Conditional on correctness. Range: [-1, +1].
+
+    Scores evidence of real analysis:
+      +0.3  structural RATIONALE:/EVIDENCE: present
+      +0.3  provider_id referenced (specific, not gameable)
+      +0.4  at least one CPT code, ICD code, or percentage/dollar figure cited
+            (replaces raw amount echo which was trivially gameable)
+      -1.0  completion too short (<20 words)
+    """
     ground_truths = kwargs.get("ground_truth", [{}] * len(completions))
     rewards = []
     for completion, gt in zip(completions, ground_truths):
         is_fraud = gt.get("is_fraud", False)
         decision = _extract_decision(completion)
-        upper_text = _to_text(completion).upper()
+        text = _to_text(completion)
+        upper_text = text.upper()
         if decision is None:
             rewards.append(-1.0)
             continue
@@ -185,12 +226,13 @@ def reasoning_reward(completions, **kwargs):
         if "RATIONALE:" in upper_text and "EVIDENCE:" in upper_text:
             score += 0.3
         provider_id = str(gt.get("provider_id", "")).upper()
-        raw_amount = gt.get("claim_amount", 0.0)
         if provider_id and provider_id in upper_text:
             score += 0.3
-        if str(raw_amount) in upper_text or f"{raw_amount:,.2f}" in upper_text:
+        # Field reference: CPT/ICD code, percentage, or dollar figure
+        # Much harder to game than echoing the raw claim_amount scalar.
+        if _FIELD_RE.search(text):
             score += 0.4
-        if len(_to_text(completion).split()) < 20:
+        if len(text.split()) < 20:
             score -= 1.0
         rewards.append(max(-1.0, min(1.0, score)))
     return rewards
@@ -231,7 +273,13 @@ def memory_reward(completions, **kwargs):
 
 def conciseness_reward(completions, **kwargs):
     """Penalise bloat only -- no short-output reward (prevents short-APPROVE hack).
-    Range: [-1.5, +0.1]. Closure bonus kept as incentive to close </think>."""
+    Range: [-1.5, +0.1].
+
+    Closure bonus (0.1) requires >50 think words — prevents gaming by closing an
+    empty or trivial <think> block purely for the bonus token.
+    Tightened output thresholds: 150/300/500 (was 200/400) to discourage
+    over-verbose responses now that think_quality_reward rewards substantive reasoning.
+    """
     rewards = []
     for completion in completions:
         text = _to_text(completion)
@@ -240,17 +288,21 @@ def conciseness_reward(completions, **kwargs):
             rewards.append(0.0)
             continue
         if "</think>" in text:
-            _, output_section = text.split("</think>", 1)
+            think_section, output_section = text.split("</think>", 1)
             output_section = output_section.strip()
-            closure_bonus = 0.1
+            # Closure bonus only when think section is substantive
+            think_word_count = len(think_section.split())
+            closure_bonus = 0.1 if think_word_count > 50 else 0.0
         else:
             output_section = text
             closure_bonus = 0.0
         n = len(output_section.split())
-        if n <= 200:
-            base = 0.0    # acceptable range, no reward/penalty
-        elif n <= 400:
+        if n <= 150:
+            base = 0.0    # tight acceptable range
+        elif n <= 300:
             base = -0.5
+        elif n <= 500:
+            base = -1.0
         else:
             base = -1.5
         rewards.append(base + closure_bonus)
@@ -282,16 +334,248 @@ def warmup_investigation_reward(completions, **kwargs):
 
 
 def investigation_bonus_reward(completions, **kwargs):
-    """Anti-approve-all at all steps. Range: [0, +0.5]."""
+    """Anti-approve-all at all steps. Range: [0, +0.5].
+
+    DENY reduced to +0.2 (was +0.5): DENY is a terminal action with no
+    further information gain; over-incentivising it pushes the model toward
+    hard denials rather than nuanced FLAG_REVIEW/INVESTIGATE escalations.
+    """
     rewards = []
     for completion in completions:
         decision = _extract_decision(completion)
-        if decision in ("INVESTIGATE", "DENY"):
+        if decision == "INVESTIGATE":
             rewards.append(0.5)
-        elif decision in ("FLAG_REVIEW", "REQUEST_INFO"):
+        elif decision in ("FLAG_REVIEW", "REQUEST_INFO", "DENY"):
             rewards.append(0.2)
         else:
             rewards.append(0.0)
+    return rewards
+
+
+_SPECIFICITY_RE = re.compile(
+    r"(\d+\.?\d*\s*%|\$\s*[\d,]+\.?\d*"
+    r"|above\s+\w+\s+threshold"
+    r"|compared\s+to\s+(?:average|baseline|normal|typical|expected)"
+    r"|(\d+\.?\d*)\s*(?:times|x)\s+(?:higher|lower|more|less)"
+    r"|exceed[s]?\s+(?:benchmark|threshold|limit|average)"
+    r"|(?:significantly|substantially)\s+(?:higher|lower|above|below))",
+    re.IGNORECASE,
+)
+_FRAUD_SIGNAL_RE = re.compile(
+    r"\b(suspicious|anomalous|unusual|irregular|inflated|fabricated|"
+    r"duplicate|phantom|upcoded|unbundled|kickback|mismatched|inconsistent|"
+    r"concerning|red.?flag|fraud(?:ulent)?|billing.?error)\b",
+    re.IGNORECASE,
+)
+_LEGIT_SIGNAL_RE = re.compile(
+    r"\b(normal|routine|consistent|within.?range|expected|typical|"
+    r"appropriate|legitimate|standard|reasonable|compliant|no.?issue)\b",
+    re.IGNORECASE,
+)
+_INVEST_INTENT_RE = re.compile(
+    r"\b(need\s+to\s+(?:verify|check|confirm|investigate|audit)|"
+    r"require\s+(?:further|additional)\s+(?:review|investigation|documentation)|"
+    r"unclear|cannot\s+confirm|insufficient\s+(?:evidence|information))\b",
+    re.IGNORECASE,
+)
+_STOPWORDS = frozenset({
+    "the", "a", "an", "and", "or", "but", "in", "on", "at", "to", "for",
+    "of", "with", "by", "from", "is", "are", "was", "were", "be", "been",
+    "being", "have", "has", "had", "do", "does", "did", "will", "would",
+    "could", "should", "may", "might", "shall", "this", "that", "these",
+    "those", "it", "its", "i", "we", "you", "he", "she", "they", "their",
+    "our", "my", "your", "his", "her", "which", "who", "what", "when",
+    "where", "how", "why", "not", "no", "if", "so", "as", "than",
+})
+
+
+def think_quality_reward(completions, **kwargs):
+    """Quality of reasoning inside <think> tags.  Range: [-0.3, +0.3].
+
+    Four components:
+      Trigram anti-repetition (content-words only, stopword-filtered)
+        < 0.5 unique-trigram ratio → -0.3 (heavy repetition penalty)
+        0.5–0.7 → -0.1 (mild)
+        ≥ 0.7 → neutral (good diversity carries no bonus — absence of penalty suffices)
+      Specificity: ≥2 quantitative/comparative phrases → +0.1; exactly 1 → +0.05
+      Coherence: signal direction (fraud/legit keywords) must match decision
+        aligned → +0.1; strongly misaligned (>2 opposing signals) → -0.15
+      Investigation alignment: "need to verify" intent in think → INVESTIGATE/
+        REQUEST_INFO/FLAG_REVIEW → +0.08; same intent + APPROVE → -0.08
+
+    Think sections with <20 words are skipped (score = 0.0).
+    """
+    rewards = []
+    for completion in completions:
+        text = _to_text(completion)
+        decision = _extract_decision(text)
+        if decision is None:
+            rewards.append(0.0)
+            continue
+
+        # Extract think content
+        if "</think>" in text:
+            think_content = text.split("</think>", 1)[0]
+            if "<think>" in think_content:
+                think_content = think_content.split("<think>", 1)[1]
+        else:
+            think_content = ""
+
+        think_words = think_content.split()
+        if len(think_words) < 20:
+            rewards.append(0.0)
+            continue
+
+        score = 0.0
+
+        # 1. Trigram anti-repetition (content-words only)
+        content_words = [
+            w.lower().strip(".,!?;:\"'") for w in think_words
+            if w.lower().strip(".,!?;:\"'") not in _STOPWORDS and len(w) > 2
+        ]
+        if len(content_words) >= 3:
+            trigrams = [
+                (content_words[i], content_words[i + 1], content_words[i + 2])
+                for i in range(len(content_words) - 2)
+            ]
+            ratio = len(set(trigrams)) / len(trigrams)
+            if ratio < 0.5:
+                score -= 0.3
+            elif ratio < 0.7:
+                score -= 0.1
+
+        # 2. Specificity: quantitative / comparative phrases
+        spec_count = len(_SPECIFICITY_RE.findall(think_content))
+        if spec_count >= 2:
+            score += 0.1
+        elif spec_count == 1:
+            score += 0.05
+
+        # 3. Coherence: keyword direction vs decision
+        fraud_n = len(_FRAUD_SIGNAL_RE.findall(think_content))
+        legit_n = len(_LEGIT_SIGNAL_RE.findall(think_content))
+        if decision in ("INVESTIGATE", "FLAG_REVIEW", "DENY"):
+            if fraud_n > legit_n:
+                score += 0.1
+            elif legit_n > fraud_n + 2:
+                score -= 0.15
+        elif decision == "APPROVE":
+            if legit_n > fraud_n:
+                score += 0.1
+            elif fraud_n > legit_n + 2:
+                score -= 0.15
+
+        # 4. Investigation alignment
+        invest_intent = bool(_INVEST_INTENT_RE.search(think_content))
+        if invest_intent and decision in ("INVESTIGATE", "REQUEST_INFO", "FLAG_REVIEW"):
+            score += 0.08
+        elif invest_intent and decision == "APPROVE":
+            score -= 0.08
+
+        rewards.append(max(-0.3, min(0.3, score)))
+    return rewards
+
+
+_BINGO_PATTERNS = {
+    "prior_fraud":          r"\b(prior\s+fraud|previous\s+fraud|fraud\s+history|past\s+fraud|historical\s+fraud)\b",
+    "high_denial_rate":     r"\b(denial\s+rate|claim\s+denial|high\s+denial|rejection\s+rate)\b",
+    "weekend_claims":       r"\b(weekend\s+claim|weekend\s+billing|weekend\s+service|off.?hour)\b",
+    "high_cost_ratio":      r"\b(high.?cost|cost\s+outlier|expensive\s+claim|inflated\s+billing)\b",
+    "elevated_risk_score":  r"\b(risk\s+score|elevated\s+risk|high\s+risk\s+score|risk\s+indicator)\b",
+    "amount_outlier":       r"\b(amount\s+(?:anomaly|outlier|unusual|z.?score)|billing\s+(?:outlier|anomaly)|unusual\s+amount)\b",
+    "fast_filing":          r"\b(fast\s+filing|same.?day\s+(?:filing|submission|billing)|rapid\s+(?:filing|billing)|filing\s+speed)\b",
+    "specialty_mismatch":   r"\b(specialty\s+mismatch|procedure\s+mismatch|specialty.?procedure\s+(?:conflict|inconsistency))\b",
+    "high_member_risk":     r"\b(member\s+risk|patient\s+risk|beneficiary\s+risk|high.?risk\s+member|member\s+fraud\s+risk)\b",
+}
+
+
+def _parse_active_bingo_indicators(prompt_text: str) -> set:
+    """Extract which bingo indicators are ACTIVE in this claim from the prompt markdown."""
+    pt = _to_text(prompt_text)
+    active = set()
+
+    m = re.search(r"prior.?fraud.?(?:rate|pct|percentage)?[:\s]+(\d+\.?\d*)\s*%", pt, re.IGNORECASE)
+    if m and float(m.group(1)) > 5.0:
+        active.add("prior_fraud")
+
+    m = re.search(r"denial.?rate[:\s]+(\d+\.?\d*)\s*%", pt, re.IGNORECASE)
+    if m and float(m.group(1)) > 15.0:
+        active.add("high_denial_rate")
+
+    m = re.search(r"weekend.?claims?[:\s]+(\d+\.?\d*)\s*%", pt, re.IGNORECASE)
+    if m and float(m.group(1)) > 25.0:
+        active.add("weekend_claims")
+
+    m = re.search(r"high.?cost.?(?:claims?|pct|percentage)?[:\s]+(\d+\.?\d*)\s*%", pt, re.IGNORECASE)
+    if m and float(m.group(1)) > 30.0:
+        active.add("high_cost_ratio")
+
+    m = re.search(r"risk.?score[:\s]+(\d+\.?\d*)", pt, re.IGNORECASE)
+    if m and float(m.group(1)) > 0.35:
+        active.add("elevated_risk_score")
+
+    m = re.search(r"(?:amount|billing).?z.?score[:\s]+(\d+\.?\d*)", pt, re.IGNORECASE)
+    if m and float(m.group(1)) > 1.5:
+        active.add("amount_outlier")
+    m = re.search(r"(?:amount|billing).?z.?score[:\s]+(\d+\.?\d*)\s*%", pt, re.IGNORECASE)
+    if m and float(m.group(1)) > 150.0:
+        active.add("amount_outlier")
+
+    m = re.search(r"(?:filing.?(?:speed|delay|lag)|days?.?to.?file)[:\s]+(\d+\.?\d*)\s*day", pt, re.IGNORECASE)
+    if m and float(m.group(1)) <= 1.0:
+        active.add("fast_filing")
+    if re.search(r"same.?day\s+(?:filing|submission|billed)", pt, re.IGNORECASE):
+        active.add("fast_filing")
+
+    if re.search(r"specialty.?mismatch|procedure.?specialty.?(?:conflict|mismatch|inconsistency)", pt, re.IGNORECASE):
+        active.add("specialty_mismatch")
+
+    m = re.search(r"member.?(?:risk|fraud.?risk)[:\s]+(\d+\.?\d*)\s*%", pt, re.IGNORECASE)
+    if m and float(m.group(1)) > 15.0:
+        active.add("high_member_risk")
+
+    return active
+
+
+def bingo_reward(completions, prompts=None, **kwargs):
+    """Healthcare-specific Risk Factor Bingo.  Range: [-0.20, +0.30].
+
+    Parses 9 structural fraud indicators from the prompt markdown, then rewards
+    the model for correctly identifying ACTIVE indicators in its response.
+    Uses _is_affirmative() to prevent negation farming
+    (e.g. "no prior fraud" should NOT earn the prior_fraud hit).
+
+    Scoring:
+      +0.08  per active indicator mentioned affirmatively  (correct identification)
+      -0.05  per INACTIVE indicator mentioned affirmatively  (hallucination)
+      Active but not mentioned: no penalty (model may prefer other evidence paths)
+      Cap: +0.30 / -0.20
+
+    Clean claims (zero active indicators) always return 0.0 — this reward is
+    only meaningful when the prompt contains real risk signals.
+    """
+    if prompts is None:
+        prompts = kwargs.get("prompts", [""] * len(completions))
+
+    rewards = []
+    for completion, prompt in zip(completions, prompts):
+        text = _to_text(completion)
+        active = _parse_active_bingo_indicators(prompt)
+
+        if not active:
+            rewards.append(0.0)
+            continue
+
+        score = 0.0
+        for indicator, pattern in _BINGO_PATTERNS.items():
+            is_active = indicator in active
+            mentioned_pos = _is_affirmative(text, pattern)
+            if is_active and mentioned_pos:
+                score += 0.08
+            elif not is_active and mentioned_pos:
+                score -= 0.05  # hallucinated indicator
+
+        rewards.append(max(-0.20, min(0.30, score)))
     return rewards
 
 
@@ -434,6 +718,7 @@ def _run_probe_health_check(log_path: Path, max_steps: int) -> bool:
         "correctness_reward", "reasoning_reward", "budget_reward",
         "memory_reward", "conciseness_reward", "parse_reward",
         "warmup_investigation_reward", "investigation_bonus_reward",
+        "think_quality_reward", "bingo_reward",
     ]
     for fn in fn_names:
         # rewards are logged with /mean suffix in rewards_log.jsonl
@@ -742,7 +1027,9 @@ def main() -> None:
 
     training_config = GRPOConfig(
         output_dir=output_dir,
-        importance_sampling_level="sequence",  # GSPO
+        importance_sampling_level="sequence",  # GSPO: sequence-level IS ratio
+        loss_type="luspo",                     # clean GSPO (TRL ≥0.29.1); default="dapo" is a hybrid
+        mask_truncated_completions=True,       # exclude clipped completions from gradient (reduces collapse noise)
         num_iterations=args.num_iterations,
         beta=0.04,  # was 0.001, near-zero KL caused policy diverge to KL=27
         epsilon=0.2,
@@ -787,6 +1074,8 @@ def main() -> None:
             parse_reward,
             warmup_investigation_reward,
             investigation_bonus_reward,
+            think_quality_reward,
+            bingo_reward,
         ],
         train_dataset=dataset,
         processing_class=tokenizer,
