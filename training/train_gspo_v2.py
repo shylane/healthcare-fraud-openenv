@@ -310,8 +310,23 @@ def conciseness_reward(completions, **kwargs):
 
 
 def parse_reward(completions, **kwargs):
-    """Format gate. Range: [-5, 0]."""
-    return [0.0 if _extract_decision(c) is not None else -5.0 for c in completions]
+    """Format gate.  Range: [-5, +0.5].
+
+    +0.5 for correct DECISION:<action> format — gives a positive pull so the
+    model keeps the format even when correctness_reward is negative.
+    0.0 is no longer emitted; the reward is always +0.5 or -5.0.
+    Empirical data: parse_reward was always 0.0 during early healthy training,
+    then collapsed to -3.6 as format was lost — the +0.5 incentive should
+    maintain the format signal during periods of reward uncertainty.
+    """
+    rewards = []
+    for c in completions:
+        decision = _extract_decision(c)
+        if decision is not None:
+            rewards.append(0.5)   # rewarded for having any valid structured output
+        else:
+            rewards.append(-5.0)
+    return rewards
 
 
 def warmup_investigation_reward(completions, **kwargs):
@@ -622,27 +637,42 @@ class RewardLogger(TrainerCallback):
 class CollapseEarlyStop(TrainerCallback):
     """Stop training early when the policy has collapsed to save compute.
 
-    Two collapse modes detected:
+    Three collapse modes detected:
     - Length explosion: clipped_ratio >= 0.99 for ``patience`` consecutive logs
       (all completions hitting max_completion_length — zero group variance)
     - Reward freeze: frac_reward_zero_std >= 1.0 for ``patience`` consecutive logs
       (every completion in each group has identical reward — nothing to learn)
+    - KL explosion: kl >= kl_threshold for ``kl_patience`` consecutive logs
+      (policy diverged irreversibly from reference — IS ratios numerically unstable)
+      Cycle 2 hit KL=781 using dapo+seq IS; with luspo this should not occur,
+      but this acts as a hard safety net.  Default threshold=4.0 catches drift
+      before IS ratios become catastrophically large.
 
     When triggered, sets control.should_training_stop = True so the trainer
     exits cleanly (exit 0), preserving the last saved checkpoint.
     """
 
-    def __init__(self, patience: int = 20):
+    def __init__(self, patience: int = 20, kl_threshold: float = 4.0, kl_patience: int = 5):
         # patience in log steps (logging_steps=5, so 20 logs = 100 training steps)
         self.patience = patience
+        self.kl_threshold = kl_threshold
+        self.kl_patience = kl_patience
         self._clip_streak = 0
         self._zero_std_streak = 0
+        self._kl_streak = 0
 
     def on_log(self, args, state, control, logs=None, **kwargs):
         if not logs:
             return
         clip = logs.get("completions/clipped_ratio", 0.0)
         zero_std = logs.get("frac_reward_zero_std", 0.0)
+        kl = logs.get("kl", 0.0) or 0.0
+
+        # KL streak is independent of the other two
+        if kl >= self.kl_threshold:
+            self._kl_streak += 1
+        else:
+            self._kl_streak = 0
 
         if clip >= 0.99:
             self._clip_streak += 1
@@ -662,6 +692,11 @@ class CollapseEarlyStop(TrainerCallback):
         if self._zero_std_streak >= self.patience:
             print(f"\n[EARLY STOP] frac_reward_zero_std=1.0 for {self._zero_std_streak} "
                   f"consecutive log steps (step {state.global_step}) — zero learning signal, stopping.")
+            control.should_training_stop = True
+
+        if self._kl_streak >= self.kl_patience:
+            print(f"\n[EARLY STOP] KL={kl:.2f} >= {self.kl_threshold} for {self._kl_streak} "
+                  f"consecutive log steps (step {state.global_step}) — KL explosion, stopping.")
             control.should_training_stop = True
 
 
@@ -716,7 +751,7 @@ def _run_probe_health_check(log_path: Path, max_steps: int) -> bool:
     # 5. Individual reward functions all fired (non-NaN)
     fn_names = [
         "correctness_reward", "reasoning_reward", "budget_reward",
-        "memory_reward", "conciseness_reward", "parse_reward",
+        "conciseness_reward", "parse_reward",
         "warmup_investigation_reward", "investigation_bonus_reward",
         "think_quality_reward", "bingo_reward",
     ]
@@ -1066,16 +1101,16 @@ def main() -> None:
         model=model,
         args=training_config,
         reward_funcs=[
-            correctness_reward,
-            reasoning_reward,
-            budget_reward,
-            memory_reward,
-            conciseness_reward,
-            parse_reward,
-            warmup_investigation_reward,
-            investigation_bonus_reward,
-            think_quality_reward,
-            bingo_reward,
+            correctness_reward,   # [-10, +5]   — primary signal
+            reasoning_reward,     # [-1, +1]    — evidence quality
+            budget_reward,        # [-0.5, +1]  — investigation efficiency
+            # memory_reward removed: always 0.0 — "KNOWN PROVIDER" never in prompts
+            conciseness_reward,   # [-1.5, +0.1] — output length gate
+            parse_reward,         # [-5, +0.5]  — format gate (now has +0.5 positive pull)
+            warmup_investigation_reward,  # [-0.3, +0.8] — cold-start INVESTIGATE
+            investigation_bonus_reward,   # [0, +0.5]   — anti-approve-all
+            think_quality_reward, # [-0.3, +0.3] — reasoning quality in <think>
+            bingo_reward,         # [-0.20, +0.30] — healthcare fraud indicators
         ],
         train_dataset=dataset,
         processing_class=tokenizer,

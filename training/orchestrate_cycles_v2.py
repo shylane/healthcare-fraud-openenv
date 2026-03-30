@@ -219,6 +219,68 @@ def _cycle1_checkpoint_exists(workspace: Path) -> bool:
     return ckpt.exists() and any((ckpt).iterdir())
 
 
+def _find_best_checkpoint_path(workspace: Path, cycle: int) -> str | None:
+    """Return path to the checkpoint with the highest mean reward in a given cycle.
+
+    Reads checkpoints_v2/cycle_N/rewards_log.jsonl, finds the step with the
+    highest ``reward`` value, then returns the nearest saved checkpoint dir
+    (checkpoint-<step>) inside that cycle.  Falls back to the cycle dir itself
+    (which contains the final adapter) when no individual checkpoint is found.
+
+    Why this matters: the FINAL checkpoint from a collapsed cycle has diverged
+    weights (KL>>1, grad_norm>>10).  Merging a collapsed model as the base for
+    the next cycle causes the IS ratios to explode immediately.  The PEAK
+    checkpoint (highest mean reward) is typically taken before collapse and
+    provides a much more stable starting distribution.
+    """
+    cycle_dir = workspace / "checkpoints_v2" / f"cycle_{cycle}"
+    log_path = cycle_dir / "rewards_log.jsonl"
+
+    if not log_path.exists():
+        return str(cycle_dir)
+
+    # Find step with highest mean reward
+    best_step = None
+    best_reward = float("-inf")
+    try:
+        with open(log_path, encoding="utf-8") as f:
+            for line in f:
+                try:
+                    entry = json.loads(line)
+                    r = entry.get("reward")
+                    s = entry.get("step")
+                    if r is not None and s is not None and float(r) > best_reward:
+                        best_reward = float(r)
+                        best_step = int(s)
+                except (json.JSONDecodeError, ValueError, TypeError):
+                    pass
+    except OSError:
+        return str(cycle_dir)
+
+    if best_step is None:
+        return str(cycle_dir)
+
+    # Find the nearest saved checkpoint at or before best_step
+    ckpt_dirs = sorted(
+        [d for d in cycle_dir.iterdir() if d.is_dir() and d.name.startswith("checkpoint-")],
+        key=lambda d: int(d.name.split("-")[1]),
+    )
+    best_ckpt = None
+    for d in ckpt_dirs:
+        step = int(d.name.split("-")[1])
+        if step <= best_step:
+            best_ckpt = d
+        else:
+            break
+
+    if best_ckpt is None:
+        return str(cycle_dir)
+
+    print(f"  [BEST CKPT] Cycle {cycle} peak reward={best_reward:.4f} at step {best_step} "
+          f"-> using {best_ckpt.name} as merge base")
+    return str(best_ckpt)
+
+
 # ---------------------------------------------------------------------------
 # Per-phase runners
 # ---------------------------------------------------------------------------
@@ -535,11 +597,15 @@ def main():
     for cycle in range(max(start_cycle, 2), args.total_cycles + 1):
         prev_cycle = cycle - 1
         prev_model_path = str(workspace / "checkpoints_v2" / f"cycle_{prev_cycle}")
+        # For merging: use the PEAK checkpoint (best reward) from prev cycle,
+        # not the final checkpoint which may be post-collapse.
+        best_prev_ckpt = _find_best_checkpoint_path(workspace, prev_cycle)
 
         print("\n" + "="*50)
         print(f"=== CYCLE {cycle} ===")
         print("="*50)
-        print(f"  Prev model: {prev_model_path}")
+        print(f"  Prev model (eval/harvest): {prev_model_path}")
+        print(f"  Prev model (merge base):   {best_prev_ckpt}")
 
         # Phase 1: Eval harvest (using prev cycle model)
         ok = run_eval_harvest(
@@ -574,7 +640,7 @@ def main():
         # Phase 4: Train
         ok = run_train(
             workspace, cycle,
-            base_cycle_path=prev_model_path,  # merge prev LoRA before fresh LoRA
+            base_cycle_path=best_prev_ckpt,  # merge PEAK (not final) LoRA before fresh LoRA
             model_id=args.model_id,
             dry_run=args.dry_run,
             group_size=args.group_size,
