@@ -861,7 +861,8 @@ _MODEL_CONFIGS: dict[str, dict] = {
                          "gate_proj", "up_proj", "down_proj"],
     },
     "unsloth/Qwen3-1.7B": {
-        "load_in_4bit": True,
+        "load_in_4bit": False,       # bf16 — avoids RoPE fast-inference shape mismatch
+        "dtype": "bfloat16",
         "eos_token_ids": [151645, 151643, 151668],  # add </think> as EOS
         "lora_targets": ["q_proj", "k_proj", "v_proj", "o_proj",
                          "gate_proj", "up_proj", "down_proj"],
