@@ -101,6 +101,30 @@ uv pip install --force-reinstall "trl==0.29.1" "transformers==5.3.0" \
     --index-strategy unsafe-best-match
 
 # ---------------------------------------------------------------------------
+# 4b. Patch Unsloth Qwen3 fast-inference RoPE bug (position_ids shape mismatch)
+# ---------------------------------------------------------------------------
+echo "  Applying Qwen3 fast-inference RoPE fix..."
+python - <<'PYEOF'
+import sys
+try:
+    import unsloth
+    qwen3_path = __import__('pathlib').Path(unsloth.__file__).parent / 'models' / 'qwen3.py'
+    content = qwen3_path.read_text()
+    old = "    cos = cos[position_ids].unsqueeze(1)\n    sin = sin[position_ids].unsqueeze(1)"
+    new = ("    # Fix: position_ids may be [bsz, seq_len] during prefill but Qn is always 1 token\n"
+           "    _pos_ids = position_ids[:, -1:] if position_ids.shape[-1] > 1 else position_ids\n"
+           "    cos = cos[_pos_ids].unsqueeze(1)\n"
+           "    sin = sin[_pos_ids].unsqueeze(1)")
+    if old in content:
+        qwen3_path.write_text(content.replace(old, new, 1))
+        print("  qwen3.py patched OK")
+    else:
+        print("  qwen3.py already patched or pattern not found — skipping")
+except Exception as e:
+    print(f"  qwen3 patch skipped: {e}")
+PYEOF
+
+# ---------------------------------------------------------------------------
 # 5. Verify installation
 # ---------------------------------------------------------------------------
 echo "[5/6] Verifying installation..."

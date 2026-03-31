@@ -1048,15 +1048,6 @@ def main() -> None:
     else:
         print("Resuming with existing LoRA from checkpoint.")
 
-    # ── Qwen3 RoPE fast-inference workaround ─────────────────────────────
-    # Unsloth 2026.3.x has a shape mismatch bug in Qwen3Attention_fast_forward_inference:
-    # cos[position_ids] returns [bsz, seq_len, head_dim] but Qn is [bsz, heads, 1, head_dim].
-    # Fix: bypass unsloth_fast_generate entirely and use the stock HF generate,
-    # which stays in training-mode forward (no fast inference kernels).
-    if "qwen3" in args.model_id.lower() and hasattr(model, "_old_generate"):
-        model.generate = model._old_generate
-        print("Applied Qwen3 RoPE fix: using stock HF generate (bypasses fast inference).")
-
     # ── Training config ──────────────────────────────────────────────────
     # temperature=0.6 + top_p=0.95 is required for Qwen3 thinking mode —
     # greedy decoding causes repetition loops inside <think> blocks.
