@@ -914,6 +914,12 @@ _MODEL_CONFIGS: dict[str, dict] = {
 def main() -> None:
     global _TRAINER
 
+    # Ensure bf16 autocast to match Unsloth bf16 model weights —
+    # default ACCELERATE_MIXED_PRECISION=fp16 causes Half/BFloat16 mismatch in LoRA matmul.
+    import os as _os
+    if _os.environ.get("ACCELERATE_MIXED_PRECISION", "fp16") == "fp16":
+        _os.environ["ACCELERATE_MIXED_PRECISION"] = "bf16"
+
     parser = argparse.ArgumentParser(description="GSPO Training v2 — Vast.ai hardened")
     parser.add_argument("--cycle", type=int, required=True)
     parser.add_argument("--data", type=str, required=True)
