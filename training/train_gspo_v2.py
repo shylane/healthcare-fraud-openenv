@@ -811,8 +811,8 @@ def load_dataset(jsonl_path: str):
                     "role": "system",
                     "content": (
                         "You are a healthcare fraud detection agent. "
-                        "Think step-by-step inside <think>...</think> tags, "
-                        "keeping your reasoning focused on specific claim evidence. "
+                        "Think step by step using <think>...</think> tags before giving your answer. "
+                        "Keep your reasoning focused on specific claim evidence. "
                         "After </think>, output ONLY the structured decision block:\n"
                         "Decision: <ACTION>\nRationale: <1-2 sentences>\nEvidence: <data points>"
                     ),
@@ -936,8 +936,8 @@ def main() -> None:
     parser.add_argument("--lr", type=float, default=2e-5)
     parser.add_argument("--max-steps", type=int, default=0,
                         help="0=full run. 30 for probe. 100 for smoke test.")
-    parser.add_argument("--max-completion-length", type=int, default=384,
-                        help="3090 default=384 (was 256 on 4060). "
+    parser.add_argument("--max-completion-length", type=int, default=512,
+                        help="3090 default=512 (was 384). "
                              "Use 768 for thinking models (Qwen3).")
     parser.add_argument("--model-id", type=str,
                         default="unsloth/Qwen2.5-1.5B-Instruct")
@@ -1055,17 +1055,25 @@ def main() -> None:
         print("Resuming with existing LoRA from checkpoint.")
 
     # ── Training config ──────────────────────────────────────────────────
-    # temperature=0.6 + top_p=0.95 is required for Qwen3 thinking mode —
+    # temperature=0.7 + top_p=0.95 is required for Qwen3 thinking mode —
     # greedy decoding causes repetition loops inside <think> blocks.
     # For Qwen2.5 (no thinking) these values are harmless but keep diverse rollouts.
     gen_kwargs: dict = {
         "repetition_penalty": 1.15,
-        "temperature": 0.6,
+        "temperature": 0.7,
         "top_p": 0.95,
         "do_sample": True,
     }
-    if model_cfg["eos_token_ids"] is not None:
-        gen_kwargs["eos_token_id"] = model_cfg["eos_token_ids"]
+    # Build EOS list dynamically: start from config, add tokenizer's eos_token_id
+    # and </answer> token if present to ensure generation stops cleanly.
+    _eos_ids = list(model_cfg["eos_token_ids"] or [])
+    if tokenizer.eos_token_id and tokenizer.eos_token_id not in _eos_ids:
+        _eos_ids.append(tokenizer.eos_token_id)
+    _ans_id = tokenizer.convert_tokens_to_ids("</answer>")
+    if _ans_id != tokenizer.unk_token_id:
+        _eos_ids.append(_ans_id)
+    if _eos_ids:
+        gen_kwargs["eos_token_id"] = _eos_ids
 
     training_config = GRPOConfig(
         output_dir=output_dir,
@@ -1096,7 +1104,7 @@ def main() -> None:
         save_total_limit=4,       # keep last 4 (covers ~100 steps of fallback)
         bf16=True,
         gradient_checkpointing=True,  # re-enabled: bf16 activations larger, need the ~2GB VRAM savings
-        max_grad_norm=1.0,            # clip gradient spikes (saw norm=4.2 before collapse)
+        max_grad_norm=0.5,            # tightened from 1.0 for KL stability (cycle 1 restart)
         torch_compile=False,
         report_to="wandb" if args.wandb else "none",
         run_name=f"gspo-cycle{args.cycle}-{args.model_id.split('/')[-1]}",
