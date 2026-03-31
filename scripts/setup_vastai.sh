@@ -93,11 +93,15 @@ uv pip install \
     --extra-index-url "$TORCH_INDEX" \
     --index-strategy unsafe-best-match
 
-echo "  Pinning trl==0.29.1 + transformers==5.3.0..."
+echo "  Pinning trl==0.29.1 + transformers==5.3.0 + torchvision>=0.26.0..."
 # trl==0.29.1   → needed for importance_sampling_level in GRPOConfig
 # transformers==5.3.0  → 5.4.0 added auto_docstring which unsloth exec() context lacks
+# torchvision>=0.26.0  → unsloth requires this; 0.25.x installed by default
 uv pip install --force-reinstall "trl==0.29.1" "transformers==5.3.0" \
     --extra-index-url "$TORCH_INDEX" \
+    --index-strategy unsafe-best-match
+uv pip install "torchvision>=0.26.0" \
+    --index-url "$TORCH_INDEX" \
     --index-strategy unsafe-best-match
 
 # ---------------------------------------------------------------------------
