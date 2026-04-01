@@ -37,3 +37,5 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
+evaluation/results/
+experiments/*/results/*.json
