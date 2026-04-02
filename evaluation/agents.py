@@ -209,14 +209,23 @@ class OpenRouterBase:
     """
     Shared OpenRouter API logic with exponential-backoff retry on 429.
     Subclasses set system_prompt and model.
+
+    Recommended free models (in order of reliability, Apr 2026):
+      meta-llama/llama-3.3-70b-instruct:free   ← most stable, use this
+      qwen/qwen3.6-plus-preview:free            ← 1M ctx, strong
+      nvidia/llama-3.1-nemotron-ultra-253b-v1:free
+      google/gemma-3-27b-it:free
+
+    Avoid: openai/gpt-oss-120b:free  (OpenInference provider unreliable)
     """
 
     BASE_URL = "https://openrouter.ai/api/v1/chat/completions"
+    DEFAULT_MODEL = "meta-llama/llama-3.3-70b-instruct:free"
 
     def __init__(
         self,
         api_key: str,
-        model: str = "openai/gpt-oss-120b:free",
+        model: str = "meta-llama/llama-3.3-70b-instruct:free",
         max_retries: int = 4,
         temperature: float = 0.3,
         max_tokens: int = 512,
@@ -272,6 +281,13 @@ class OpenRouterBase:
                     return data["choices"][0]["message"]["content"]
 
             except urllib.error.HTTPError as e:
+                body = b""
+                try:
+                    body = e.read()
+                except Exception:
+                    pass
+                body_str = body.decode(errors="replace")[:300]
+
                 if e.code == 429:
                     wait = 2 ** (attempt + 1)   # 2, 4, 8, 16s
                     print(f"    [429] Rate limited. Waiting {wait}s (attempt {attempt+1}/{self.max_retries})")
@@ -279,12 +295,22 @@ class OpenRouterBase:
                     continue
                 elif e.code == 503:
                     wait = 5 * (attempt + 1)
-                    print(f"    [503] Service unavailable. Waiting {wait}s")
+                    print(f"    [503] Unavailable. Waiting {wait}s (attempt {attempt+1}/{self.max_retries})")
                     time.sleep(wait)
                     continue
+                elif e.code == 404:
+                    # Provider-side 404 ("Model not found") — no point retrying,
+                    # model/endpoint is broken. Fail immediately.
+                    print(f"    [404] Model not found on provider — switch model. {body_str}")
+                    break
+                elif e.code in (401, 403):
+                    print(f"    [HTTP {e.code}] Auth error — check API key. {body_str}")
+                    break
                 else:
-                    body = e.read().decode() if hasattr(e, "read") else str(e)
-                    print(f"    [HTTP {e.code}] {body[:200]}")
+                    print(f"    [HTTP {e.code}] {body_str}")
+                    if attempt < self.max_retries - 1:
+                        time.sleep(3)
+                        continue
                     break
             except Exception as ex:
                 print(f"    [Error] {ex}")
@@ -311,7 +337,7 @@ class NaiveLLMAgent(OpenRouterBase):
     different system prompt. Any score gap = value of budget reasoning.
     """
 
-    def __init__(self, api_key: str, model: str = "openai/gpt-oss-120b:free", **kwargs):
+    def __init__(self, api_key: str, model: str = "meta-llama/llama-3.3-70b-instruct:free", **kwargs):
         super().__init__(api_key=api_key, model=model, **kwargs)
         self.name = f"NaiveLLM({model.split('/')[-1]})"
 
@@ -349,7 +375,7 @@ class BudgetAwareAgent(OpenRouterBase):
     whether the model can exploit the multi-step structure when told to.
     """
 
-    def __init__(self, api_key: str, model: str = "openai/gpt-oss-120b:free", **kwargs):
+    def __init__(self, api_key: str, model: str = "meta-llama/llama-3.3-70b-instruct:free", **kwargs):
         super().__init__(api_key=api_key, model=model, **kwargs)
         self.name = f"BudgetAware({model.split('/')[-1]})"
 
