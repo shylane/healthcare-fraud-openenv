@@ -211,14 +211,16 @@ class OpenRouterBase:
     Subclasses set system_prompt and model.
 
     Recommended models (Apr 2026):
-      Free (primary):
-        qwen/qwen3.6-plus-preview:free               <- default; Mar 30 2026, SOTA, 1M ctx
-        nvidia/llama-3.1-nemotron-ultra-253b-v1:free <- 253B, 262K ctx, backup
-        meta-llama/llama-3.3-70b-instruct:free       <- stable but Dec 2024 (dated)
-      Paid (~$0.60 for full experiment):
-        deepseek/deepseek-chat-v3-0324               <- $0.14/$0.28 per 1M, respected OSS
-        google/gemini-2.5-flash                      <- $0.15/$0.60 per 1M, Apr 2026
-    Avoid: openai/gpt-oss-120b:free  (OpenInference provider unreliable/down)
+      Free:
+        qwen/qwen3.6-plus-preview:free          <- DEFAULT; Mar 30 2026, SOTA, 1M ctx
+        minimax/minimax-m2.5:free               <- 197K ctx, BUT: mandatory <think> blocks
+                                                   (see _strip_think) + OpenInference provider
+                                                   (unreliable). Use with caution.
+        openai/gpt-oss-120b:free                <- OpenInference provider; may be intermittent
+      Skip:
+        nvidia/llama-3.1-nemotron-ultra-253b-v1:free  <- knowledge cutoff Mar 2024, too old
+      Paid (~$0.80 total for full experiment):
+        deepseek/deepseek-v3.2                  <- $0.26/$0.38 per 1M, newest DeepSeek
     """
 
     BASE_URL = "https://openrouter.ai/api/v1/chat/completions"
@@ -250,12 +252,23 @@ class OpenRouterBase:
     def reset(self) -> None:
         pass
 
+    @staticmethod
+    def _strip_think(text: str) -> str:
+        """
+        Remove <think>...</think> blocks injected by reasoning models (MiniMax M2.5,
+        DeepSeek R1-style models). Prevents think-block content from being
+        mistakenly parsed as the actual Decision/Rationale/Evidence output.
+        """
+        import re as _re
+        return _re.sub(r"<think>.*?</think>", "", text, flags=_re.DOTALL).strip()
+
     def act(self, prompt: str) -> str:
         messages = [
             {"role": "system", "content": self.system_prompt},
             {"role": "user", "content": prompt},
         ]
-        return self._call_api(messages)
+        raw = self._call_api(messages)
+        return self._strip_think(raw)
 
     def _call_api(self, messages: list[dict]) -> str:
         payload = _json.dumps({
@@ -412,25 +425,25 @@ Evidence: [specific data points: amount, provider ID, risk score, budget status]
 # ---------------------------------------------------------------------------
 
 class DeepSeekNaiveAgent(NaiveLLMAgent):
-    """Naive LLM agent using DeepSeek V3 as the backbone."""
+    """Naive LLM agent using DeepSeek V3.2 as the backbone."""
     def __init__(self, api_key: str, **kwargs):
         super().__init__(
             api_key=api_key,
-            model="deepseek/deepseek-chat-v3-0324",
+            model="deepseek/deepseek-v3.2",
             **kwargs
         )
-        self.name = "NaiveLLM(deepseek-v3)"
+        self.name = "NaiveLLM(deepseek-v3.2)"
 
 
 class DeepSeekBudgetAwareAgent(BudgetAwareAgent):
-    """Budget-aware agent using DeepSeek V3 as the backbone."""
+    """Budget-aware agent using DeepSeek V3.2 as the backbone."""
     def __init__(self, api_key: str, **kwargs):
         super().__init__(
             api_key=api_key,
-            model="deepseek/deepseek-chat-v3-0324",
+            model="deepseek/deepseek-v3.2",
             **kwargs
         )
-        self.name = "BudgetAware(deepseek-v3)"
+        self.name = "BudgetAware(deepseek-v3.2)"
 
 
 # ---------------------------------------------------------------------------
