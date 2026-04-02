@@ -210,22 +210,24 @@ class OpenRouterBase:
     Shared OpenRouter API logic with exponential-backoff retry on 429.
     Subclasses set system_prompt and model.
 
-    Recommended free models (in order of reliability, Apr 2026):
-      meta-llama/llama-3.3-70b-instruct:free   ← most stable, use this
-      qwen/qwen3.6-plus-preview:free            ← 1M ctx, strong
-      nvidia/llama-3.1-nemotron-ultra-253b-v1:free
-      google/gemma-3-27b-it:free
-
-    Avoid: openai/gpt-oss-120b:free  (OpenInference provider unreliable)
+    Recommended models (Apr 2026):
+      Free (primary):
+        qwen/qwen3.6-plus-preview:free               <- default; Mar 30 2026, SOTA, 1M ctx
+        nvidia/llama-3.1-nemotron-ultra-253b-v1:free <- 253B, 262K ctx, backup
+        meta-llama/llama-3.3-70b-instruct:free       <- stable but Dec 2024 (dated)
+      Paid (~$0.60 for full experiment):
+        deepseek/deepseek-chat-v3-0324               <- $0.14/$0.28 per 1M, respected OSS
+        google/gemini-2.5-flash                      <- $0.15/$0.60 per 1M, Apr 2026
+    Avoid: openai/gpt-oss-120b:free  (OpenInference provider unreliable/down)
     """
 
     BASE_URL = "https://openrouter.ai/api/v1/chat/completions"
-    DEFAULT_MODEL = "meta-llama/llama-3.3-70b-instruct:free"
+    DEFAULT_MODEL = "qwen/qwen3.6-plus-preview:free"
 
     def __init__(
         self,
         api_key: str,
-        model: str = "meta-llama/llama-3.3-70b-instruct:free",
+        model: str = "qwen/qwen3.6-plus-preview:free",
         max_retries: int = 4,
         temperature: float = 0.3,
         max_tokens: int = 512,
@@ -337,7 +339,7 @@ class NaiveLLMAgent(OpenRouterBase):
     different system prompt. Any score gap = value of budget reasoning.
     """
 
-    def __init__(self, api_key: str, model: str = "meta-llama/llama-3.3-70b-instruct:free", **kwargs):
+    def __init__(self, api_key: str, model: str = "qwen/qwen3.6-plus-preview:free", **kwargs):
         super().__init__(api_key=api_key, model=model, **kwargs)
         self.name = f"NaiveLLM({model.split('/')[-1]})"
 
@@ -375,7 +377,7 @@ class BudgetAwareAgent(OpenRouterBase):
     whether the model can exploit the multi-step structure when told to.
     """
 
-    def __init__(self, api_key: str, model: str = "meta-llama/llama-3.3-70b-instruct:free", **kwargs):
+    def __init__(self, api_key: str, model: str = "qwen/qwen3.6-plus-preview:free", **kwargs):
         super().__init__(api_key=api_key, model=model, **kwargs)
         self.name = f"BudgetAware({model.split('/')[-1]})"
 
