@@ -450,7 +450,7 @@ class DeepSeekBudgetAwareAgent(BudgetAwareAgent):
 # Factory helper
 # ---------------------------------------------------------------------------
 
-def make_agents(api_key: str, model: str = "openai/gpt-oss-120b:free") -> list:
+def make_agents(api_key: str, model: str = "qwen/qwen3.6-plus-preview:free") -> list:
     """Return all 4 agents for a full experiment run."""
     return [
         RandomAgent(),

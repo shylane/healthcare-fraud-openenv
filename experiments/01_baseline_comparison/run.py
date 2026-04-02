@@ -57,7 +57,7 @@ def parse_args():
                    help="Investigation budget per episode (default: 15)")
     p.add_argument("--seed", type=int, default=42,
                    help="Base random seed (default: 42)")
-    p.add_argument("--model", type=str, default="openai/gpt-oss-120b:free",
+    p.add_argument("--model", type=str, default="qwen/qwen3.6-plus-preview:free",
                    help="OpenRouter model ID for LLM agents")
     p.add_argument("--include-deepseek", action="store_true",
                    help="Also run DeepSeek V3 agents (~$1 extra cost)")
