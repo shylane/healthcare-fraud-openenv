@@ -225,6 +225,7 @@ class OpenRouterBase:
         max_retries: int = 4,
         temperature: float = 0.3,
         max_tokens: int = 512,
+        request_delay_s: float = 3.5,
         site_url: str = "https://github.com/shylane/healthcare-fraud-openenv",
         site_name: str = "healthcare-fraud-openenv",
     ):
@@ -233,9 +234,11 @@ class OpenRouterBase:
         self.max_retries = max_retries
         self.temperature = temperature
         self.max_tokens = max_tokens
+        self.request_delay_s = request_delay_s  # stay under 20 req/min hard cap
         self.site_url = site_url
         self.site_name = site_name
         self._call_count = 0
+        self._last_call_time: float = 0.0
 
     @property
     def system_prompt(self) -> str:
@@ -263,6 +266,12 @@ class OpenRouterBase:
         return self._strip_think(raw)
 
     def _call_api(self, messages: list[dict]) -> str:
+        # Throttle: enforce minimum gap between requests (OpenRouter hard cap: 20 req/min)
+        import socket as _socket
+        elapsed = time.monotonic() - self._last_call_time
+        if elapsed < self.request_delay_s:
+            time.sleep(self.request_delay_s - elapsed)
+
         payload = _json.dumps({
             "model": self.model,
             "messages": messages,
@@ -282,9 +291,10 @@ class OpenRouterBase:
                 req = urllib.request.Request(
                     self.BASE_URL, data=payload, headers=headers, method="POST"
                 )
-                with urllib.request.urlopen(req, timeout=60) as resp:
+                with urllib.request.urlopen(req, timeout=90) as resp:
                     data = _json.loads(resp.read())
                     self._call_count += 1
+                    self._last_call_time = time.monotonic()
                     return data["choices"][0]["message"]["content"]
 
             except urllib.error.HTTPError as e:
@@ -296,8 +306,9 @@ class OpenRouterBase:
                 body_str = body.decode(errors="replace")[:300]
 
                 if e.code == 429:
-                    wait = 2 ** (attempt + 1)   # 2, 4, 8, 16s
-                    print(f"    [429] Rate limited. Waiting {wait}s (attempt {attempt+1}/{self.max_retries})")
+                    # Back off longer than the fixed delay — server is saturated
+                    wait = max(self.request_delay_s * 2, 2 ** (attempt + 1))
+                    print(f"    [429] Rate limited. Waiting {wait:.0f}s (attempt {attempt+1}/{self.max_retries})")
                     time.sleep(wait)
                     continue
                 elif e.code == 503:
@@ -306,8 +317,6 @@ class OpenRouterBase:
                     time.sleep(wait)
                     continue
                 elif e.code == 404:
-                    # Provider-side 404 ("Model not found") — no point retrying,
-                    # model/endpoint is broken. Fail immediately.
                     print(f"    [404] Model not found on provider — switch model. {body_str}")
                     break
                 elif e.code in (401, 403):
@@ -319,6 +328,12 @@ class OpenRouterBase:
                         time.sleep(3)
                         continue
                     break
+            except (_socket.timeout, TimeoutError, OSError) as ex:
+                # Read timeout — server hung the connection (common under rate pressure)
+                wait = 5 * (attempt + 1)
+                print(f"    [Timeout] {ex}. Waiting {wait}s (attempt {attempt+1}/{self.max_retries})")
+                time.sleep(wait)
+                continue
             except Exception as ex:
                 print(f"    [Error] {ex}")
                 if attempt < self.max_retries - 1:
