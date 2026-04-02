@@ -210,17 +210,9 @@ class OpenRouterBase:
     Shared OpenRouter API logic with exponential-backoff retry on 429.
     Subclasses set system_prompt and model.
 
-    Recommended models (Apr 2026):
-      Free:
-        qwen/qwen3.6-plus-preview:free          <- DEFAULT; Mar 30 2026, SOTA, 1M ctx
-        minimax/minimax-m2.5:free               <- 197K ctx, BUT: mandatory <think> blocks
-                                                   (see _strip_think) + OpenInference provider
-                                                   (unreliable). Use with caution.
-        openai/gpt-oss-120b:free                <- OpenInference provider; may be intermittent
-      Skip:
-        nvidia/llama-3.1-nemotron-ultra-253b-v1:free  <- knowledge cutoff Mar 2024, too old
-      Paid (~$0.80 total for full experiment):
-        deepseek/deepseek-v3.2                  <- $0.26/$0.38 per 1M, newest DeepSeek
+    Models in use (Apr 2026):
+      Free (default):  qwen/qwen3.6-plus-preview:free   -- Mar 2026 SOTA, 1M ctx
+      Paid comparison: deepseek/deepseek-v3.2            -- $0.26/$0.38 per 1M
     """
 
     BASE_URL = "https://openrouter.ai/api/v1/chat/completions"
