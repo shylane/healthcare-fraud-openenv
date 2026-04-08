@@ -1,0 +1,23 @@
+{
+  "timestamp": "2026-04-07T10:54:55.634230",
+  "memory_halflife": 20,
+  "n_episodes": 10,
+  "agents": [
+    {
+      "name": "RandomAgent",
+      "model": "none",
+      "mean_reward": -2067.7115600000034,
+      "mean_f1": 0.09138212872220111,
+      "mean_memory_reuse_rate": 0.7638278860802081,
+      "mean_budget_conservation_rate": 0.05
+    },
+    {
+      "name": "ThresholdAgent",
+      "model": "none",
+      "mean_reward": -763.1666399999988,
+      "mean_f1": 0.13685250786563907,
+      "mean_memory_reuse_rate": 0.0,
+      "mean_budget_conservation_rate": 0.0
+    }
+  ]
+}

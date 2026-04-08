@@ -1,0 +1,69 @@
+{
+  "timestamp": "2026-04-02T10:09:44.258181",
+  "agents": [
+    {
+      "name": "RandomAgent",
+      "model": "none",
+      "n_episodes": 2,
+      "mean_reward": -386.7429999999999,
+      "std_reward": 35.82460000000003,
+      "mean_f1": 0.2,
+      "mean_precision": 0.125,
+      "mean_recall": 0.5,
+      "mean_net_savings": -178.34000000000003,
+      "mean_budget_utilization": 0.23333333333333334,
+      "mean_budget_conservation_rate": 0.0,
+      "mean_memory_reuse_rate": 0.5,
+      "mean_valid_response_rate": 1.0,
+      "mean_latency_ms": 0.0016100035281851888
+    },
+    {
+      "name": "ThresholdAgent",
+      "model": "none",
+      "n_episodes": 2,
+      "mean_reward": -221.99880000000005,
+      "std_reward": 18.632800000000003,
+      "mean_f1": 0.27884615384615385,
+      "mean_precision": 0.17424242424242425,
+      "mean_recall": 0.75,
+      "mean_net_savings": -260.09,
+      "mean_budget_utilization": 0.0,
+      "mean_budget_conservation_rate": 0.0,
+      "mean_memory_reuse_rate": 0.0,
+      "mean_valid_response_rate": 1.0,
+      "mean_latency_ms": 0.03173000586684793
+    },
+    {
+      "name": "NaiveLLM(gpt-oss-120b:free)",
+      "model": "openai/gpt-oss-120b:free",
+      "n_episodes": 2,
+      "mean_reward": -519.3732,
+      "std_reward": 3.701599999999985,
+      "mean_f1": 0.18181818181818182,
+      "mean_precision": 0.1,
+      "mean_recall": 1.0,
+      "mean_net_savings": -446.33,
+      "mean_budget_utilization": 0.0,
+      "mean_budget_conservation_rate": 0.0,
+      "mean_memory_reuse_rate": 0.0,
+      "mean_valid_response_rate": 1.0,
+      "mean_latency_ms": 103.11166500323452
+    },
+    {
+      "name": "BudgetAware(gpt-oss-120b:free)",
+      "model": "openai/gpt-oss-120b:free",
+      "n_episodes": 2,
+      "mean_reward": -519.3732,
+      "std_reward": 3.701599999999985,
+      "mean_f1": 0.18181818181818182,
+      "mean_precision": 0.1,
+      "mean_recall": 1.0,
+      "mean_net_savings": -446.33,
+      "mean_budget_utilization": 0.0,
+      "mean_budget_conservation_rate": 0.0,
+      "mean_memory_reuse_rate": 0.0,
+      "mean_valid_response_rate": 1.0,
+      "mean_latency_ms": 63.08673750900198
+    }
+  ]
+}

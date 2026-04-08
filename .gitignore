@@ -38,4 +38,4 @@ Thumbs.db
 .idea/
 *.swp
 evaluation/results/
-experiments/*/results/*.json
+# experiment result JSONs are tracked for reproducibility — keep them in the repo

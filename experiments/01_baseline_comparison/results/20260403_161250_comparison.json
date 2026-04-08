@@ -1,0 +1,69 @@
+{
+  "timestamp": "2026-04-08T05:34:15.019021",
+  "agents": [
+    {
+      "name": "RandomAgent",
+      "model": "none",
+      "n_episodes": 20,
+      "mean_reward": -2056.7894200000037,
+      "std_reward": 224.70858946368682,
+      "mean_f1": 0.08701772434830861,
+      "mean_precision": 0.04940649911982942,
+      "mean_recall": 0.43547619047619046,
+      "mean_net_savings": -6137.280000000001,
+      "mean_budget_utilization": 0.8833333333333334,
+      "mean_budget_conservation_rate": 0.15,
+      "mean_memory_reuse_rate": 0.8208107741931272,
+      "mean_valid_response_rate": 1.0,
+      "mean_latency_ms": 0.003547999542206526
+    },
+    {
+      "name": "ThresholdAgent",
+      "model": "none",
+      "n_episodes": 20,
+      "mean_reward": -840.8396999999989,
+      "std_reward": 155.68050376197405,
+      "mean_f1": 0.14426454651947243,
+      "mean_precision": 0.08465390264334441,
+      "mean_recall": 0.5317857142857143,
+      "mean_net_savings": -2147.0995,
+      "mean_budget_utilization": 0.0,
+      "mean_budget_conservation_rate": 0.0,
+      "mean_memory_reuse_rate": 0.0,
+      "mean_valid_response_rate": 1.0,
+      "mean_latency_ms": 0.0748739504488185
+    },
+    {
+      "name": "NaiveLLM(qwen3.6-plus:free)",
+      "model": "qwen/qwen3.6-plus:free",
+      "n_episodes": 20,
+      "mean_reward": -2321.51924,
+      "std_reward": 213.4351876975735,
+      "mean_f1": 0.06263473477932903,
+      "mean_precision": 0.033520532987480325,
+      "mean_recall": 0.5226190476190476,
+      "mean_net_savings": -5644.8585,
+      "mean_budget_utilization": 0.6966666666666667,
+      "mean_budget_conservation_rate": 0.075,
+      "mean_memory_reuse_rate": 0.9162283549783549,
+      "mean_valid_response_rate": 1.0,
+      "mean_latency_ms": 70669.88672175078
+    },
+    {
+      "name": "BudgetAware(qwen3.6-plus:free)",
+      "model": "qwen/qwen3.6-plus:free",
+      "n_episodes": 20,
+      "mean_reward": -1190.2732400000018,
+      "std_reward": 1111.7648269454546,
+      "mean_f1": 0.14714939153296408,
+      "mean_precision": 0.09373095562676481,
+      "mean_recall": 0.5170238095238096,
+      "mean_net_savings": -3181.0335,
+      "mean_budget_utilization": 0.05,
+      "mean_budget_conservation_rate": 0.0,
+      "mean_memory_reuse_rate": 0.4,
+      "mean_valid_response_rate": 1.0,
+      "mean_latency_ms": 126170.46556179831
+    }
+  ]
+}

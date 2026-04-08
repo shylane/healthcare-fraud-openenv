@@ -16,10 +16,20 @@ All agents implement the Agent protocol from harness.py:
 
 from __future__ import annotations
 
+import os
 import random
 import re
 import time
+from pathlib import Path
 from typing import Optional
+
+# Auto-load .env from repo root so OPENROUTER_API_KEY is available without
+# manually passing --api-key on every invocation.
+try:
+    from dotenv import load_dotenv as _load_dotenv
+    _load_dotenv(Path(__file__).parent.parent / ".env", override=False)
+except ImportError:
+    pass
 
 
 # ---------------------------------------------------------------------------
@@ -210,31 +220,38 @@ class OpenRouterBase:
     Shared OpenRouter API logic with exponential-backoff retry on 429.
     Subclasses set system_prompt and model.
 
-    Models in use (Apr 2026):
-      Free (default):  qwen/qwen3.6-plus-preview:free   -- Mar 2026 SOTA, 1M ctx
-      Paid comparison: deepseek/deepseek-v3.2            -- $0.26/$0.38 per 1M
+    Models (verified Apr 2026):
+      Default (paid): qwen/qwen3.6-plus:free        -- current gen, fast, no rate limits
+      Paid compare:   deepseek/deepseek-v3.2   -- $0.26/M, SOTA quality
+      Free (slow):    qwen/qwen3.6-plus:free:free   -- $0/M, ~1-2 req/min hard limit
     """
 
     BASE_URL = "https://openrouter.ai/api/v1/chat/completions"
-    DEFAULT_MODEL = "qwen/qwen3.6-plus-preview:free"
+    DEFAULT_MODEL = "qwen/qwen3.6-plus:free"
 
     def __init__(
         self,
-        api_key: str,
-        model: str = "qwen/qwen3.6-plus-preview:free",
-        max_retries: int = 4,
+        api_key: str = "",
+        model: str = "qwen/qwen3.6-plus:free",
+        max_retries: int = 6,
         temperature: float = 0.3,
         max_tokens: int = 512,
-        request_delay_s: float = 3.5,
+        request_delay_s: float = -1,   # -1 = auto-detect from model tier
         site_url: str = "https://github.com/shylane/healthcare-fraud-openenv",
         site_name: str = "healthcare-fraud-openenv",
     ):
-        self.api_key = api_key
+        # Fall back to env var (set by dotenv load at module import)
+        self.api_key = api_key or os.environ.get("OPENROUTER_API_KEY", "")
         self.model = model
         self.max_retries = max_retries
         self.temperature = temperature
         self.max_tokens = max_tokens
-        self.request_delay_s = request_delay_s  # stay under 20 req/min hard cap
+        # Auto-detect delay: free-tier models are throttled to ~1-2 req/min;
+        # paid models can safely run at 1.5s delay (~40 req/min).
+        if request_delay_s < 0:
+            self.request_delay_s = 8.0 if model.endswith(":free") else 1.5
+        else:
+            self.request_delay_s = request_delay_s
         self.site_url = site_url
         self.site_name = site_name
         self._call_count = 0
@@ -254,6 +271,8 @@ class OpenRouterBase:
         DeepSeek R1-style models). Prevents think-block content from being
         mistakenly parsed as the actual Decision/Rationale/Evidence output.
         """
+        if not text:
+            return "Decision: FLAG_REVIEW\nRationale: Empty model response.\nEvidence: N/A"
         import re as _re
         return _re.sub(r"<think>.*?</think>", "", text, flags=_re.DOTALL).strip()
 
@@ -295,7 +314,13 @@ class OpenRouterBase:
                     data = _json.loads(resp.read())
                     self._call_count += 1
                     self._last_call_time = time.monotonic()
-                    return data["choices"][0]["message"]["content"]
+                    content = data["choices"][0]["message"].get("content")
+                    if content is None:
+                        # Some models return tool_calls or empty content — treat as error
+                        print(f"    [Warn] Model returned null content (finish_reason="
+                              f"{data['choices'][0].get('finish_reason')}). Using fallback.")
+                        return "Decision: FLAG_REVIEW\nRationale: Model returned no content.\nEvidence: N/A"
+                    return content
 
             except urllib.error.HTTPError as e:
                 body = b""
@@ -306,8 +331,9 @@ class OpenRouterBase:
                 body_str = body.decode(errors="replace")[:300]
 
                 if e.code == 429:
-                    # Back off longer than the fixed delay — server is saturated
-                    wait = max(self.request_delay_s * 2, 2 ** (attempt + 1))
+                    # Aggressive backoff: 30s, 45s, 60s, 90s, 120s, 180s
+                    # Free-tier rate limits reset within ~1 minute
+                    wait = 30 * (attempt + 1)
                     print(f"    [429] Rate limited. Waiting {wait:.0f}s (attempt {attempt+1}/{self.max_retries})")
                     time.sleep(wait)
                     continue
@@ -319,6 +345,9 @@ class OpenRouterBase:
                 elif e.code == 404:
                     print(f"    [404] Model not found on provider — switch model. {body_str}")
                     break
+                elif e.code == 402:
+                    print(f"    [402] Insufficient credits — top up OpenRouter balance. {body_str}")
+                    break  # no point retrying — balance won't change between attempts
                 elif e.code in (401, 403):
                     print(f"    [HTTP {e.code}] Auth error — check API key. {body_str}")
                     break
@@ -359,7 +388,7 @@ class NaiveLLMAgent(OpenRouterBase):
     different system prompt. Any score gap = value of budget reasoning.
     """
 
-    def __init__(self, api_key: str, model: str = "qwen/qwen3.6-plus-preview:free", **kwargs):
+    def __init__(self, api_key: str = "", model: str = "qwen/qwen3.6-plus:free", **kwargs):
         super().__init__(api_key=api_key, model=model, **kwargs)
         self.name = f"NaiveLLM({model.split('/')[-1]})"
 
@@ -397,7 +426,7 @@ class BudgetAwareAgent(OpenRouterBase):
     whether the model can exploit the multi-step structure when told to.
     """
 
-    def __init__(self, api_key: str, model: str = "qwen/qwen3.6-plus-preview:free", **kwargs):
+    def __init__(self, api_key: str = "", model: str = "qwen/qwen3.6-plus:free", **kwargs):
         super().__init__(api_key=api_key, model=model, **kwargs)
         self.name = f"BudgetAware({model.split('/')[-1]})"
 
@@ -433,7 +462,7 @@ Evidence: [specific data points: amount, provider ID, risk score, budget status]
 
 class DeepSeekNaiveAgent(NaiveLLMAgent):
     """Naive LLM agent using DeepSeek V3.2 as the backbone."""
-    def __init__(self, api_key: str, **kwargs):
+    def __init__(self, api_key: str = "", **kwargs):
         super().__init__(
             api_key=api_key,
             model="deepseek/deepseek-v3.2",
@@ -444,7 +473,7 @@ class DeepSeekNaiveAgent(NaiveLLMAgent):
 
 class DeepSeekBudgetAwareAgent(BudgetAwareAgent):
     """Budget-aware agent using DeepSeek V3.2 as the backbone."""
-    def __init__(self, api_key: str, **kwargs):
+    def __init__(self, api_key: str = "", **kwargs):
         super().__init__(
             api_key=api_key,
             model="deepseek/deepseek-v3.2",
@@ -457,7 +486,7 @@ class DeepSeekBudgetAwareAgent(BudgetAwareAgent):
 # Factory helper
 # ---------------------------------------------------------------------------
 
-def make_agents(api_key: str, model: str = "qwen/qwen3.6-plus-preview:free") -> list:
+def make_agents(api_key: str = "", model: str = "qwen/qwen3.6-plus:free") -> list:
     """Return all 4 agents for a full experiment run."""
     return [
         RandomAgent(),

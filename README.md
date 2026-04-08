@@ -2,10 +2,16 @@
 
 > **AgentX-AgentBeats / OpenEnv Track** | Phase 2 Sprint 1 | April 12, 2026
 
-A real-world RL environment where an LLM agent sequentially reviews healthcare
-insurance claims and decides whether to approve, flag, investigate, deny, or
-request additional information. Trained end-to-end via GSPO (Group Sequence
-Policy Optimization) using Unsloth + TRL on Qwen3-1.7B.
+A rigorous evaluation study: does budget/memory-aware prompting make LLM agents
+better fraud detectors? We built a sequential RL environment, ran 4 agent types
+(random, rule-based, naive LLM, budget-aware LLM), and measured the results
+across 20 episodes × 100 claims each.
+
+**Key finding:** A budget-aware prompt improves the same LLM by **2.7×**. A naive
+LLM with no guidance scores *worse than random*. A rule-based heuristic beats
+every LLM without a single API call.
+
+> Blog post: [HF Blog — shylane/healthcare-fraud-rl](https://huggingface.co/blog/shylane/healthcare-fraud-rl) *(publishing April 2026)*
 
 ---
 

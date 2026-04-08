@@ -32,6 +32,13 @@ from pathlib import Path
 _ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(_ROOT))
 
+# Load .env so OPENROUTER_API_KEY is available without --api-key flag
+try:
+    from dotenv import load_dotenv
+    load_dotenv(_ROOT / ".env", override=False)
+except ImportError:
+    pass
+
 from evaluation.harness import run_agent
 from evaluation.agents import (
     RandomAgent,
@@ -57,16 +64,22 @@ def parse_args():
                    help="Investigation budget per episode (default: 15)")
     p.add_argument("--seed", type=int, default=42,
                    help="Base random seed (default: 42)")
-    p.add_argument("--model", type=str, default="qwen/qwen3.6-plus-preview:free",
+    p.add_argument("--model", type=str, default="qwen/qwen3.6-plus:free",
                    help="OpenRouter model ID for LLM agents")
     p.add_argument("--include-deepseek", action="store_true",
-                   help="Also run DeepSeek V3 agents (~$1 extra cost)")
+                   help="Also run DeepSeek V3.2 agents (~$1 extra cost)")
     p.add_argument("--quick", action="store_true",
                    help="Quick mode: 2 episodes, 20 claims (smoke test)")
     p.add_argument("--no-llm", action="store_true",
                    help="Only run rule-based agents (no API calls)")
     p.add_argument("--api-key", type=str, default=None,
                    help="OpenRouter API key (or set OPENROUTER_API_KEY env var)")
+    p.add_argument("--delay", type=float, default=-1,
+                   help="Seconds between API calls (-1 = auto: 1.5s paid, 8s free)")
+    p.add_argument("--deepseek-only", action="store_true",
+                   help="Run only DeepSeek agents (skip Random/Threshold/Qwen) — use in a second shell")
+    p.add_argument("--budget-aware-only", action="store_true",
+                   help="Run only BudgetAwareAgent with --model (skip everything else) — resume a partial run")
     return p.parse_args()
 
 
@@ -155,28 +168,40 @@ def main():
 
     api_key = args.api_key or os.environ.get("OPENROUTER_API_KEY", "")
     if not api_key and not args.no_llm:
-        print("ERROR: Set OPENROUTER_API_KEY env var or pass --api-key")
-        print("  export OPENROUTER_API_KEY=sk-or-...")
+        print("ERROR: No API key found. Either:")
+        print("  1. Add OPENROUTER_API_KEY=sk-or-... to .env in the repo root")
+        print("  2. Pass --api-key sk-or-...")
         sys.exit(1)
 
     # Build agent list
-    agents = [RandomAgent(), ThresholdAgent()]
-    if not args.no_llm:
-        agents += [
-            NaiveLLMAgent(api_key=api_key, model=args.model),
-            BudgetAwareAgent(api_key=api_key, model=args.model),
-        ]
-    if args.include_deepseek and not args.no_llm:
-        agents += [
-            DeepSeekNaiveAgent(api_key=api_key),
-            DeepSeekBudgetAwareAgent(api_key=api_key),
-        ]
+    llm_kwargs = dict(api_key=api_key, request_delay_s=args.delay)
+    if args.deepseek_only:
+        agents = [DeepSeekNaiveAgent(**llm_kwargs), DeepSeekBudgetAwareAgent(**llm_kwargs)]
+    elif args.budget_aware_only:
+        agents = [BudgetAwareAgent(model=args.model, **llm_kwargs)]
+    else:
+        agents = [RandomAgent(), ThresholdAgent()]
+        if not args.no_llm:
+            agents += [
+                NaiveLLMAgent(model=args.model, **llm_kwargs),
+                BudgetAwareAgent(model=args.model, **llm_kwargs),
+            ]
+        if args.include_deepseek:
+            agents += [
+                DeepSeekNaiveAgent(**llm_kwargs),
+                DeepSeekBudgetAwareAgent(**llm_kwargs),
+            ]
 
+    # Resolve actual delay for display
+    sample_delay = (
+        (8.0 if args.model.endswith(":free") else 1.5)
+        if args.delay < 0 else args.delay
+    )
     print(f"\nExperiment 01 — Baseline Comparison")
     print(f"Agents: {[a.name for a in agents]}")
     print(f"Config: {args.n_episodes} episodes × {args.claims} claims "
           f"| fraud_rate={args.fraud_rate:.0%} | budget={args.budget}")
-    print(f"Model: {args.model}\n")
+    print(f"Model: {args.model}  |  API delay: {sample_delay:.1f}s/call\n")
 
     all_results = []
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")

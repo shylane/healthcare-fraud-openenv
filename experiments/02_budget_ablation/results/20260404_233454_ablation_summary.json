@@ -1,0 +1,79 @@
+{
+  "timestamp": "2026-04-04T23:34:58.292843",
+  "experiment": "02_budget_ablation",
+  "n_episodes": 10,
+  "claims_per_episode": 100,
+  "fraud_rate": 0.05,
+  "budgets_tested": [
+    5,
+    10,
+    15,
+    20
+  ],
+  "by_budget": {
+    "5": [
+      {
+        "name": "RandomAgent",
+        "mean_reward": -1720.3878800000025,
+        "mean_f1": 0.0996129505915521,
+        "mean_budget_conservation_rate": 0.37083333333333335,
+        "mean_budget_utilization": 1.0
+      },
+      {
+        "name": "ThresholdAgent",
+        "mean_reward": -764.836319999999,
+        "mean_f1": 0.13535861878572877,
+        "mean_budget_conservation_rate": 0.0,
+        "mean_budget_utilization": 0.0
+      }
+    ],
+    "10": [
+      {
+        "name": "RandomAgent",
+        "mean_reward": -1860.018800000003,
+        "mean_f1": 0.10331396655671901,
+        "mean_budget_conservation_rate": 0.25,
+        "mean_budget_utilization": 0.99
+      },
+      {
+        "name": "ThresholdAgent",
+        "mean_reward": -764.836319999999,
+        "mean_f1": 0.13535861878572877,
+        "mean_budget_conservation_rate": 0.0,
+        "mean_budget_utilization": 0.0
+      }
+    ],
+    "15": [
+      {
+        "name": "RandomAgent",
+        "mean_reward": -1955.4398000000033,
+        "mean_f1": 0.10331396655671901,
+        "mean_budget_conservation_rate": 0.05,
+        "mean_budget_utilization": 0.8733333333333334
+      },
+      {
+        "name": "ThresholdAgent",
+        "mean_reward": -764.836319999999,
+        "mean_f1": 0.13535861878572877,
+        "mean_budget_conservation_rate": 0.0,
+        "mean_budget_utilization": 0.0
+      }
+    ],
+    "20": [
+      {
+        "name": "RandomAgent",
+        "mean_reward": -2006.1338000000037,
+        "mean_f1": 0.10331396655671901,
+        "mean_budget_conservation_rate": 0.05,
+        "mean_budget_utilization": 0.74
+      },
+      {
+        "name": "ThresholdAgent",
+        "mean_reward": -764.836319999999,
+        "mean_f1": 0.13535861878572877,
+        "mean_budget_conservation_rate": 0.0,
+        "mean_budget_utilization": 0.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "timestamp": "2026-04-04T11:20:38.642824",
+  "agents": [
+    {
+      "name": "NaiveLLM(deepseek-v3.2)",
+      "model": "deepseek/deepseek-v3.2",
+      "n_episodes": 20,
+      "mean_reward": -1212.31986,
+      "std_reward": 147.0621741058807,
+      "mean_f1": 0.07438269774388187,
+      "mean_precision": 0.04172592206386926,
+      "mean_recall": 0.3736904761904762,
+      "mean_net_savings": -2315.1639999999998,
+      "mean_budget_utilization": 0.09333333333333334,
+      "mean_budget_conservation_rate": 0.0,
+      "mean_memory_reuse_rate": 0.32999999999999996,
+      "mean_valid_response_rate": 0.9744999999999999,
+      "mean_latency_ms": 11247.913256947359
+    },
+    {
+      "name": "BudgetAware(deepseek-v3.2)",
+      "model": "deepseek/deepseek-v3.2",
+      "n_episodes": 20,
+      "mean_reward": -454.9956900000001,
+      "std_reward": 145.4283361922494,
+      "mean_f1": 0.04743538324420678,
+      "mean_precision": 0.03357970460911637,
+      "mean_recall": 0.08178571428571428,
+      "mean_net_savings": -2608.957,
+      "mean_budget_utilization": 0.0,
+      "mean_budget_conservation_rate": 0.0,
+      "mean_memory_reuse_rate": 0.0,
+      "mean_valid_response_rate": 0.998,
+      "mean_latency_ms": 10777.602487949538
+    }
+  ]
+}

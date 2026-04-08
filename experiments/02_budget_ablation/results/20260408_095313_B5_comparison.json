@@ -1,0 +1,51 @@
+{
+  "timestamp": "2026-04-08T15:43:22.801596",
+  "budget": 5,
+  "n_episodes": 10,
+  "agents": [
+    {
+      "name": "RandomAgent",
+      "model": "none",
+      "mean_reward": -1828.4472800000026,
+      "std_reward": 191.87395988206896,
+      "mean_f1": 0.08731641269458627,
+      "mean_budget_utilization": 1.0,
+      "mean_budget_conservation_rate": 0.2875,
+      "mean_memory_reuse_rate": 0.8585042735042736,
+      "mean_net_savings": -4405.176
+    },
+    {
+      "name": "ThresholdAgent",
+      "model": "none",
+      "mean_reward": -808.473879999999,
+      "std_reward": 249.5201853189469,
+      "mean_f1": 0.16353804050355775,
+      "mean_budget_utilization": 0.0,
+      "mean_budget_conservation_rate": 0.0,
+      "mean_memory_reuse_rate": 0.0,
+      "mean_net_savings": -1793.681
+    },
+    {
+      "name": "NaiveLLM(deepseek-v3.2)",
+      "model": "deepseek/deepseek-v3.2",
+      "mean_reward": -1168.9074999999998,
+      "std_reward": 167.0191714273602,
+      "mean_f1": 0.09055939385819013,
+      "mean_budget_utilization": 0.14,
+      "mean_budget_conservation_rate": 0.0,
+      "mean_memory_reuse_rate": 0.2,
+      "mean_net_savings": -2039.1829999999998
+    },
+    {
+      "name": "BudgetAware(deepseek-v3.2)",
+      "model": "deepseek/deepseek-v3.2",
+      "mean_reward": -742.7553000000001,
+      "std_reward": 257.6892773996816,
+      "mean_f1": 0.0907778183737263,
+      "mean_budget_utilization": 0.0,
+      "mean_budget_conservation_rate": 0.0,
+      "mean_memory_reuse_rate": 0.0,
+      "mean_net_savings": -2966.963
+    }
+  ]
+}

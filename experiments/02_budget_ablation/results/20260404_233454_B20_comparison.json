@@ -1,0 +1,29 @@
+{
+  "timestamp": "2026-04-04T23:34:58.288556",
+  "budget": 20,
+  "n_episodes": 10,
+  "agents": [
+    {
+      "name": "RandomAgent",
+      "model": "none",
+      "mean_reward": -2006.1338000000037,
+      "std_reward": 196.6124152542359,
+      "mean_f1": 0.10331396655671901,
+      "mean_budget_utilization": 0.74,
+      "mean_budget_conservation_rate": 0.05,
+      "mean_memory_reuse_rate": 0.8075954927425515,
+      "mean_net_savings": -5136.337
+    },
+    {
+      "name": "ThresholdAgent",
+      "model": "none",
+      "mean_reward": -764.836319999999,
+      "std_reward": 226.12150767336047,
+      "mean_f1": 0.13535861878572877,
+      "mean_budget_utilization": 0.0,
+      "mean_budget_conservation_rate": 0.0,
+      "mean_memory_reuse_rate": 0.0,
+      "mean_net_savings": -1800.4100000000003
+    }
+  ]
+}

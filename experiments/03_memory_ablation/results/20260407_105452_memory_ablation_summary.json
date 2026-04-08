@@ -1,0 +1,80 @@
+{
+  "timestamp": "2026-04-07T10:54:56.650258",
+  "experiment": "03_memory_ablation",
+  "n_episodes": 10,
+  "claims_per_episode": 100,
+  "fraud_rate": 0.05,
+  "investigation_budget": 15,
+  "halflives_tested": [
+    0,
+    5,
+    20,
+    100
+  ],
+  "by_halflife": {
+    "0": [
+      {
+        "name": "RandomAgent",
+        "mean_reward": -2067.7115600000034,
+        "mean_f1": 0.09138212872220111,
+        "mean_memory_reuse_rate": 0.7638278860802081,
+        "mean_budget_utilization": 0.8866666666666667
+      },
+      {
+        "name": "ThresholdAgent",
+        "mean_reward": -763.1666399999988,
+        "mean_f1": 0.13685250786563907,
+        "mean_memory_reuse_rate": 0.0,
+        "mean_budget_utilization": 0.0
+      }
+    ],
+    "5": [
+      {
+        "name": "RandomAgent",
+        "mean_reward": -2067.7115600000034,
+        "mean_f1": 0.09138212872220111,
+        "mean_memory_reuse_rate": 0.7638278860802081,
+        "mean_budget_utilization": 0.8866666666666667
+      },
+      {
+        "name": "ThresholdAgent",
+        "mean_reward": -763.1666399999988,
+        "mean_f1": 0.13685250786563907,
+        "mean_memory_reuse_rate": 0.0,
+        "mean_budget_utilization": 0.0
+      }
+    ],
+    "20": [
+      {
+        "name": "RandomAgent",
+        "mean_reward": -2067.7115600000034,
+        "mean_f1": 0.09138212872220111,
+        "mean_memory_reuse_rate": 0.7638278860802081,
+        "mean_budget_utilization": 0.8866666666666667
+      },
+      {
+        "name": "ThresholdAgent",
+        "mean_reward": -763.1666399999988,
+        "mean_f1": 0.13685250786563907,
+        "mean_memory_reuse_rate": 0.0,
+        "mean_budget_utilization": 0.0
+      }
+    ],
+    "100": [
+      {
+        "name": "RandomAgent",
+        "mean_reward": -2067.7115600000034,
+        "mean_f1": 0.09138212872220111,
+        "mean_memory_reuse_rate": 0.7638278860802081,
+        "mean_budget_utilization": 0.8866666666666667
+      },
+      {
+        "name": "ThresholdAgent",
+        "mean_reward": -763.1666399999988,
+        "mean_f1": 0.13685250786563907,
+        "mean_memory_reuse_rate": 0.0,
+        "mean_budget_utilization": 0.0
+      }
+    ]
+  }
+}

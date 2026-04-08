@@ -1,0 +1,4502 @@
+[
+  {
+    "episode": 0,
+    "total_reward": -2673.7632000000012,
+    "mean_reward_window": -2673.7632000000012,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0941470142865715
+  },
+  {
+    "episode": 1,
+    "total_reward": -2501.3355999999994,
+    "mean_reward_window": -2587.5494000000003,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0846927118036291
+  },
+  {
+    "episode": 2,
+    "total_reward": -2312.2387999999983,
+    "mean_reward_window": -2495.7791999999995,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 4,
+    "policy_entropy": 1.090999043645788
+  },
+  {
+    "episode": 3,
+    "total_reward": -2229.1543999999963,
+    "mean_reward_window": -2429.1229999999987,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 0,
+    "policy_entropy": 1.0931179153867117
+  },
+  {
+    "episode": 4,
+    "total_reward": -3078.778799999998,
+    "mean_reward_window": -2559.054159999999,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 7,
+    "policy_entropy": 1.0869686950787791
+  },
+  {
+    "episode": 5,
+    "total_reward": -2744.5708,
+    "mean_reward_window": -2589.973599999999,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 5,
+    "policy_entropy": 1.0926977895039809
+  },
+  {
+    "episode": 6,
+    "total_reward": -2488.069599999999,
+    "mean_reward_window": -2575.4158857142843,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 2,
+    "policy_entropy": 1.090841093126624
+  },
+  {
+    "episode": 7,
+    "total_reward": -2341.8031999999967,
+    "mean_reward_window": -2546.2142999999987,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 3,
+    "policy_entropy": 1.091065192616319
+  },
+  {
+    "episode": 8,
+    "total_reward": -2566.2156,
+    "mean_reward_window": -2548.4366666666656,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0917501736070112
+  },
+  {
+    "episode": 9,
+    "total_reward": -2537.6007999999997,
+    "mean_reward_window": -2547.353079999999,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0901192017694632
+  },
+  {
+    "episode": 10,
+    "total_reward": -2944.3867999999993,
+    "mean_reward_window": -2583.4470545454533,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0907499718647156
+  },
+  {
+    "episode": 11,
+    "total_reward": -2309.8263999999976,
+    "mean_reward_window": -2560.645333333332,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 3,
+    "policy_entropy": 1.088910861941875
+  },
+  {
+    "episode": 12,
+    "total_reward": -2324.9839999999976,
+    "mean_reward_window": -2542.517538461537,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0873014136942476
+  },
+  {
+    "episode": 13,
+    "total_reward": -2653.526,
+    "mean_reward_window": -2550.4467142857134,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 6,
+    "policy_entropy": 1.0828722601481127
+  },
+  {
+    "episode": 14,
+    "total_reward": -2181.8099999999963,
+    "mean_reward_window": -2525.870933333332,
+    "investigations_used": 15,
+    "fraud_caught": 7,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0770941246184216
+  },
+  {
+    "episode": 15,
+    "total_reward": -2414.485999999998,
+    "mean_reward_window": -2518.9093749999984,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 0,
+    "policy_entropy": 1.0857075728550873
+  },
+  {
+    "episode": 16,
+    "total_reward": -2371.657599999999,
+    "mean_reward_window": -2510.2475058823516,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 6,
+    "policy_entropy": 1.0852703398888344
+  },
+  {
+    "episode": 17,
+    "total_reward": -2413.3283999999994,
+    "mean_reward_window": -2504.86311111111,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0887979533617078
+  },
+  {
+    "episode": 18,
+    "total_reward": -2558.9527999999987,
+    "mean_reward_window": -2507.709936842104,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 0,
+    "policy_entropy": 1.0875461428639974
+  },
+  {
+    "episode": 19,
+    "total_reward": -2738.1040000000007,
+    "mean_reward_window": -2519.2296399999987,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0870706102567953
+  },
+  {
+    "episode": 20,
+    "total_reward": -2455.0099999999984,
+    "mean_reward_window": -2508.2919799999986,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 5,
+    "policy_entropy": 1.0924261991551172
+  },
+  {
+    "episode": 21,
+    "total_reward": -2339.8620000000005,
+    "mean_reward_window": -2500.2182999999986,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0892700039804617
+  },
+  {
+    "episode": 22,
+    "total_reward": -2328.583199999998,
+    "mean_reward_window": -2501.0355199999985,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0893985904120167
+  },
+  {
+    "episode": 23,
+    "total_reward": -2147.3471999999974,
+    "mean_reward_window": -2496.9451599999984,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0951930943881616
+  },
+  {
+    "episode": 24,
+    "total_reward": -2562.0599999999986,
+    "mean_reward_window": -2471.109219999999,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0869666512600535
+  },
+  {
+    "episode": 25,
+    "total_reward": -2380.044399999997,
+    "mean_reward_window": -2452.8828999999987,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0904153076634817
+  },
+  {
+    "episode": 26,
+    "total_reward": -2277.833199999998,
+    "mean_reward_window": -2442.3710799999985,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0930194202612324
+  },
+  {
+    "episode": 27,
+    "total_reward": -2440.9023999999986,
+    "mean_reward_window": -2447.326039999999,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 0,
+    "policy_entropy": 1.0918185321576162
+  },
+  {
+    "episode": 28,
+    "total_reward": -2666.686399999999,
+    "mean_reward_window": -2452.3495799999987,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0901535378699592
+  },
+  {
+    "episode": 29,
+    "total_reward": -2476.016399999999,
+    "mean_reward_window": -2449.2703599999986,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0907808738656464
+  },
+  {
+    "episode": 30,
+    "total_reward": -2160.119999999997,
+    "mean_reward_window": -2410.0570199999984,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0924066519610998
+  },
+  {
+    "episode": 31,
+    "total_reward": -2451.7555999999986,
+    "mean_reward_window": -2417.1534799999986,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0803604774501343
+  },
+  {
+    "episode": 32,
+    "total_reward": -2971.2055999999993,
+    "mean_reward_window": -2449.4645599999985,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 6,
+    "policy_entropy": 1.0884763450965482
+  },
+  {
+    "episode": 33,
+    "total_reward": -2177.3671999999983,
+    "mean_reward_window": -2425.656619999999,
+    "investigations_used": 15,
+    "fraud_caught": 5,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0914085363350379
+  },
+  {
+    "episode": 34,
+    "total_reward": -2359.2331999999974,
+    "mean_reward_window": -2434.5277799999985,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0892568522856676
+  },
+  {
+    "episode": 35,
+    "total_reward": -2480.106399999999,
+    "mean_reward_window": -2437.8087999999984,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0912362850115684
+  },
+  {
+    "episode": 36,
+    "total_reward": -2436.766399999999,
+    "mean_reward_window": -2441.064239999999,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0873981310810206
+  },
+  {
+    "episode": 37,
+    "total_reward": -2729.506799999999,
+    "mean_reward_window": -2456.8731599999983,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0881607069344217
+  },
+  {
+    "episode": 38,
+    "total_reward": -2580.3051999999984,
+    "mean_reward_window": -2457.9407799999985,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 3,
+    "policy_entropy": 1.085730611566833
+  },
+  {
+    "episode": 39,
+    "total_reward": -2614.8443999999986,
+    "mean_reward_window": -2451.7777999999985,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 5,
+    "policy_entropy": 1.0823743077452774
+  },
+  {
+    "episode": 40,
+    "total_reward": -2162.5959999999964,
+    "mean_reward_window": -2437.1570999999985,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0811010758509314
+  },
+  {
+    "episode": 41,
+    "total_reward": -2231.498799999998,
+    "mean_reward_window": -2431.7389399999984,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0934602194432128
+  },
+  {
+    "episode": 42,
+    "total_reward": -2305.053199999997,
+    "mean_reward_window": -2430.5624399999983,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0938206525914411
+  },
+  {
+    "episode": 43,
+    "total_reward": -2855.1715999999997,
+    "mean_reward_window": -2465.9536599999983,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0899454004469074
+  },
+  {
+    "episode": 44,
+    "total_reward": -2236.2807999999973,
+    "mean_reward_window": -2449.6646999999984,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0788145224910424
+  },
+  {
+    "episode": 45,
+    "total_reward": -2506.658399999999,
+    "mean_reward_window": -2455.9953999999984,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0932298476127158
+  },
+  {
+    "episode": 46,
+    "total_reward": -2037.4715999999955,
+    "mean_reward_window": -2443.977319999998,
+    "investigations_used": 15,
+    "fraud_caught": 6,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0927433378316824
+  },
+  {
+    "episode": 47,
+    "total_reward": -2299.967999999997,
+    "mean_reward_window": -2436.9305999999983,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0918686864547296
+  },
+  {
+    "episode": 48,
+    "total_reward": -2466.825999999998,
+    "mean_reward_window": -2426.937579999998,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 3,
+    "policy_entropy": 1.087889607975901
+  },
+  {
+    "episode": 49,
+    "total_reward": -2796.2387999999983,
+    "mean_reward_window": -2442.948699999998,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 4,
+    "policy_entropy": 1.08792747364549
+  },
+  {
+    "episode": 50,
+    "total_reward": -2424.722799999999,
+    "mean_reward_window": -2456.178839999998,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0916859557994807
+  },
+  {
+    "episode": 51,
+    "total_reward": -2156.3063999999977,
+    "mean_reward_window": -2441.406379999998,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 1.091592180955411
+  },
+  {
+    "episode": 52,
+    "total_reward": -2605.7563999999984,
+    "mean_reward_window": -2423.133919999998,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0932530191240906
+  },
+  {
+    "episode": 53,
+    "total_reward": -2224.4383999999973,
+    "mean_reward_window": -2425.487479999998,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0923436415118464
+  },
+  {
+    "episode": 54,
+    "total_reward": -2693.397599999999,
+    "mean_reward_window": -2442.195699999998,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 5,
+    "policy_entropy": 1.093169462066929
+  },
+  {
+    "episode": 55,
+    "total_reward": -2369.701599999998,
+    "mean_reward_window": -2436.675459999998,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 0,
+    "policy_entropy": 1.0939891041537302
+  },
+  {
+    "episode": 56,
+    "total_reward": -2519.433199999999,
+    "mean_reward_window": -2440.808799999998,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0955168884341813
+  },
+  {
+    "episode": 57,
+    "total_reward": -2484.8335999999995,
+    "mean_reward_window": -2428.575139999998,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0959254608298492
+  },
+  {
+    "episode": 58,
+    "total_reward": -2445.245199999999,
+    "mean_reward_window": -2421.822139999998,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0916233938680737
+  },
+  {
+    "episode": 59,
+    "total_reward": -2429.6987999999988,
+    "mean_reward_window": -2412.564859999998,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0961071964368825
+  },
+  {
+    "episode": 60,
+    "total_reward": -2300.7443999999978,
+    "mean_reward_window": -2419.472279999998,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 0,
+    "policy_entropy": 1.0941959898468419
+  },
+  {
+    "episode": 61,
+    "total_reward": -2353.2335999999987,
+    "mean_reward_window": -2425.559019999998,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0915744260142701
+  },
+  {
+    "episode": 62,
+    "total_reward": -2295.941199999998,
+    "mean_reward_window": -2425.1034199999986,
+    "investigations_used": 15,
+    "fraud_caught": 6,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0922603184359292
+  },
+  {
+    "episode": 63,
+    "total_reward": -2670.2991999999986,
+    "mean_reward_window": -2415.8597999999984,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0946691799429487
+  },
+  {
+    "episode": 64,
+    "total_reward": -2144.5431999999964,
+    "mean_reward_window": -2411.272919999998,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0923418864041978
+  },
+  {
+    "episode": 65,
+    "total_reward": -2853.6228000000006,
+    "mean_reward_window": -2428.6211399999984,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 6,
+    "policy_entropy": 1.0932514710062484
+  },
+  {
+    "episode": 66,
+    "total_reward": -2580.096799999999,
+    "mean_reward_window": -2455.7523999999985,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0926921106570706
+  },
+  {
+    "episode": 67,
+    "total_reward": -2514.0939999999987,
+    "mean_reward_window": -2466.4586999999983,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0953569784892414
+  },
+  {
+    "episode": 68,
+    "total_reward": -2248.4067999999975,
+    "mean_reward_window": -2455.5377399999984,
+    "investigations_used": 15,
+    "fraud_caught": 5,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0930660503343759
+  },
+  {
+    "episode": 69,
+    "total_reward": -2680.766000000001,
+    "mean_reward_window": -2449.7640999999985,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0922139778203472
+  },
+  {
+    "episode": 70,
+    "total_reward": -2406.5151999999975,
+    "mean_reward_window": -2448.8537199999982,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 0,
+    "policy_entropy": 1.0930138489940924
+  },
+  {
+    "episode": 71,
+    "total_reward": -2258.626799999998,
+    "mean_reward_window": -2453.9697399999986,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0906956458555652
+  },
+  {
+    "episode": 72,
+    "total_reward": -2612.5415999999987,
+    "mean_reward_window": -2454.3089999999984,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0913590663193675
+  },
+  {
+    "episode": 73,
+    "total_reward": -2531.645599999998,
+    "mean_reward_window": -2469.6693599999985,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0907101837832258
+  },
+  {
+    "episode": 74,
+    "total_reward": -2148.4719999999966,
+    "mean_reward_window": -2442.423079999998,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0928005156435088
+  },
+  {
+    "episode": 75,
+    "total_reward": -2596.817199999999,
+    "mean_reward_window": -2453.7788599999985,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 1.093163911840819
+  },
+  {
+    "episode": 76,
+    "total_reward": -2190.7303999999976,
+    "mean_reward_window": -2437.3437199999985,
+    "investigations_used": 15,
+    "fraud_caught": 9,
+    "fraud_missed": 4,
+    "policy_entropy": 1.092097664318779
+  },
+  {
+    "episode": 77,
+    "total_reward": -2473.7359999999994,
+    "mean_reward_window": -2436.7888399999983,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0940276922182501
+  },
+  {
+    "episode": 78,
+    "total_reward": -2240.1575999999977,
+    "mean_reward_window": -2426.534459999998,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0947753340815083
+  },
+  {
+    "episode": 79,
+    "total_reward": -2478.326799999999,
+    "mean_reward_window": -2428.9658599999984,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0953363531013414
+  },
+  {
+    "episode": 80,
+    "total_reward": -2795.812,
+    "mean_reward_window": -2453.7192399999985,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0907738813646268
+  },
+  {
+    "episode": 81,
+    "total_reward": -2146.8251999999966,
+    "mean_reward_window": -2443.3988199999985,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 0,
+    "policy_entropy": 1.095041090664444
+  },
+  {
+    "episode": 82,
+    "total_reward": -2015.8119999999956,
+    "mean_reward_window": -2429.3923599999985,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 0,
+    "policy_entropy": 1.0933635727826674
+  },
+  {
+    "episode": 83,
+    "total_reward": -2244.672399999996,
+    "mean_reward_window": -2408.111019999998,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 2,
+    "policy_entropy": 1.094059326321034
+  },
+  {
+    "episode": 84,
+    "total_reward": -2352.1747999999966,
+    "mean_reward_window": -2418.492599999998,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0912842141220735
+  },
+  {
+    "episode": 85,
+    "total_reward": -2774.8200000000015,
+    "mean_reward_window": -2414.552459999998,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 6,
+    "policy_entropy": 1.0926078749827353
+  },
+  {
+    "episode": 86,
+    "total_reward": -2479.0099999999998,
+    "mean_reward_window": -2409.4981199999984,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 5,
+    "policy_entropy": 1.092476889753363
+  },
+  {
+    "episode": 87,
+    "total_reward": -1857.6299999999962,
+    "mean_reward_window": -2376.674919999998,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0915802598228694
+  },
+  {
+    "episode": 88,
+    "total_reward": -2146.8539999999957,
+    "mean_reward_window": -2371.597279999998,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0910865306153035
+  },
+  {
+    "episode": 89,
+    "total_reward": -2467.1387999999974,
+    "mean_reward_window": -2360.915919999998,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 1.091106953694495
+  },
+  {
+    "episode": 90,
+    "total_reward": -2331.943599999998,
+    "mean_reward_window": -2357.1873399999977,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 1.089693871898061
+  },
+  {
+    "episode": 91,
+    "total_reward": -2169.311199999997,
+    "mean_reward_window": -2352.7215599999977,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 1,
+    "policy_entropy": 1.088540456168031
+  },
+  {
+    "episode": 92,
+    "total_reward": -2253.2279999999982,
+    "mean_reward_window": -2334.755879999998,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 0,
+    "policy_entropy": 1.0895127173558006
+  },
+  {
+    "episode": 93,
+    "total_reward": -2453.9587999999985,
+    "mean_reward_window": -2330.871539999998,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 5,
+    "policy_entropy": 1.090821704681378
+  },
+  {
+    "episode": 94,
+    "total_reward": -2359.519999999999,
+    "mean_reward_window": -2341.423939999998,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 1.090653805411457
+  },
+  {
+    "episode": 95,
+    "total_reward": -2336.6615999999985,
+    "mean_reward_window": -2328.416159999998,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0886629473577514
+  },
+  {
+    "episode": 96,
+    "total_reward": -2507.767599999998,
+    "mean_reward_window": -2344.268019999998,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0902972364437882
+  },
+  {
+    "episode": 97,
+    "total_reward": -2235.971999999997,
+    "mean_reward_window": -2332.379819999998,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0880350507420422
+  },
+  {
+    "episode": 98,
+    "total_reward": -2339.807599999998,
+    "mean_reward_window": -2337.3623199999975,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 4,
+    "policy_entropy": 1.088718980878795
+  },
+  {
+    "episode": 99,
+    "total_reward": -2056.000399999996,
+    "mean_reward_window": -2316.245999999998,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 0,
+    "policy_entropy": 1.0838625343770987
+  },
+  {
+    "episode": 100,
+    "total_reward": -1780.8691999999965,
+    "mean_reward_window": -2265.4988599999974,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 0,
+    "policy_entropy": 1.0893428521570323
+  },
+  {
+    "episode": 101,
+    "total_reward": -2054.706399999996,
+    "mean_reward_window": -2260.8929199999975,
+    "investigations_used": 15,
+    "fraud_caught": 5,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0871584221560129
+  },
+  {
+    "episode": 102,
+    "total_reward": -2339.326399999999,
+    "mean_reward_window": -2277.0686399999977,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0907345421621106
+  },
+  {
+    "episode": 103,
+    "total_reward": -2219.103599999997,
+    "mean_reward_window": -2275.7901999999976,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 1.088228793053558
+  },
+  {
+    "episode": 104,
+    "total_reward": -2363.3983999999987,
+    "mean_reward_window": -2276.351379999998,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0849916596604072
+  },
+  {
+    "episode": 105,
+    "total_reward": -2209.520799999997,
+    "mean_reward_window": -2248.0864199999974,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0845114830362428
+  },
+  {
+    "episode": 106,
+    "total_reward": -2236.891199999997,
+    "mean_reward_window": -2235.9804799999974,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0870660665512404
+  },
+  {
+    "episode": 107,
+    "total_reward": -2290.754399999998,
+    "mean_reward_window": -2257.6366999999977,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0914736728869325
+  },
+  {
+    "episode": 108,
+    "total_reward": -2255.321599999997,
+    "mean_reward_window": -2263.0600799999975,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0859873171789025
+  },
+  {
+    "episode": 109,
+    "total_reward": -2367.6863999999982,
+    "mean_reward_window": -2258.087459999998,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0828063762583076
+  },
+  {
+    "episode": 110,
+    "total_reward": -2420.3251999999984,
+    "mean_reward_window": -2262.5065399999976,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 1.084855636936268
+  },
+  {
+    "episode": 111,
+    "total_reward": -2386.0947999999976,
+    "mean_reward_window": -2273.3457199999975,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 2,
+    "policy_entropy": 1.093549810364854
+  },
+  {
+    "episode": 112,
+    "total_reward": -2186.921599999997,
+    "mean_reward_window": -2270.0303999999974,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0848027472075306
+  },
+  {
+    "episode": 113,
+    "total_reward": -1926.7719999999968,
+    "mean_reward_window": -2243.671059999998,
+    "investigations_used": 15,
+    "fraud_caught": 6,
+    "fraud_missed": 5,
+    "policy_entropy": 1.0874967258456718
+  },
+  {
+    "episode": 114,
+    "total_reward": -2033.9095999999968,
+    "mean_reward_window": -2227.3905399999976,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 1.093596823174472
+  },
+  {
+    "episode": 115,
+    "total_reward": -2353.1951999999974,
+    "mean_reward_window": -2228.2172199999973,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0923773510635932
+  },
+  {
+    "episode": 116,
+    "total_reward": -2574.0643999999984,
+    "mean_reward_window": -2231.5320599999973,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 4,
+    "policy_entropy": 1.088789935726851
+  },
+  {
+    "episode": 117,
+    "total_reward": -2056.745999999996,
+    "mean_reward_window": -2222.5707599999973,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0959172670928563
+  },
+  {
+    "episode": 118,
+    "total_reward": -2396.152399999998,
+    "mean_reward_window": -2225.387999999997,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0927936408963095
+  },
+  {
+    "episode": 119,
+    "total_reward": -2449.606399999998,
+    "mean_reward_window": -2245.0682999999976,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0924589274477476
+  },
+  {
+    "episode": 120,
+    "total_reward": -2632.458800000001,
+    "mean_reward_window": -2287.6477799999975,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 5,
+    "policy_entropy": 1.0930006700851342
+  },
+  {
+    "episode": 121,
+    "total_reward": -2335.9223999999977,
+    "mean_reward_window": -2301.7085799999977,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0924771100172177
+  },
+  {
+    "episode": 122,
+    "total_reward": -2181.447599999997,
+    "mean_reward_window": -2293.814639999998,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 1.088172570458283
+  },
+  {
+    "episode": 123,
+    "total_reward": -2315.9947999999968,
+    "mean_reward_window": -2298.6591999999973,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0906048136379285
+  },
+  {
+    "episode": 124,
+    "total_reward": -2750.675999999999,
+    "mean_reward_window": -2318.0230799999977,
+    "investigations_used": 15,
+    "fraud_caught": 5,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0855402528479843
+  },
+  {
+    "episode": 125,
+    "total_reward": -2019.053199999996,
+    "mean_reward_window": -2308.4996999999976,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 0,
+    "policy_entropy": 1.0873752003148913
+  },
+  {
+    "episode": 126,
+    "total_reward": -2030.6003999999955,
+    "mean_reward_window": -2298.1851599999977,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0872346118334324
+  },
+  {
+    "episode": 127,
+    "total_reward": -2339.8159999999975,
+    "mean_reward_window": -2300.6382399999975,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 3,
+    "policy_entropy": 1.077246787484257
+  },
+  {
+    "episode": 128,
+    "total_reward": -2395.3827999999985,
+    "mean_reward_window": -2307.6412999999975,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0792152575837375
+  },
+  {
+    "episode": 129,
+    "total_reward": -2336.7179999999994,
+    "mean_reward_window": -2306.0928799999974,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 5,
+    "policy_entropy": 1.0881376639013152
+  },
+  {
+    "episode": 130,
+    "total_reward": -2006.3419999999962,
+    "mean_reward_window": -2285.3937199999973,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0848809286761016
+  },
+  {
+    "episode": 131,
+    "total_reward": -2267.4707999999964,
+    "mean_reward_window": -2279.4625199999973,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0772358551576637
+  },
+  {
+    "episode": 132,
+    "total_reward": -1961.319999999996,
+    "mean_reward_window": -2268.1824399999973,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0850233956026887
+  },
+  {
+    "episode": 133,
+    "total_reward": -2029.5431999999953,
+    "mean_reward_window": -2273.320999999997,
+    "investigations_used": 14,
+    "fraud_caught": 3,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0856427733665108
+  },
+  {
+    "episode": 134,
+    "total_reward": -2287.1539999999995,
+    "mean_reward_window": -2285.9832199999973,
+    "investigations_used": 15,
+    "fraud_caught": 5,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0888568034817556
+  },
+  {
+    "episode": 135,
+    "total_reward": -2253.6823999999974,
+    "mean_reward_window": -2281.0075799999972,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0854300684426934
+  },
+  {
+    "episode": 136,
+    "total_reward": -2188.9559999999974,
+    "mean_reward_window": -2261.7521599999973,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0838101084471488
+  },
+  {
+    "episode": 137,
+    "total_reward": -2133.7199999999966,
+    "mean_reward_window": -2265.6008599999977,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0857098347415073
+  },
+  {
+    "episode": 138,
+    "total_reward": -2157.5399999999963,
+    "mean_reward_window": -2253.670239999997,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 0,
+    "policy_entropy": 1.0830316130075002
+  },
+  {
+    "episode": 139,
+    "total_reward": -2516.8051999999966,
+    "mean_reward_window": -2257.030179999997,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 6,
+    "policy_entropy": 1.0868871391408632
+  },
+  {
+    "episode": 140,
+    "total_reward": -2642.8771999999994,
+    "mean_reward_window": -2257.5510999999974,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0857238683963677
+  },
+  {
+    "episode": 141,
+    "total_reward": -2265.851599999999,
+    "mean_reward_window": -2254.0475599999972,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0893700762712901
+  },
+  {
+    "episode": 142,
+    "total_reward": -2263.022799999999,
+    "mean_reward_window": -2258.126319999997,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0807645421925505
+  },
+  {
+    "episode": 143,
+    "total_reward": -2974.7000000000003,
+    "mean_reward_window": -2291.0615799999973,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 7,
+    "policy_entropy": 1.086346668330219
+  },
+  {
+    "episode": 144,
+    "total_reward": -2079.941999999996,
+    "mean_reward_window": -2257.5248799999977,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0836616277346616
+  },
+  {
+    "episode": 145,
+    "total_reward": -2306.229199999999,
+    "mean_reward_window": -2271.8836799999976,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0773642107638197
+  },
+  {
+    "episode": 146,
+    "total_reward": -2841.495200000001,
+    "mean_reward_window": -2312.428419999998,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 3,
+    "policy_entropy": 1.082900803181324
+  },
+  {
+    "episode": 147,
+    "total_reward": -2168.084399999998,
+    "mean_reward_window": -2303.8418399999982,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0782693909245984
+  },
+  {
+    "episode": 148,
+    "total_reward": -2438.6023999999966,
+    "mean_reward_window": -2306.002819999998,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 1.088597535739008
+  },
+  {
+    "episode": 149,
+    "total_reward": -1967.9347999999957,
+    "mean_reward_window": -2287.5636599999975,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0904888762698264
+  },
+  {
+    "episode": 150,
+    "total_reward": -2162.975199999997,
+    "mean_reward_window": -2295.3953199999974,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0864497906880541
+  },
+  {
+    "episode": 151,
+    "total_reward": -2568.231199999998,
+    "mean_reward_window": -2310.4333399999978,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0808865359901847
+  },
+  {
+    "episode": 152,
+    "total_reward": -2267.4531999999967,
+    "mean_reward_window": -2325.7399999999975,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 3,
+    "policy_entropy": 1.08473143147779
+  },
+  {
+    "episode": 153,
+    "total_reward": -2532.5607999999997,
+    "mean_reward_window": -2350.890879999998,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 7,
+    "policy_entropy": 1.086944424444098
+  },
+  {
+    "episode": 154,
+    "total_reward": -2224.949199999998,
+    "mean_reward_window": -2347.780639999998,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0801494108453968
+  },
+  {
+    "episode": 155,
+    "total_reward": -2516.507999999999,
+    "mean_reward_window": -2360.921919999998,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0841736371470374
+  },
+  {
+    "episode": 156,
+    "total_reward": -2158.646799999996,
+    "mean_reward_window": -2359.406459999998,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0756613835490438
+  },
+  {
+    "episode": 157,
+    "total_reward": -2345.3419999999983,
+    "mean_reward_window": -2369.987559999998,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0804423356883703
+  },
+  {
+    "episode": 158,
+    "total_reward": -2392.968799999998,
+    "mean_reward_window": -2381.758999999998,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0787763285129226
+  },
+  {
+    "episode": 159,
+    "total_reward": -1729.0587999999962,
+    "mean_reward_window": -2342.371679999998,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 0,
+    "policy_entropy": 1.0740913140990487
+  },
+  {
+    "episode": 160,
+    "total_reward": -2740.6652000000004,
+    "mean_reward_window": -2347.261079999998,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0856502602024616
+  },
+  {
+    "episode": 161,
+    "total_reward": -2244.2063999999978,
+    "mean_reward_window": -2346.1788199999983,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 6,
+    "policy_entropy": 1.0807835985924783
+  },
+  {
+    "episode": 162,
+    "total_reward": -2193.4779999999964,
+    "mean_reward_window": -2342.701579999998,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0813598233981798
+  },
+  {
+    "episode": 163,
+    "total_reward": -2096.506399999995,
+    "mean_reward_window": -2298.7918999999974,
+    "investigations_used": 15,
+    "fraud_caught": 6,
+    "fraud_missed": 3,
+    "policy_entropy": 1.083014864237483
+  },
+  {
+    "episode": 164,
+    "total_reward": -2186.039999999997,
+    "mean_reward_window": -2304.0967999999975,
+    "investigations_used": 15,
+    "fraud_caught": 6,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0746440293034454
+  },
+  {
+    "episode": 165,
+    "total_reward": -3284.4680000000035,
+    "mean_reward_window": -2353.008739999998,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 4,
+    "policy_entropy": 1.079572135846216
+  },
+  {
+    "episode": 166,
+    "total_reward": -1520.4275999999975,
+    "mean_reward_window": -2286.9553599999977,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0822390554122243
+  },
+  {
+    "episode": 167,
+    "total_reward": -2248.535199999996,
+    "mean_reward_window": -2290.9778999999976,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0822718007066647
+  },
+  {
+    "episode": 168,
+    "total_reward": -2098.657199999996,
+    "mean_reward_window": -2273.9806399999975,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0728082939860804
+  },
+  {
+    "episode": 169,
+    "total_reward": -2176.0819999999967,
+    "mean_reward_window": -2284.3879999999976,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0708239871701615
+  },
+  {
+    "episode": 170,
+    "total_reward": -1988.5963999999965,
+    "mean_reward_window": -2275.6690599999974,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 6,
+    "policy_entropy": 1.079641836730801
+  },
+  {
+    "episode": 171,
+    "total_reward": -2219.900399999999,
+    "mean_reward_window": -2258.2525199999977,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0715344862032214
+  },
+  {
+    "episode": 172,
+    "total_reward": -2218.4079999999976,
+    "mean_reward_window": -2255.8002599999977,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0778882795714715
+  },
+  {
+    "episode": 173,
+    "total_reward": -1921.358799999997,
+    "mean_reward_window": -2225.2401599999976,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0805683934890515
+  },
+  {
+    "episode": 174,
+    "total_reward": -1945.0075999999958,
+    "mean_reward_window": -2211.2430799999975,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 0,
+    "policy_entropy": 1.0751671089645518
+  },
+  {
+    "episode": 175,
+    "total_reward": -2443.218399999997,
+    "mean_reward_window": -2207.5785999999976,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 5,
+    "policy_entropy": 1.0710416735625716
+  },
+  {
+    "episode": 176,
+    "total_reward": -2050.661599999995,
+    "mean_reward_window": -2202.1793399999974,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0809201644548014
+  },
+  {
+    "episode": 177,
+    "total_reward": -2312.2371999999978,
+    "mean_reward_window": -2200.5240999999974,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0783863301235002
+  },
+  {
+    "episode": 178,
+    "total_reward": -2143.4063999999967,
+    "mean_reward_window": -2188.045979999997,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0706266162645508
+  },
+  {
+    "episode": 179,
+    "total_reward": -2089.3991999999976,
+    "mean_reward_window": -2206.0629999999974,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0745435193843136
+  },
+  {
+    "episode": 180,
+    "total_reward": -2197.5087999999964,
+    "mean_reward_window": -2178.905179999997,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 1.076387627608434
+  },
+  {
+    "episode": 181,
+    "total_reward": -2457.502399999997,
+    "mean_reward_window": -2189.569979999997,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 6,
+    "policy_entropy": 1.073434932114034
+  },
+  {
+    "episode": 182,
+    "total_reward": -1843.0239999999958,
+    "mean_reward_window": -2172.047279999997,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 4,
+    "policy_entropy": 1.074839324444817
+  },
+  {
+    "episode": 183,
+    "total_reward": -2212.4015999999974,
+    "mean_reward_window": -2177.842039999997,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0795285761570201
+  },
+  {
+    "episode": 184,
+    "total_reward": -2333.184,
+    "mean_reward_window": -2185.199239999997,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0789979947347148
+  },
+  {
+    "episode": 185,
+    "total_reward": -2150.0091999999963,
+    "mean_reward_window": -2128.476299999997,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0793222378563723
+  },
+  {
+    "episode": 186,
+    "total_reward": -2432.2632000000003,
+    "mean_reward_window": -2174.0680799999973,
+    "investigations_used": 15,
+    "fraud_caught": 5,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0750843945005337
+  },
+  {
+    "episode": 187,
+    "total_reward": -2266.0071999999973,
+    "mean_reward_window": -2174.941679999997,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 0,
+    "policy_entropy": 1.0688634917224604
+  },
+  {
+    "episode": 188,
+    "total_reward": -2371.852399999999,
+    "mean_reward_window": -2188.6014399999976,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 6,
+    "policy_entropy": 1.0644691010040792
+  },
+  {
+    "episode": 189,
+    "total_reward": -2473.625599999998,
+    "mean_reward_window": -2203.478619999997,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 6,
+    "policy_entropy": 1.062089135502309
+  },
+  {
+    "episode": 190,
+    "total_reward": -2487.971200000001,
+    "mean_reward_window": -2228.4473599999974,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0701998211394055
+  },
+  {
+    "episode": 191,
+    "total_reward": -2313.3695999999977,
+    "mean_reward_window": -2233.1208199999974,
+    "investigations_used": 15,
+    "fraud_caught": 5,
+    "fraud_missed": 3,
+    "policy_entropy": 1.068625060096087
+  },
+  {
+    "episode": 192,
+    "total_reward": -2444.4035999999987,
+    "mean_reward_window": -2244.4205999999976,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0604728621536472
+  },
+  {
+    "episode": 193,
+    "total_reward": -2309.5259999999976,
+    "mean_reward_window": -2263.8289599999976,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 4,
+    "policy_entropy": 1.06759367390527
+  },
+  {
+    "episode": 194,
+    "total_reward": -2232.334799999999,
+    "mean_reward_window": -2278.195319999998,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0636288385851187
+  },
+  {
+    "episode": 195,
+    "total_reward": -2040.328799999995,
+    "mean_reward_window": -2258.0508399999976,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0599861971295252
+  },
+  {
+    "episode": 196,
+    "total_reward": -2309.6131999999984,
+    "mean_reward_window": -2270.9984199999976,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0586907081857742
+  },
+  {
+    "episode": 197,
+    "total_reward": -2089.027999999996,
+    "mean_reward_window": -2259.837959999998,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0459247927886075
+  },
+  {
+    "episode": 198,
+    "total_reward": -2383.277199999997,
+    "mean_reward_window": -2271.8314999999975,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 5,
+    "policy_entropy": 1.0613161612030038
+  },
+  {
+    "episode": 199,
+    "total_reward": -2051.914799999996,
+    "mean_reward_window": -2269.957279999998,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0526734217396174
+  },
+  {
+    "episode": 200,
+    "total_reward": -1913.6875999999954,
+    "mean_reward_window": -2255.7662199999977,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0430441840499922
+  },
+  {
+    "episode": 201,
+    "total_reward": -2345.153199999999,
+    "mean_reward_window": -2250.1487599999978,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 1.063758808211986
+  },
+  {
+    "episode": 202,
+    "total_reward": -1713.398399999997,
+    "mean_reward_window": -2243.667479999998,
+    "investigations_used": 14,
+    "fraud_caught": 4,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0574845468715643
+  },
+  {
+    "episode": 203,
+    "total_reward": -2330.056399999998,
+    "mean_reward_window": -2249.550219999998,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 0,
+    "policy_entropy": 1.0521797732448903
+  },
+  {
+    "episode": 204,
+    "total_reward": -2309.547199999998,
+    "mean_reward_window": -2248.3683799999976,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 2,
+    "policy_entropy": 1.061286124217426
+  },
+  {
+    "episode": 205,
+    "total_reward": -2037.1895999999954,
+    "mean_reward_window": -2242.7273999999975,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 1.040696682026783
+  },
+  {
+    "episode": 206,
+    "total_reward": -1854.709999999996,
+    "mean_reward_window": -2213.8497399999974,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 1,
+    "policy_entropy": 1.049923065506467
+  },
+  {
+    "episode": 207,
+    "total_reward": -2069.0459999999953,
+    "mean_reward_window": -2204.001679999997,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0555914923481848
+  },
+  {
+    "episode": 208,
+    "total_reward": -2153.0311999999976,
+    "mean_reward_window": -2193.0606199999975,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0441771902111925
+  },
+  {
+    "episode": 209,
+    "total_reward": -2244.091599999998,
+    "mean_reward_window": -2181.5839199999973,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0433017651089809
+  },
+  {
+    "episode": 210,
+    "total_reward": -1821.115599999997,
+    "mean_reward_window": -2148.2411399999974,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 3,
+    "policy_entropy": 1.045357042359331
+  },
+  {
+    "episode": 211,
+    "total_reward": -2072.0863999999956,
+    "mean_reward_window": -2136.176979999997,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0478759275606626
+  },
+  {
+    "episode": 212,
+    "total_reward": -1957.9207999999962,
+    "mean_reward_window": -2111.852839999997,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 5,
+    "policy_entropy": 1.0547454883710194
+  },
+  {
+    "episode": 213,
+    "total_reward": -2024.179199999995,
+    "mean_reward_window": -2097.5854999999965,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0551207064088874
+  },
+  {
+    "episode": 214,
+    "total_reward": -2004.953199999996,
+    "mean_reward_window": -2086.2164199999966,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0485191392335995
+  },
+  {
+    "episode": 215,
+    "total_reward": -2120.101599999997,
+    "mean_reward_window": -2090.2050599999966,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 1.041749875488495
+  },
+  {
+    "episode": 216,
+    "total_reward": -2236.7239999999983,
+    "mean_reward_window": -2086.5605999999966,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0480069829832832
+  },
+  {
+    "episode": 217,
+    "total_reward": -2016.5787999999955,
+    "mean_reward_window": -2082.9381399999966,
+    "investigations_used": 14,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 1.034563986537089
+  },
+  {
+    "episode": 218,
+    "total_reward": -2020.3931999999954,
+    "mean_reward_window": -2064.793939999997,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0210663150314851
+  },
+  {
+    "episode": 219,
+    "total_reward": -2057.055599999995,
+    "mean_reward_window": -2065.050979999997,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0348293408097429
+  },
+  {
+    "episode": 220,
+    "total_reward": -2043.0211999999965,
+    "mean_reward_window": -2071.517659999997,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0497151038244947
+  },
+  {
+    "episode": 221,
+    "total_reward": -1726.3915999999967,
+    "mean_reward_window": -2040.5795799999964,
+    "investigations_used": 15,
+    "fraud_caught": 5,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0307190342901396
+  },
+  {
+    "episode": 222,
+    "total_reward": -2165.171599999998,
+    "mean_reward_window": -2063.1682399999963,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0477543784188565
+  },
+  {
+    "episode": 223,
+    "total_reward": -2335.907599999997,
+    "mean_reward_window": -2063.460799999996,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0346126191726466
+  },
+  {
+    "episode": 224,
+    "total_reward": -1942.779999999996,
+    "mean_reward_window": -2045.1224399999962,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 0,
+    "policy_entropy": 1.0331064077612957
+  },
+  {
+    "episode": 225,
+    "total_reward": -1953.940399999997,
+    "mean_reward_window": -2040.9599799999964,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0435686933932409
+  },
+  {
+    "episode": 226,
+    "total_reward": -2004.9623999999972,
+    "mean_reward_window": -2048.4725999999964,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 4,
+    "policy_entropy": 1.036214522239335
+  },
+  {
+    "episode": 227,
+    "total_reward": -1747.410799999997,
+    "mean_reward_window": -2032.3908399999968,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0468057357853362
+  },
+  {
+    "episode": 228,
+    "total_reward": -2349.911199999998,
+    "mean_reward_window": -2042.2348399999967,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0417116805947142
+  },
+  {
+    "episode": 229,
+    "total_reward": -1856.9011999999955,
+    "mean_reward_window": -2022.8753199999967,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0289010148789164
+  },
+  {
+    "episode": 230,
+    "total_reward": -1476.0155999999977,
+    "mean_reward_window": -2005.6203199999964,
+    "investigations_used": 10,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0409365686678769
+  },
+  {
+    "episode": 231,
+    "total_reward": -1909.1815999999963,
+    "mean_reward_window": -1997.4750799999965,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0382732988952126
+  },
+  {
+    "episode": 232,
+    "total_reward": -2555.6227999999987,
+    "mean_reward_window": -2027.3601799999967,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 7,
+    "policy_entropy": 1.0305613078064662
+  },
+  {
+    "episode": 233,
+    "total_reward": -2103.5799999999967,
+    "mean_reward_window": -2031.3302199999969,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 1.028635841937184
+  },
+  {
+    "episode": 234,
+    "total_reward": -2063.529999999996,
+    "mean_reward_window": -2034.2590599999967,
+    "investigations_used": 13,
+    "fraud_caught": 2,
+    "fraud_missed": 5,
+    "policy_entropy": 1.059652609397347
+  },
+  {
+    "episode": 235,
+    "total_reward": -2159.5075999999967,
+    "mean_reward_window": -2036.2293599999969,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 3,
+    "policy_entropy": 1.04161356938633
+  },
+  {
+    "episode": 236,
+    "total_reward": -1958.3731999999954,
+    "mean_reward_window": -2022.3118199999967,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 1.045622864707159
+  },
+  {
+    "episode": 237,
+    "total_reward": -1881.3183999999953,
+    "mean_reward_window": -2015.5487999999964,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 1.021393589091352
+  },
+  {
+    "episode": 238,
+    "total_reward": -2028.2007999999958,
+    "mean_reward_window": -2015.9391799999964,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0397817636390094
+  },
+  {
+    "episode": 239,
+    "total_reward": -2008.996399999996,
+    "mean_reward_window": -2013.5362199999968,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0262454047122667
+  },
+  {
+    "episode": 240,
+    "total_reward": -1929.6871999999971,
+    "mean_reward_window": -2007.8695199999966,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0507794653006564
+  },
+  {
+    "episode": 241,
+    "total_reward": -1788.3251999999966,
+    "mean_reward_window": -2010.9661999999967,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0354084545563371
+  },
+  {
+    "episode": 242,
+    "total_reward": -1962.304799999996,
+    "mean_reward_window": -2000.8228599999966,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0263021210906689
+  },
+  {
+    "episode": 243,
+    "total_reward": -2390.980799999999,
+    "mean_reward_window": -2003.5765199999964,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0410361193845838
+  },
+  {
+    "episode": 244,
+    "total_reward": -2011.3303999999976,
+    "mean_reward_window": -2007.0040399999968,
+    "investigations_used": 13,
+    "fraud_caught": 2,
+    "fraud_missed": 5,
+    "policy_entropy": 1.0422746622110832
+  },
+  {
+    "episode": 245,
+    "total_reward": -2342.694399999999,
+    "mean_reward_window": -2026.441739999997,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 5,
+    "policy_entropy": 1.0455577124678452
+  },
+  {
+    "episode": 246,
+    "total_reward": -2345.753200000001,
+    "mean_reward_window": -2043.481279999997,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0469152716808743
+  },
+  {
+    "episode": 247,
+    "total_reward": -1868.3615999999956,
+    "mean_reward_window": -2049.528819999997,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0187853846918686
+  },
+  {
+    "episode": 248,
+    "total_reward": -2399.799599999998,
+    "mean_reward_window": -2052.0232399999973,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 0,
+    "policy_entropy": 1.0356878722472005
+  },
+  {
+    "episode": 249,
+    "total_reward": -1841.1027999999963,
+    "mean_reward_window": -2051.233319999997,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0396984725420304
+  },
+  {
+    "episode": 250,
+    "total_reward": -2233.1823999999965,
+    "mean_reward_window": -2089.0916599999973,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0321417036217304
+  },
+  {
+    "episode": 251,
+    "total_reward": -1956.036799999996,
+    "mean_reward_window": -2091.434419999997,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0349990914876026
+  },
+  {
+    "episode": 252,
+    "total_reward": -1947.3043999999973,
+    "mean_reward_window": -2061.018499999997,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0495898045329262
+  },
+  {
+    "episode": 253,
+    "total_reward": -1623.3059999999969,
+    "mean_reward_window": -2037.004799999997,
+    "investigations_used": 10,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0423028272777546
+  },
+  {
+    "episode": 254,
+    "total_reward": -2225.3495999999977,
+    "mean_reward_window": -2045.0957799999971,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0194033616541893
+  },
+  {
+    "episode": 255,
+    "total_reward": -2235.4019999999973,
+    "mean_reward_window": -2048.890499999997,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 3,
+    "policy_entropy": 1.036488867787397
+  },
+  {
+    "episode": 256,
+    "total_reward": -1748.6783999999966,
+    "mean_reward_window": -2038.4057599999971,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0496985951334104
+  },
+  {
+    "episode": 257,
+    "total_reward": -1866.4047999999968,
+    "mean_reward_window": -2037.6600799999972,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0469641424465566
+  },
+  {
+    "episode": 258,
+    "total_reward": -2188.4923999999974,
+    "mean_reward_window": -2045.6746599999974,
+    "investigations_used": 13,
+    "fraud_caught": 2,
+    "fraud_missed": 7,
+    "policy_entropy": 1.053608989745161
+  },
+  {
+    "episode": 259,
+    "total_reward": -2430.5955999999983,
+    "mean_reward_window": -2066.7546199999974,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0471981619013095
+  },
+  {
+    "episode": 260,
+    "total_reward": -1944.716399999996,
+    "mean_reward_window": -2067.5060799999974,
+    "investigations_used": 14,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 1.050123586554256
+  },
+  {
+    "episode": 261,
+    "total_reward": -2075.202799999995,
+    "mean_reward_window": -2081.8499599999973,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 9,
+    "policy_entropy": 1.0346194247865168
+  },
+  {
+    "episode": 262,
+    "total_reward": -2077.1475999999966,
+    "mean_reward_window": -2087.592099999997,
+    "investigations_used": 15,
+    "fraud_caught": 5,
+    "fraud_missed": 6,
+    "policy_entropy": 1.0383856115182024
+  },
+  {
+    "episode": 263,
+    "total_reward": -2266.2379999999966,
+    "mean_reward_window": -2081.354959999997,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0321782220026021
+  },
+  {
+    "episode": 264,
+    "total_reward": -2179.4427999999975,
+    "mean_reward_window": -2089.7605799999974,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0326642812817182
+  },
+  {
+    "episode": 265,
+    "total_reward": -2190.336799999997,
+    "mean_reward_window": -2082.142699999997,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0319061290013958
+  },
+  {
+    "episode": 266,
+    "total_reward": -2111.7183999999975,
+    "mean_reward_window": -2070.440959999997,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0297733112782352
+  },
+  {
+    "episode": 267,
+    "total_reward": -2461.037600000002,
+    "mean_reward_window": -2100.0747599999972,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 7,
+    "policy_entropy": 1.030450073632949
+  },
+  {
+    "episode": 268,
+    "total_reward": -2092.9815999999973,
+    "mean_reward_window": -2084.733859999997,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0280479258568607
+  },
+  {
+    "episode": 269,
+    "total_reward": -1864.3955999999966,
+    "mean_reward_window": -2085.898499999997,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0449280776393222
+  },
+  {
+    "episode": 270,
+    "total_reward": -1986.2011999999968,
+    "mean_reward_window": -2073.549439999997,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0371566374752352
+  },
+  {
+    "episode": 271,
+    "total_reward": -1838.991199999998,
+    "mean_reward_window": -2067.697159999997,
+    "investigations_used": 11,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0574500297333045
+  },
+  {
+    "episode": 272,
+    "total_reward": -2018.9971999999952,
+    "mean_reward_window": -2071.281799999997,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0366981635663988
+  },
+  {
+    "episode": 273,
+    "total_reward": -2522.8788000000004,
+    "mean_reward_window": -2116.2604399999973,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0186619050911654
+  },
+  {
+    "episode": 274,
+    "total_reward": -2012.6031999999957,
+    "mean_reward_window": -2105.6231199999975,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0204228286905705
+  },
+  {
+    "episode": 275,
+    "total_reward": -2184.0755999999974,
+    "mean_reward_window": -2103.0567999999976,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 0,
+    "policy_entropy": 1.0402037372999846
+  },
+  {
+    "episode": 276,
+    "total_reward": -2000.0367999999978,
+    "mean_reward_window": -2115.624719999997,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 1.035951149171183
+  },
+  {
+    "episode": 277,
+    "total_reward": -2156.671999999998,
+    "mean_reward_window": -2130.1380799999974,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0342468410795451
+  },
+  {
+    "episode": 278,
+    "total_reward": -1840.4647999999968,
+    "mean_reward_window": -2112.736699999997,
+    "investigations_used": 15,
+    "fraud_caught": 6,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0432413580053637
+  },
+  {
+    "episode": 279,
+    "total_reward": -2818.0360000000023,
+    "mean_reward_window": -2132.1087199999974,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0455808876680264
+  },
+  {
+    "episode": 280,
+    "total_reward": -2394.6915999999983,
+    "mean_reward_window": -2154.607479999998,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 5,
+    "policy_entropy": 1.0376391944922683
+  },
+  {
+    "episode": 281,
+    "total_reward": -1924.029199999996,
+    "mean_reward_window": -2147.0487999999978,
+    "investigations_used": 13,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0494101057126315
+  },
+  {
+    "episode": 282,
+    "total_reward": -1861.537599999996,
+    "mean_reward_window": -2136.2682999999975,
+    "investigations_used": 15,
+    "fraud_caught": 5,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0517870566513923
+  },
+  {
+    "episode": 283,
+    "total_reward": -1891.2755999999963,
+    "mean_reward_window": -2117.5201799999977,
+    "investigations_used": 13,
+    "fraud_caught": 1,
+    "fraud_missed": 1,
+    "policy_entropy": 1.054977071485061
+  },
+  {
+    "episode": 284,
+    "total_reward": -2011.2439999999958,
+    "mean_reward_window": -2109.1102399999972,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 0,
+    "policy_entropy": 1.0501732265514405
+  },
+  {
+    "episode": 285,
+    "total_reward": -2331.3695999999995,
+    "mean_reward_window": -2116.161879999998,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 7,
+    "policy_entropy": 1.0232595900619517
+  },
+  {
+    "episode": 286,
+    "total_reward": -1981.5983999999949,
+    "mean_reward_window": -2109.6558799999975,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 1.04714235962706
+  },
+  {
+    "episode": 287,
+    "total_reward": -2339.721599999999,
+    "mean_reward_window": -2103.590079999997,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 6,
+    "policy_entropy": 1.0426235026907045
+  },
+  {
+    "episode": 288,
+    "total_reward": -2230.379599999997,
+    "mean_reward_window": -2110.4599799999974,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0347641499514149
+  },
+  {
+    "episode": 289,
+    "total_reward": -2103.2083999999973,
+    "mean_reward_window": -2122.4006199999976,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0466025408690909
+  },
+  {
+    "episode": 290,
+    "total_reward": -2042.1511999999962,
+    "mean_reward_window": -2125.1981199999973,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 1.05490700876859
+  },
+  {
+    "episode": 291,
+    "total_reward": -2062.677199999996,
+    "mean_reward_window": -2136.382419999997,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0314169195487333
+  },
+  {
+    "episode": 292,
+    "total_reward": -1804.025599999997,
+    "mean_reward_window": -2125.6338399999977,
+    "investigations_used": 15,
+    "fraud_caught": 5,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0578347390386558
+  },
+  {
+    "episode": 293,
+    "total_reward": -2224.5543999999973,
+    "mean_reward_window": -2110.717619999997,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0311183349294666
+  },
+  {
+    "episode": 294,
+    "total_reward": -2189.9175999999957,
+    "mean_reward_window": -2119.5833399999974,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 8,
+    "policy_entropy": 1.0519333801906459
+  },
+  {
+    "episode": 295,
+    "total_reward": -1900.7515999999969,
+    "mean_reward_window": -2105.4171399999973,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0371917772802617
+  },
+  {
+    "episode": 296,
+    "total_reward": -1845.8179999999961,
+    "mean_reward_window": -2097.7061999999974,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 3,
+    "policy_entropy": 1.049076316348167
+  },
+  {
+    "episode": 297,
+    "total_reward": -2331.5016000000005,
+    "mean_reward_window": -2106.447679999997,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 3,
+    "policy_entropy": 1.034149665423564
+  },
+  {
+    "episode": 298,
+    "total_reward": -2747.2844000000005,
+    "mean_reward_window": -2151.7886599999974,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 5,
+    "policy_entropy": 1.0415643667726449
+  },
+  {
+    "episode": 299,
+    "total_reward": -2102.6315999999965,
+    "mean_reward_window": -2116.018439999997,
+    "investigations_used": 13,
+    "fraud_caught": 1,
+    "fraud_missed": 5,
+    "policy_entropy": 1.0501060135387656
+  },
+  {
+    "episode": 300,
+    "total_reward": -2347.513599999998,
+    "mean_reward_window": -2113.6595399999974,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0498987778397786
+  },
+  {
+    "episode": 301,
+    "total_reward": -1818.439999999996,
+    "mean_reward_window": -2108.380079999997,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0407700369401116
+  },
+  {
+    "episode": 302,
+    "total_reward": -2010.9939999999958,
+    "mean_reward_window": -2115.852899999997,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 5,
+    "policy_entropy": 1.0481891843371622
+  },
+  {
+    "episode": 303,
+    "total_reward": -1833.2455999999966,
+    "mean_reward_window": -2112.951399999997,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0539390464232425
+  },
+  {
+    "episode": 304,
+    "total_reward": -2402.869199999998,
+    "mean_reward_window": -2132.532659999997,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 1,
+    "policy_entropy": 1.042424540146697
+  },
+  {
+    "episode": 305,
+    "total_reward": -1971.189199999996,
+    "mean_reward_window": -2114.5236399999967,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 2,
+    "policy_entropy": 1.051471500096194
+  },
+  {
+    "episode": 306,
+    "total_reward": -2521.1208000000006,
+    "mean_reward_window": -2141.4997599999974,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0376005972817095
+  },
+  {
+    "episode": 307,
+    "total_reward": -1901.181999999996,
+    "mean_reward_window": -2119.5727799999972,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0435968891276557
+  },
+  {
+    "episode": 308,
+    "total_reward": -2177.874399999997,
+    "mean_reward_window": -2116.947519999997,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 7,
+    "policy_entropy": 1.0356592241268943
+  },
+  {
+    "episode": 309,
+    "total_reward": -2058.128799999995,
+    "mean_reward_window": -2114.693539999997,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0371072789499696
+  },
+  {
+    "episode": 310,
+    "total_reward": -1776.1675999999968,
+    "mean_reward_window": -2101.394359999997,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0251771145785344
+  },
+  {
+    "episode": 311,
+    "total_reward": -1816.2463999999964,
+    "mean_reward_window": -2089.072819999997,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0410503780394718
+  },
+  {
+    "episode": 312,
+    "total_reward": -2074.7943999999966,
+    "mean_reward_window": -2102.611259999997,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0427634898455316
+  },
+  {
+    "episode": 313,
+    "total_reward": -1856.8903999999966,
+    "mean_reward_window": -2084.2280599999967,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0470703196007896
+  },
+  {
+    "episode": 314,
+    "total_reward": -2181.5383999999967,
+    "mean_reward_window": -2083.809099999997,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0185238980151397
+  },
+  {
+    "episode": 315,
+    "total_reward": -2136.455599999997,
+    "mean_reward_window": -2095.594299999997,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0423801719826207
+  },
+  {
+    "episode": 316,
+    "total_reward": -1619.0339999999956,
+    "mean_reward_window": -2084.255099999997,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0162193361457763
+  },
+  {
+    "episode": 317,
+    "total_reward": -1824.2703999999967,
+    "mean_reward_window": -2058.893539999997,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0322780562374532
+  },
+  {
+    "episode": 318,
+    "total_reward": -2051.5211999999974,
+    "mean_reward_window": -2024.1053799999968,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0468793030594354
+  },
+  {
+    "episode": 319,
+    "total_reward": -2300.0671999999977,
+    "mean_reward_window": -2033.9771599999967,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 7,
+    "policy_entropy": 1.0421943948720787
+  },
+  {
+    "episode": 320,
+    "total_reward": -2186.0255999999977,
+    "mean_reward_window": -2025.9027599999968,
+    "investigations_used": 15,
+    "fraud_caught": 6,
+    "fraud_missed": 5,
+    "policy_entropy": 1.0261324500248519
+  },
+  {
+    "episode": 321,
+    "total_reward": -2105.457999999997,
+    "mean_reward_window": -2040.2536599999967,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0281213655295705
+  },
+  {
+    "episode": 322,
+    "total_reward": -2267.797999999997,
+    "mean_reward_window": -2053.0938599999968,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0294994904783132
+  },
+  {
+    "episode": 323,
+    "total_reward": -1862.9275999999966,
+    "mean_reward_window": -2054.577959999997,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0194512044600583
+  },
+  {
+    "episode": 324,
+    "total_reward": -2034.1479999999956,
+    "mean_reward_window": -2036.141899999997,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0208700338799428
+  },
+  {
+    "episode": 325,
+    "total_reward": -1998.836799999995,
+    "mean_reward_window": -2037.5242799999967,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0087516224324564
+  },
+  {
+    "episode": 326,
+    "total_reward": -2189.605199999998,
+    "mean_reward_window": -2020.9484999999968,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0202724763117685
+  },
+  {
+    "episode": 327,
+    "total_reward": -2628.5036000000023,
+    "mean_reward_window": -2057.314579999997,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 3,
+    "policy_entropy": 1.023604812092716
+  },
+  {
+    "episode": 328,
+    "total_reward": -2361.9471999999987,
+    "mean_reward_window": -2066.518219999997,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 6,
+    "policy_entropy": 1.0403250755633864
+  },
+  {
+    "episode": 329,
+    "total_reward": -1658.8603999999966,
+    "mean_reward_window": -2046.554799999997,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0194624235818655
+  },
+  {
+    "episode": 330,
+    "total_reward": -1702.871599999998,
+    "mean_reward_window": -2042.8899999999971,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 0,
+    "policy_entropy": 1.017250255864072
+  },
+  {
+    "episode": 331,
+    "total_reward": -1866.7135999999946,
+    "mean_reward_window": -2045.4133599999973,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 5,
+    "policy_entropy": 1.0179583644746946
+  },
+  {
+    "episode": 332,
+    "total_reward": -1492.3727999999971,
+    "mean_reward_window": -2016.2922799999972,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0140709074004552
+  },
+  {
+    "episode": 333,
+    "total_reward": -1637.914799999997,
+    "mean_reward_window": -2005.3434999999972,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0212958257970817
+  },
+  {
+    "episode": 334,
+    "total_reward": -1642.328399999996,
+    "mean_reward_window": -1978.3829999999973,
+    "investigations_used": 13,
+    "fraud_caught": 4,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0108541948712362
+  },
+  {
+    "episode": 335,
+    "total_reward": -1854.1151999999954,
+    "mean_reward_window": -1964.265979999997,
+    "investigations_used": 14,
+    "fraud_caught": 0,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0144175394236965
+  },
+  {
+    "episode": 336,
+    "total_reward": -2061.8571999999954,
+    "mean_reward_window": -1986.407139999997,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0120729691931227
+  },
+  {
+    "episode": 337,
+    "total_reward": -1864.3207999999952,
+    "mean_reward_window": -1988.4096599999968,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 0.9868851504224703
+  },
+  {
+    "episode": 338,
+    "total_reward": -2215.149599999998,
+    "mean_reward_window": -1996.591079999997,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 7,
+    "policy_entropy": 0.9950978418428176
+  },
+  {
+    "episode": 339,
+    "total_reward": -1906.5755999999953,
+    "mean_reward_window": -1976.9164999999969,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 4,
+    "policy_entropy": 0.9984682400391867
+  },
+  {
+    "episode": 340,
+    "total_reward": -2101.0487999999978,
+    "mean_reward_window": -1972.6676599999969,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0105295078651912
+  },
+  {
+    "episode": 341,
+    "total_reward": -2035.9383999999957,
+    "mean_reward_window": -1969.1916799999967,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0093971963641353
+  },
+  {
+    "episode": 342,
+    "total_reward": -1816.6311999999964,
+    "mean_reward_window": -1946.6333399999967,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0022777164891656
+  },
+  {
+    "episode": 343,
+    "total_reward": -2232.5651999999977,
+    "mean_reward_window": -1965.1152199999967,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 6,
+    "policy_entropy": 0.985838745944554
+  },
+  {
+    "episode": 344,
+    "total_reward": -1773.8843999999951,
+    "mean_reward_window": -1952.1020399999968,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 1,
+    "policy_entropy": 0.9753850773922439
+  },
+  {
+    "episode": 345,
+    "total_reward": -1678.0947999999967,
+    "mean_reward_window": -1936.064939999997,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 1,
+    "policy_entropy": 0.9765875239129291
+  },
+  {
+    "episode": 346,
+    "total_reward": -1839.6199999999965,
+    "mean_reward_window": -1918.5656799999967,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 0.9862175201733092
+  },
+  {
+    "episode": 347,
+    "total_reward": -1783.9623999999963,
+    "mean_reward_window": -1876.3386199999964,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 5,
+    "policy_entropy": 1.0049119941445364
+  },
+  {
+    "episode": 348,
+    "total_reward": -1739.8055999999958,
+    "mean_reward_window": -1845.2315399999964,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 4,
+    "policy_entropy": 0.9733383005601521
+  },
+  {
+    "episode": 349,
+    "total_reward": -1828.5871999999954,
+    "mean_reward_window": -1853.717879999996,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 0.9684265838094606
+  },
+  {
+    "episode": 350,
+    "total_reward": -2112.7847999999963,
+    "mean_reward_window": -1874.2135399999963,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 0.9756982294729492
+  },
+  {
+    "episode": 351,
+    "total_reward": -1876.4887999999971,
+    "mean_reward_window": -1874.7022999999965,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 2,
+    "policy_entropy": 0.9762697151034139
+  },
+  {
+    "episode": 352,
+    "total_reward": -2152.523599999997,
+    "mean_reward_window": -1907.7098399999963,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0047832783597852
+  },
+  {
+    "episode": 353,
+    "total_reward": -2092.943999999997,
+    "mean_reward_window": -1930.461299999996,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 0.9967198036936733
+  },
+  {
+    "episode": 354,
+    "total_reward": -2193.9023999999977,
+    "mean_reward_window": -1958.0399999999966,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 4,
+    "policy_entropy": 0.9888856168840485
+  },
+  {
+    "episode": 355,
+    "total_reward": -2119.871999999997,
+    "mean_reward_window": -1971.3278399999963,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0056071302292082
+  },
+  {
+    "episode": 356,
+    "total_reward": -1759.3259999999975,
+    "mean_reward_window": -1956.2012799999964,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 1.018513455223888
+  },
+  {
+    "episode": 357,
+    "total_reward": -1819.1607999999972,
+    "mean_reward_window": -1953.9432799999965,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0162860696338405
+  },
+  {
+    "episode": 358,
+    "total_reward": -1570.2431999999978,
+    "mean_reward_window": -1921.6979599999966,
+    "investigations_used": 13,
+    "fraud_caught": 4,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0029166247341474
+  },
+  {
+    "episode": 359,
+    "total_reward": -1713.2595999999958,
+    "mean_reward_window": -1912.0321599999966,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 1,
+    "policy_entropy": 0.9993768740231709
+  },
+  {
+    "episode": 360,
+    "total_reward": -1568.2227999999968,
+    "mean_reward_window": -1885.3908599999966,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0255176319435007
+  },
+  {
+    "episode": 361,
+    "total_reward": -1849.4011999999968,
+    "mean_reward_window": -1876.0639999999967,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 0.9986861966130345
+  },
+  {
+    "episode": 362,
+    "total_reward": -1778.6679999999976,
+    "mean_reward_window": -1874.1658399999967,
+    "investigations_used": 11,
+    "fraud_caught": 2,
+    "fraud_missed": 5,
+    "policy_entropy": 1.04131074205727
+  },
+  {
+    "episode": 363,
+    "total_reward": -1794.2287999999955,
+    "mean_reward_window": -1852.2490199999968,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0041670683590653
+  },
+  {
+    "episode": 364,
+    "total_reward": -2120.6655999999966,
+    "mean_reward_window": -1869.5880799999966,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 4,
+    "policy_entropy": 0.9978524161770221
+  },
+  {
+    "episode": 365,
+    "total_reward": -2058.903599999995,
+    "mean_reward_window": -1888.6285199999966,
+    "investigations_used": 13,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0185826948161707
+  },
+  {
+    "episode": 366,
+    "total_reward": -1597.3699999999978,
+    "mean_reward_window": -1876.5160199999966,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0301732125173801
+  },
+  {
+    "episode": 367,
+    "total_reward": -1752.050399999997,
+    "mean_reward_window": -1874.9204199999967,
+    "investigations_used": 13,
+    "fraud_caught": 0,
+    "fraud_missed": 2,
+    "policy_entropy": 1.0186866625261315
+  },
+  {
+    "episode": 368,
+    "total_reward": -2164.147999999997,
+    "mean_reward_window": -1896.1375399999968,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0091303509056182
+  },
+  {
+    "episode": 369,
+    "total_reward": -2167.2551999999955,
+    "mean_reward_window": -1913.0709399999967,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 5,
+    "policy_entropy": 1.0034913306702098
+  },
+  {
+    "episode": 370,
+    "total_reward": -1527.138399999997,
+    "mean_reward_window": -1883.7886199999969,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 0,
+    "policy_entropy": 1.0072508255052262
+  },
+  {
+    "episode": 371,
+    "total_reward": -1857.7651999999966,
+    "mean_reward_window": -1882.852439999997,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 0,
+    "policy_entropy": 1.0038428009431872
+  },
+  {
+    "episode": 372,
+    "total_reward": -1944.4067999999957,
+    "mean_reward_window": -1872.4465999999968,
+    "investigations_used": 14,
+    "fraud_caught": 2,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0105787384529348
+  },
+  {
+    "episode": 373,
+    "total_reward": -2043.6011999999964,
+    "mean_reward_window": -1869.9794599999968,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 3,
+    "policy_entropy": 0.995689452038713
+  },
+  {
+    "episode": 374,
+    "total_reward": -2089.3631999999975,
+    "mean_reward_window": -1864.7524999999969,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 0.9992119518084852
+  },
+  {
+    "episode": 375,
+    "total_reward": -2020.522399999996,
+    "mean_reward_window": -1859.7850199999968,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0150892807358185
+  },
+  {
+    "episode": 376,
+    "total_reward": -2520.4835999999973,
+    "mean_reward_window": -1897.8428999999967,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 8,
+    "policy_entropy": 1.010622821494372
+  },
+  {
+    "episode": 377,
+    "total_reward": -1712.855599999996,
+    "mean_reward_window": -1892.5276399999966,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 1,
+    "policy_entropy": 0.9978436809834652
+  },
+  {
+    "episode": 378,
+    "total_reward": -1589.9779999999976,
+    "mean_reward_window": -1893.5143799999964,
+    "investigations_used": 15,
+    "fraud_caught": 5,
+    "fraud_missed": 1,
+    "policy_entropy": 0.977984976995424
+  },
+  {
+    "episode": 379,
+    "total_reward": -1386.7051999999978,
+    "mean_reward_window": -1877.186659999997,
+    "investigations_used": 15,
+    "fraud_caught": 6,
+    "fraud_missed": 0,
+    "policy_entropy": 0.9847453820037412
+  },
+  {
+    "episode": 380,
+    "total_reward": -1592.7239999999965,
+    "mean_reward_window": -1878.4117199999969,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 2,
+    "policy_entropy": 1.005855977209372
+  },
+  {
+    "episode": 381,
+    "total_reward": -1956.369199999995,
+    "mean_reward_window": -1883.7601199999965,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 1,
+    "policy_entropy": 0.9932531382623087
+  },
+  {
+    "episode": 382,
+    "total_reward": -1877.744799999996,
+    "mean_reward_window": -1888.7139599999966,
+    "investigations_used": 10,
+    "fraud_caught": 2,
+    "fraud_missed": 6,
+    "policy_entropy": 0.9868061140299563
+  },
+  {
+    "episode": 383,
+    "total_reward": -1456.8555999999985,
+    "mean_reward_window": -1871.8452999999965,
+    "investigations_used": 12,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 1.0014571503295386
+  },
+  {
+    "episode": 384,
+    "total_reward": -2042.0839999999948,
+    "mean_reward_window": -1867.9162199999967,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 5,
+    "policy_entropy": 1.006491890879143
+  },
+  {
+    "episode": 385,
+    "total_reward": -1669.5267999999965,
+    "mean_reward_window": -1848.4473799999967,
+    "investigations_used": 14,
+    "fraud_caught": 4,
+    "fraud_missed": 5,
+    "policy_entropy": 0.9974910825782748
+  },
+  {
+    "episode": 386,
+    "total_reward": -1775.055199999996,
+    "mean_reward_window": -1857.3316399999967,
+    "investigations_used": 15,
+    "fraud_caught": 5,
+    "fraud_missed": 2,
+    "policy_entropy": 0.9286918309879564
+  },
+  {
+    "episode": 387,
+    "total_reward": -1748.1603999999968,
+    "mean_reward_window": -1857.1371399999964,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 4,
+    "policy_entropy": 0.9903433876684541
+  },
+  {
+    "episode": 388,
+    "total_reward": -1715.307599999997,
+    "mean_reward_window": -1834.6951199999967,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 5,
+    "policy_entropy": 0.9946718797590497
+  },
+  {
+    "episode": 389,
+    "total_reward": -2071.230399999994,
+    "mean_reward_window": -1829.8938799999964,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 5,
+    "policy_entropy": 0.993968419153578
+  },
+  {
+    "episode": 390,
+    "total_reward": -1705.2747999999958,
+    "mean_reward_window": -1838.8006999999966,
+    "investigations_used": 14,
+    "fraud_caught": 2,
+    "fraud_missed": 5,
+    "policy_entropy": 0.9312143029605546
+  },
+  {
+    "episode": 391,
+    "total_reward": -2227.0643999999966,
+    "mean_reward_window": -1857.2656599999966,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 4,
+    "policy_entropy": 0.9217483945490818
+  },
+  {
+    "episode": 392,
+    "total_reward": -1756.6319999999967,
+    "mean_reward_window": -1847.8769199999965,
+    "investigations_used": 12,
+    "fraud_caught": 1,
+    "fraud_missed": 1,
+    "policy_entropy": 0.9471107459647943
+  },
+  {
+    "episode": 393,
+    "total_reward": -1303.6355999999996,
+    "mean_reward_window": -1810.8786399999965,
+    "investigations_used": 5,
+    "fraud_caught": 0,
+    "fraud_missed": 2,
+    "policy_entropy": 0.9878085552711873
+  },
+  {
+    "episode": 394,
+    "total_reward": -1914.9759999999958,
+    "mean_reward_window": -1802.1592799999967,
+    "investigations_used": 12,
+    "fraud_caught": 0,
+    "fraud_missed": 4,
+    "policy_entropy": 0.981101741779945
+  },
+  {
+    "episode": 395,
+    "total_reward": -1932.3603999999957,
+    "mean_reward_window": -1797.7511799999963,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 4,
+    "policy_entropy": 0.9404629598020946
+  },
+  {
+    "episode": 396,
+    "total_reward": -2677.346800000005,
+    "mean_reward_window": -1805.5943399999967,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 0.9822577883205734
+  },
+  {
+    "episode": 397,
+    "total_reward": -1582.741199999997,
+    "mean_reward_window": -1799.0886199999968,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 2,
+    "policy_entropy": 0.9617381340630867
+  },
+  {
+    "episode": 398,
+    "total_reward": -1456.1187999999993,
+    "mean_reward_window": -1792.395659999997,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 2,
+    "policy_entropy": 0.9837669448559885
+  },
+  {
+    "episode": 399,
+    "total_reward": -2040.859999999996,
+    "mean_reward_window": -1825.103399999997,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 4,
+    "policy_entropy": 0.9611755268947451
+  },
+  {
+    "episode": 400,
+    "total_reward": -1633.8155999999992,
+    "mean_reward_window": -1827.157979999997,
+    "investigations_used": 14,
+    "fraud_caught": 4,
+    "fraud_missed": 5,
+    "policy_entropy": 0.9460693850638964
+  },
+  {
+    "episode": 401,
+    "total_reward": -1539.7383999999977,
+    "mean_reward_window": -1806.326439999997,
+    "investigations_used": 14,
+    "fraud_caught": 4,
+    "fraud_missed": 3,
+    "policy_entropy": 1.0054274528453147
+  },
+  {
+    "episode": 402,
+    "total_reward": -1683.3303999999964,
+    "mean_reward_window": -1796.6057199999973,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 0.9613768208609466
+  },
+  {
+    "episode": 403,
+    "total_reward": -1962.448799999996,
+    "mean_reward_window": -1821.8853799999972,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 3,
+    "policy_entropy": 0.9324770821459349
+  },
+  {
+    "episode": 404,
+    "total_reward": -1945.2419999999963,
+    "mean_reward_window": -1817.0432799999974,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 7,
+    "policy_entropy": 0.9741189828350223
+  },
+  {
+    "episode": 405,
+    "total_reward": -1742.2759999999953,
+    "mean_reward_window": -1820.6807399999973,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 3,
+    "policy_entropy": 0.9320002026599217
+  },
+  {
+    "episode": 406,
+    "total_reward": -2223.9459999999976,
+    "mean_reward_window": -1843.1252799999972,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 5,
+    "policy_entropy": 0.9802289347688979
+  },
+  {
+    "episode": 407,
+    "total_reward": -2401.550399999999,
+    "mean_reward_window": -1875.7947799999972,
+    "investigations_used": 14,
+    "fraud_caught": 1,
+    "fraud_missed": 6,
+    "policy_entropy": 0.9463380045379678
+  },
+  {
+    "episode": 408,
+    "total_reward": -2448.326799999997,
+    "mean_reward_window": -1912.4457399999974,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 4,
+    "policy_entropy": 0.9797486628786505
+  },
+  {
+    "episode": 409,
+    "total_reward": -1707.4699999999957,
+    "mean_reward_window": -1894.2577199999973,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 5,
+    "policy_entropy": 0.917956960709151
+  },
+  {
+    "episode": 410,
+    "total_reward": -1708.2503999999963,
+    "mean_reward_window": -1894.4064999999973,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 0.9816333553501291
+  },
+  {
+    "episode": 411,
+    "total_reward": -2066.407599999996,
+    "mean_reward_window": -1886.3736599999975,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 4,
+    "policy_entropy": 0.989403979804566
+  },
+  {
+    "episode": 412,
+    "total_reward": -1613.6035999999965,
+    "mean_reward_window": -1879.2222399999973,
+    "investigations_used": 13,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 0.965838901143631
+  },
+  {
+    "episode": 413,
+    "total_reward": -1753.9035999999978,
+    "mean_reward_window": -1901.7356399999971,
+    "investigations_used": 14,
+    "fraud_caught": 1,
+    "fraud_missed": 4,
+    "policy_entropy": 0.9367436051523097
+  },
+  {
+    "episode": 414,
+    "total_reward": -2193.524399999999,
+    "mean_reward_window": -1915.6630599999976,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 5,
+    "policy_entropy": 0.9760666358398032
+  },
+  {
+    "episode": 415,
+    "total_reward": -1784.2783999999979,
+    "mean_reward_window": -1908.2589599999974,
+    "investigations_used": 12,
+    "fraud_caught": 0,
+    "fraud_missed": 4,
+    "policy_entropy": 1.0018969588297026
+  },
+  {
+    "episode": 416,
+    "total_reward": -1319.6639999999982,
+    "mean_reward_window": -1840.3748199999973,
+    "investigations_used": 12,
+    "fraud_caught": 4,
+    "fraud_missed": 3,
+    "policy_entropy": 0.9818611270781921
+  },
+  {
+    "episode": 417,
+    "total_reward": -1642.725599999998,
+    "mean_reward_window": -1843.3740399999974,
+    "investigations_used": 11,
+    "fraud_caught": 2,
+    "fraud_missed": 6,
+    "policy_entropy": 0.984049838812129
+  },
+  {
+    "episode": 418,
+    "total_reward": -1791.5195999999964,
+    "mean_reward_window": -1860.144079999997,
+    "investigations_used": 14,
+    "fraud_caught": 2,
+    "fraud_missed": 3,
+    "policy_entropy": 0.9981037043904338
+  },
+  {
+    "episode": 419,
+    "total_reward": -1769.6183999999982,
+    "mean_reward_window": -1846.5819999999972,
+    "investigations_used": 10,
+    "fraud_caught": 2,
+    "fraud_missed": 4,
+    "policy_entropy": 0.9738426518725599
+  },
+  {
+    "episode": 420,
+    "total_reward": -1530.2035999999969,
+    "mean_reward_window": -1841.401399999997,
+    "investigations_used": 14,
+    "fraud_caught": 4,
+    "fraud_missed": 1,
+    "policy_entropy": 0.9914414021766815
+  },
+  {
+    "episode": 421,
+    "total_reward": -1792.8667999999955,
+    "mean_reward_window": -1854.057819999997,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 4,
+    "policy_entropy": 0.9592667681745968
+  },
+  {
+    "episode": 422,
+    "total_reward": -2088.5299999999957,
+    "mean_reward_window": -1874.317799999997,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 6,
+    "policy_entropy": 0.9826459311454567
+  },
+  {
+    "episode": 423,
+    "total_reward": -1693.7203999999972,
+    "mean_reward_window": -1860.881379999997,
+    "investigations_used": 11,
+    "fraud_caught": 1,
+    "fraud_missed": 0,
+    "policy_entropy": 0.9652941275556902
+  },
+  {
+    "episode": 424,
+    "total_reward": -2238.3579999999997,
+    "mean_reward_window": -1875.537179999997,
+    "investigations_used": 13,
+    "fraud_caught": 0,
+    "fraud_missed": 5,
+    "policy_entropy": 0.9760662971265288
+  },
+  {
+    "episode": 425,
+    "total_reward": -2068.194799999996,
+    "mean_reward_window": -1891.833119999997,
+    "investigations_used": 12,
+    "fraud_caught": 1,
+    "fraud_missed": 7,
+    "policy_entropy": 0.9237839658480026
+  },
+  {
+    "episode": 426,
+    "total_reward": -1404.7963999999981,
+    "mean_reward_window": -1850.8756399999972,
+    "investigations_used": 7,
+    "fraud_caught": 2,
+    "fraud_missed": 4,
+    "policy_entropy": 0.9916382897515912
+  },
+  {
+    "episode": 427,
+    "total_reward": -1795.6479999999958,
+    "mean_reward_window": -1820.580519999997,
+    "investigations_used": 15,
+    "fraud_caught": 6,
+    "fraud_missed": 4,
+    "policy_entropy": 0.9687352900303448
+  },
+  {
+    "episode": 428,
+    "total_reward": -1645.7475999999954,
+    "mean_reward_window": -1780.451559999997,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 0.9685681587063699
+  },
+  {
+    "episode": 429,
+    "total_reward": -1508.4835999999975,
+    "mean_reward_window": -1770.5022399999973,
+    "investigations_used": 12,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 0.9138906882809938
+  },
+  {
+    "episode": 430,
+    "total_reward": -1982.446399999996,
+    "mean_reward_window": -1784.2120399999972,
+    "investigations_used": 12,
+    "fraud_caught": 1,
+    "fraud_missed": 6,
+    "policy_entropy": 0.9318019240265422
+  },
+  {
+    "episode": 431,
+    "total_reward": -1769.2771999999954,
+    "mean_reward_window": -1769.355519999997,
+    "investigations_used": 8,
+    "fraud_caught": 4,
+    "fraud_missed": 6,
+    "policy_entropy": 0.9652399613447482
+  },
+  {
+    "episode": 432,
+    "total_reward": -1883.2963999999965,
+    "mean_reward_window": -1782.8401599999972,
+    "investigations_used": 10,
+    "fraud_caught": 0,
+    "fraud_missed": 5,
+    "policy_entropy": 0.931594784309836
+  },
+  {
+    "episode": 433,
+    "total_reward": -1731.5891999999965,
+    "mean_reward_window": -1781.724439999997,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 1,
+    "policy_entropy": 0.9462434149099264
+  },
+  {
+    "episode": 434,
+    "total_reward": -1966.6231999999961,
+    "mean_reward_window": -1770.3793799999971,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 5,
+    "policy_entropy": 0.9587661361885436
+  },
+  {
+    "episode": 435,
+    "total_reward": -1831.5499999999963,
+    "mean_reward_window": -1772.7429599999966,
+    "investigations_used": 11,
+    "fraud_caught": 3,
+    "fraud_missed": 4,
+    "policy_entropy": 0.931695881491438
+  },
+  {
+    "episode": 436,
+    "total_reward": -1586.4151999999967,
+    "mean_reward_window": -1786.0805199999966,
+    "investigations_used": 9,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 0.9864515608662034
+  },
+  {
+    "episode": 437,
+    "total_reward": -1641.5579999999968,
+    "mean_reward_window": -1786.0221399999966,
+    "investigations_used": 13,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 0.9775794315827335
+  },
+  {
+    "episode": 438,
+    "total_reward": -1665.550399999997,
+    "mean_reward_window": -1779.7236799999966,
+    "investigations_used": 13,
+    "fraud_caught": 2,
+    "fraud_missed": 3,
+    "policy_entropy": 0.9129267706892545
+  },
+  {
+    "episode": 439,
+    "total_reward": -1452.2755999999977,
+    "mean_reward_window": -1763.8565399999966,
+    "investigations_used": 8,
+    "fraud_caught": 1,
+    "fraud_missed": 4,
+    "policy_entropy": 0.9772371482630375
+  },
+  {
+    "episode": 440,
+    "total_reward": -1887.8143999999957,
+    "mean_reward_window": -1781.7370799999965,
+    "investigations_used": 12,
+    "fraud_caught": 3,
+    "fraud_missed": 6,
+    "policy_entropy": 0.929638035680685
+  },
+  {
+    "episode": 441,
+    "total_reward": -1810.0467999999964,
+    "mean_reward_window": -1782.5960799999968,
+    "investigations_used": 11,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 0.9712864920585008
+  },
+  {
+    "episode": 442,
+    "total_reward": -1734.2531999999958,
+    "mean_reward_window": -1764.8822399999967,
+    "investigations_used": 15,
+    "fraud_caught": 3,
+    "fraud_missed": 1,
+    "policy_entropy": 0.9567940050703283
+  },
+  {
+    "episode": 443,
+    "total_reward": -1687.753599999997,
+    "mean_reward_window": -1764.5838999999967,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 5,
+    "policy_entropy": 0.9029894441585942
+  },
+  {
+    "episode": 444,
+    "total_reward": -1773.192399999997,
+    "mean_reward_window": -1741.3256199999964,
+    "investigations_used": 11,
+    "fraud_caught": 1,
+    "fraud_missed": 9,
+    "policy_entropy": 0.9101172725683879
+  },
+  {
+    "episode": 445,
+    "total_reward": -1877.9839999999965,
+    "mean_reward_window": -1731.8150799999967,
+    "investigations_used": 8,
+    "fraud_caught": 2,
+    "fraud_missed": 3,
+    "policy_entropy": 0.9777847078492994
+  },
+  {
+    "episode": 446,
+    "total_reward": -1497.343199999998,
+    "mean_reward_window": -1736.4424199999964,
+    "investigations_used": 10,
+    "fraud_caught": 0,
+    "fraud_missed": 1,
+    "policy_entropy": 0.914377507375906
+  },
+  {
+    "episode": 447,
+    "total_reward": -1489.1987999999976,
+    "mean_reward_window": -1721.1199599999968,
+    "investigations_used": 12,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 0.9096766356482997
+  },
+  {
+    "episode": 448,
+    "total_reward": -1727.5651999999966,
+    "mean_reward_window": -1725.2108399999968,
+    "investigations_used": 14,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 0.976495643153314
+  },
+  {
+    "episode": 449,
+    "total_reward": -1860.7363999999977,
+    "mean_reward_window": -1742.8234799999966,
+    "investigations_used": 13,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 0.9742527393717424
+  },
+  {
+    "episode": 450,
+    "total_reward": -1173.1807999999996,
+    "mean_reward_window": -1702.360199999997,
+    "investigations_used": 10,
+    "fraud_caught": 2,
+    "fraud_missed": 0,
+    "policy_entropy": 0.9183424899145753
+  },
+  {
+    "episode": 451,
+    "total_reward": -1486.5423999999973,
+    "mean_reward_window": -1688.223459999997,
+    "investigations_used": 8,
+    "fraud_caught": 3,
+    "fraud_missed": 2,
+    "policy_entropy": 0.9614887933909182
+  },
+  {
+    "episode": 452,
+    "total_reward": -1728.6139999999982,
+    "mean_reward_window": -1680.4893399999971,
+    "investigations_used": 12,
+    "fraud_caught": 0,
+    "fraud_missed": 2,
+    "policy_entropy": 0.9212809265841697
+  },
+  {
+    "episode": 453,
+    "total_reward": -1623.7943999999961,
+    "mean_reward_window": -1675.099599999997,
+    "investigations_used": 10,
+    "fraud_caught": 1,
+    "fraud_missed": 4,
+    "policy_entropy": 0.9727718086816134
+  },
+  {
+    "episode": 454,
+    "total_reward": -2137.4535999999985,
+    "mean_reward_window": -1683.641119999997,
+    "investigations_used": 14,
+    "fraud_caught": 2,
+    "fraud_missed": 5,
+    "policy_entropy": 0.9649261127224822
+  },
+  {
+    "episode": 455,
+    "total_reward": -1193.610799999999,
+    "mean_reward_window": -1651.7441599999972,
+    "investigations_used": 8,
+    "fraud_caught": 1,
+    "fraud_missed": 1,
+    "policy_entropy": 0.9064356795926521
+  },
+  {
+    "episode": 456,
+    "total_reward": -2070.2747999999974,
+    "mean_reward_window": -1675.9371399999975,
+    "investigations_used": 13,
+    "fraud_caught": 1,
+    "fraud_missed": 4,
+    "policy_entropy": 0.9818764938673272
+  },
+  {
+    "episode": 457,
+    "total_reward": -1907.5347999999967,
+    "mean_reward_window": -1689.2359799999972,
+    "investigations_used": 11,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 0.99260016964346
+  },
+  {
+    "episode": 458,
+    "total_reward": -2032.9979999999946,
+    "mean_reward_window": -1707.6083599999972,
+    "investigations_used": 13,
+    "fraud_caught": 0,
+    "fraud_missed": 1,
+    "policy_entropy": 0.9660537010037864
+  },
+  {
+    "episode": 459,
+    "total_reward": -1921.017199999997,
+    "mean_reward_window": -1731.0454399999974,
+    "investigations_used": 13,
+    "fraud_caught": 2,
+    "fraud_missed": 3,
+    "policy_entropy": 0.9845589428629802
+  },
+  {
+    "episode": 460,
+    "total_reward": -1799.0235999999954,
+    "mean_reward_window": -1726.6058999999973,
+    "investigations_used": 14,
+    "fraud_caught": 5,
+    "fraud_missed": 2,
+    "policy_entropy": 0.9149388418831308
+  },
+  {
+    "episode": 461,
+    "total_reward": -1909.085199999996,
+    "mean_reward_window": -1731.557819999997,
+    "investigations_used": 13,
+    "fraud_caught": 2,
+    "fraud_missed": 8,
+    "policy_entropy": 0.9792721923121326
+  },
+  {
+    "episode": 462,
+    "total_reward": -1698.4459999999979,
+    "mean_reward_window": -1729.7674599999973,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 3,
+    "policy_entropy": 0.9676837244425698
+  },
+  {
+    "episode": 463,
+    "total_reward": -1770.1071999999974,
+    "mean_reward_window": -1733.8851399999971,
+    "investigations_used": 14,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 0.9528182929520387
+  },
+  {
+    "episode": 464,
+    "total_reward": -1863.2895999999967,
+    "mean_reward_window": -1738.3899999999971,
+    "investigations_used": 10,
+    "fraud_caught": 0,
+    "fraud_missed": 6,
+    "policy_entropy": 0.9371366790755462
+  },
+  {
+    "episode": 465,
+    "total_reward": -1529.2807999999986,
+    "mean_reward_window": -1720.9548399999974,
+    "investigations_used": 13,
+    "fraud_caught": 4,
+    "fraud_missed": 3,
+    "policy_entropy": 0.9191778988865408
+  },
+  {
+    "episode": 466,
+    "total_reward": -1356.5487999999987,
+    "mean_reward_window": -1713.9151199999974,
+    "investigations_used": 7,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 0.9420257276369254
+  },
+  {
+    "episode": 467,
+    "total_reward": -1126.2608000000005,
+    "mean_reward_window": -1695.7682199999974,
+    "investigations_used": 7,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 0.9718050296326468
+  },
+  {
+    "episode": 468,
+    "total_reward": -2010.6255999999955,
+    "mean_reward_window": -1709.9212399999974,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 2,
+    "policy_entropy": 0.9565940843252412
+  },
+  {
+    "episode": 469,
+    "total_reward": -1701.0307999999968,
+    "mean_reward_window": -1701.9359599999975,
+    "investigations_used": 12,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 0.9804236281757117
+  },
+  {
+    "episode": 470,
+    "total_reward": -1683.7135999999973,
+    "mean_reward_window": -1727.462599999997,
+    "investigations_used": 10,
+    "fraud_caught": 5,
+    "fraud_missed": 4,
+    "policy_entropy": 0.9376850569785382
+  },
+  {
+    "episode": 471,
+    "total_reward": -1957.1543999999956,
+    "mean_reward_window": -1750.9931999999972,
+    "investigations_used": 12,
+    "fraud_caught": 2,
+    "fraud_missed": 6,
+    "policy_entropy": 0.9560016786678364
+  },
+  {
+    "episode": 472,
+    "total_reward": -1574.2071999999973,
+    "mean_reward_window": -1743.2728599999973,
+    "investigations_used": 12,
+    "fraud_caught": 4,
+    "fraud_missed": 3,
+    "policy_entropy": 0.8975006477008215
+  },
+  {
+    "episode": 473,
+    "total_reward": -1458.4019999999987,
+    "mean_reward_window": -1735.0032399999975,
+    "investigations_used": 11,
+    "fraud_caught": 0,
+    "fraud_missed": 2,
+    "policy_entropy": 0.9782202179568855
+  },
+  {
+    "episode": 474,
+    "total_reward": -1661.4931999999972,
+    "mean_reward_window": -1711.2052199999973,
+    "investigations_used": 14,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 0.9436944630506523
+  },
+  {
+    "episode": 475,
+    "total_reward": -1608.0339999999967,
+    "mean_reward_window": -1731.9263799999972,
+    "investigations_used": 7,
+    "fraud_caught": 1,
+    "fraud_missed": 0,
+    "policy_entropy": 0.9693922472878409
+  },
+  {
+    "episode": 476,
+    "total_reward": -1881.0355999999963,
+    "mean_reward_window": -1722.464419999997,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 2,
+    "policy_entropy": 0.885399647950037
+  },
+  {
+    "episode": 477,
+    "total_reward": -1483.641199999997,
+    "mean_reward_window": -1701.2697399999972,
+    "investigations_used": 11,
+    "fraud_caught": 2,
+    "fraud_missed": 2,
+    "policy_entropy": 0.9466356635998137
+  },
+  {
+    "episode": 478,
+    "total_reward": -1441.2403999999979,
+    "mean_reward_window": -1671.6818599999974,
+    "investigations_used": 10,
+    "fraud_caught": 1,
+    "fraud_missed": 1,
+    "policy_entropy": 0.8877073207313204
+  },
+  {
+    "episode": 479,
+    "total_reward": -1627.8943999999958,
+    "mean_reward_window": -1657.0257199999971,
+    "investigations_used": 10,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 0.9150973701419954
+  },
+  {
+    "episode": 480,
+    "total_reward": -1721.827599999997,
+    "mean_reward_window": -1653.1659199999972,
+    "investigations_used": 10,
+    "fraud_caught": 2,
+    "fraud_missed": 6,
+    "policy_entropy": 0.9439583685823567
+  },
+  {
+    "episode": 481,
+    "total_reward": -1947.7591999999966,
+    "mean_reward_window": -1655.0996199999972,
+    "investigations_used": 14,
+    "fraud_caught": 0,
+    "fraud_missed": 7,
+    "policy_entropy": 0.9400674714037505
+  },
+  {
+    "episode": 482,
+    "total_reward": -1315.769599999998,
+    "mean_reward_window": -1635.9657999999972,
+    "investigations_used": 9,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 0.8813628389984767
+  },
+  {
+    "episode": 483,
+    "total_reward": -1695.5963999999972,
+    "mean_reward_window": -1632.2402599999973,
+    "investigations_used": 11,
+    "fraud_caught": 4,
+    "fraud_missed": 6,
+    "policy_entropy": 0.878805212898045
+  },
+  {
+    "episode": 484,
+    "total_reward": -1855.0587999999964,
+    "mean_reward_window": -1631.8287199999972,
+    "investigations_used": 13,
+    "fraud_caught": 1,
+    "fraud_missed": 8,
+    "policy_entropy": 0.8890381492974968
+  },
+  {
+    "episode": 485,
+    "total_reward": -1145.4523999999985,
+    "mean_reward_window": -1612.6372999999971,
+    "investigations_used": 9,
+    "fraud_caught": 5,
+    "fraud_missed": 1,
+    "policy_entropy": 0.9327736272135247
+  },
+  {
+    "episode": 486,
+    "total_reward": -1056.4740000000006,
+    "mean_reward_window": -1597.6335599999973,
+    "investigations_used": 6,
+    "fraud_caught": 1,
+    "fraud_missed": 2,
+    "policy_entropy": 0.868398166328202
+  },
+  {
+    "episode": 487,
+    "total_reward": -1563.8391999999985,
+    "mean_reward_window": -1619.5124799999971,
+    "investigations_used": 13,
+    "fraud_caught": 2,
+    "fraud_missed": 1,
+    "policy_entropy": 0.9462704409916904
+  },
+  {
+    "episode": 488,
+    "total_reward": -1371.005999999997,
+    "mean_reward_window": -1587.5314999999973,
+    "investigations_used": 12,
+    "fraud_caught": 0,
+    "fraud_missed": 1,
+    "policy_entropy": 0.9417185705685067
+  },
+  {
+    "episode": 489,
+    "total_reward": -1424.2003999999977,
+    "mean_reward_window": -1573.6899799999974,
+    "investigations_used": 15,
+    "fraud_caught": 4,
+    "fraud_missed": 2,
+    "policy_entropy": 0.9099271926871482
+  },
+  {
+    "episode": 490,
+    "total_reward": -1379.9811999999997,
+    "mean_reward_window": -1558.5033599999974,
+    "investigations_used": 8,
+    "fraud_caught": 1,
+    "fraud_missed": 7,
+    "policy_entropy": 0.9159705877237537
+  },
+  {
+    "episode": 491,
+    "total_reward": -1747.297999999998,
+    "mean_reward_window": -1548.0105399999977,
+    "investigations_used": 7,
+    "fraud_caught": 0,
+    "fraud_missed": 1,
+    "policy_entropy": 0.9540783953013039
+  },
+  {
+    "episode": 492,
+    "total_reward": -1586.869199999996,
+    "mean_reward_window": -1548.6436399999975,
+    "investigations_used": 10,
+    "fraud_caught": 2,
+    "fraud_missed": 3,
+    "policy_entropy": 0.9550437244055486
+  },
+  {
+    "episode": 493,
+    "total_reward": -1903.3939999999961,
+    "mean_reward_window": -1570.8932399999974,
+    "investigations_used": 15,
+    "fraud_caught": 2,
+    "fraud_missed": 5,
+    "policy_entropy": 0.8511188667538873
+  },
+  {
+    "episode": 494,
+    "total_reward": -1646.836399999997,
+    "mean_reward_window": -1570.1603999999975,
+    "investigations_used": 15,
+    "fraud_caught": 1,
+    "fraud_missed": 1,
+    "policy_entropy": 0.8453478789408639
+  },
+  {
+    "episode": 495,
+    "total_reward": -2023.9747999999954,
+    "mean_reward_window": -1590.9574399999974,
+    "investigations_used": 15,
+    "fraud_caught": 0,
+    "fraud_missed": 4,
+    "policy_entropy": 0.9250725156718187
+  },
+  {
+    "episode": 496,
+    "total_reward": -1748.6319999999955,
+    "mean_reward_window": -1584.3372599999973,
+    "investigations_used": 14,
+    "fraud_caught": 1,
+    "fraud_missed": 3,
+    "policy_entropy": 0.9405534348619853
+  },
+  {
+    "episode": 497,
+    "total_reward": -1367.1103999999975,
+    "mean_reward_window": -1578.5107199999973,
+    "investigations_used": 11,
+    "fraud_caught": 1,
+    "fraud_missed": 6,
+    "policy_entropy": 0.8483962858879819
+  },
+  {
+    "episode": 498,
+    "total_reward": -1562.193999999997,
+    "mean_reward_window": -1584.5583999999974,
+    "investigations_used": 12,
+    "fraud_caught": 1,
+    "fraud_missed": 1,
+    "policy_entropy": 0.923526243360488
+  },
+  {
+    "episode": 499,
+    "total_reward": -1629.799999999996,
+    "mean_reward_window": -1584.6536799999972,
+    "investigations_used": 10,
+    "fraud_caught": 1,
+    "fraud_missed": 4,
+    "policy_entropy": 0.9199318768648761
+  }
+]

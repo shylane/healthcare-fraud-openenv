@@ -1,0 +1,37 @@
+{
+  "timestamp": "2026-04-02T01:12:24.475155",
+  "agents": [
+    {
+      "name": "RandomAgent",
+      "model": "none",
+      "n_episodes": 2,
+      "mean_reward": -487.2431999999999,
+      "std_reward": 75.46799999999996,
+      "mean_f1": 0.16233766233766234,
+      "mean_precision": 0.09166666666666667,
+      "mean_recall": 0.75,
+      "mean_net_savings": -1142.21,
+      "mean_budget_utilization": 0.26666666666666666,
+      "mean_budget_conservation_rate": 0.0,
+      "mean_memory_reuse_rate": 1.0,
+      "mean_valid_response_rate": 1.0,
+      "mean_latency_ms": 0.0011349970009177923
+    },
+    {
+      "name": "ThresholdAgent",
+      "model": "none",
+      "n_episodes": 2,
+      "mean_reward": -139.16060000000002,
+      "std_reward": 58.415400000000034,
+      "mean_f1": 0.3666666666666667,
+      "mean_precision": 0.225,
+      "mean_recall": 1.0,
+      "mean_net_savings": 342.98499999999996,
+      "mean_budget_utilization": 0.0,
+      "mean_budget_conservation_rate": 0.0,
+      "mean_memory_reuse_rate": 0.0,
+      "mean_valid_response_rate": 1.0,
+      "mean_latency_ms": 0.02868500305339694
+    }
+  ]
+}

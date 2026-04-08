@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-04-05T00:02:26.349980",
+  "experiment": "04_reinforce_poc",
+  "config": {
+    "n_episodes": 500,
+    "claims_per_episode": 100,
+    "fraud_rate": 0.05,
+    "investigation_budget": 15,
+    "lr": 0.001,
+    "gamma": 0.99,
+    "use_baseline": true
+  },
+  "training_time_s": 40.61815690994263,
+  "learning": {
+    "first_quartile_mean_reward": -2467.8177407999983,
+    "last_quartile_mean_reward": -2480.1740863999985,
+    "improvement": -12.356345600000168
+  }
+}
