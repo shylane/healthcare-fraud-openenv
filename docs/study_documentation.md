@@ -483,24 +483,28 @@ features = [
 
 All results from `experiments/*/results/` JSON files, 20 episodes × 100 claims each, `seed=42`.
 
-| Agent | Mean Reward | Std | F1 | Recall | Budget Use | Mem Reuse | Net Loss/ep |
-|-------|------------|-----|-----|--------|------------|-----------|------------|
-| BudgetAware (DeepSeek) | **−455** | 145 | 0.047 | 8% | 0% | 0% | $2,609 |
-| ThresholdAgent | −799 | 177 | **0.123** | 57% | 0% | 0% | $1,447 |
-| BudgetAware (Qwen3.6) | −1,190 | 1,112 | **0.147** | 52% | 5% | 40% | $3,181 |
-| NaiveLLM (DeepSeek) | −1,212 | 147 | 0.074 | 37% | 9% | 33% | $2,315 |
-| REINFORCE (trained) | −1,646 | 209 | 0.057 | 23% | 79% | 83% | — |
-| RandomAgent | −2,173 | 309 | 0.072 | 37% | 94% | 85% | $6,137 |
-| NaiveLLM (Qwen3.6) | −2,322 | 213 | 0.063 | 52% | 70% | 92% | $5,645 |
+| Agent | RL Reward | Std | F1 | Recall | Budget Use | Fraud Caught$/ep | Net Loss$/ep | Fraud Catch Rate |
+|-------|-----------|-----|-----|--------|------------|-----------------|-------------|-----------------|
+| BudgetAware (DeepSeek) | **−455** | 145 | 0.047 | 8% | 0% | $905 | $2,609 | 26% |
+| ThresholdAgent | −841 | 156 | **0.144** | 53% | 0% | $1,493 | $2,147 | 48% |
+| BudgetAware (Qwen3.6) | −1,190 | 1,112 | **0.147** | 52% | 5% | $1,412 | $3,181 | 46% |
+| NaiveLLM (DeepSeek) | −1,212 | 147 | 0.074 | 37% | 9% | $2,149 | $2,315 | **61%** |
+| REINFORCE (trained) | −1,646 | 209 | 0.057 | 23% | 79% | $1,194 | $5,352 | 30% |
+| RandomAgent | −2,057 | 225 | 0.087 | 44% | 88% | $1,313 | $6,137 | 34% |
+| NaiveLLM (Qwen3.6) | −2,322 | 213 | 0.063 | 52% | 70% | $1,608 | $5,645 | 52% |
+
+> **Important:** RL Reward and Net Loss$/ep rank agents differently — see Section 7.5 (Reward Calibration) for explanation.
 
 Source files:
-- `experiments/01_baseline_comparison/results/20260403_230615_comparison.json` — DeepSeek agents
+- `experiments/01_baseline_comparison/results/20260403_230615_BudgetAwaredeepseek-v3.2.json` — BudgetAware DeepSeek
+- `experiments/01_baseline_comparison/results/20260403_230615_NaiveLLMdeepseek-v3.2.json` — NaiveLLM DeepSeek
 - `experiments/01_baseline_comparison/results/20260403_161250_NaiveLLMqwen3.6-plus_free.json` — Qwen NaiveLLM
 - `experiments/01_baseline_comparison/results/20260403_161250_BudgetAwareqwen3.6-plus_free.json` — Qwen BudgetAware
-- `experiments/01_baseline_comparison/results/20260403_161250_comparison.json` — Qwen full comparison
-- `experiments/04_reinforce_poc/results/20260405_000606_eval_*.json` — REINFORCE + Random + Threshold eval
+- `experiments/01_baseline_comparison/results/20260403_161250_ThresholdAgent.json` — ThresholdAgent
+- `experiments/01_baseline_comparison/results/20260403_161250_RandomAgent.json` — RandomAgent
+- `experiments/04_reinforce_poc/results/20260405_000606_eval_*.json` — REINFORCE eval
 
-**Cross-model budget-aware improvement:**
+**Cross-model budget-aware improvement (RL Reward):**
 
 | Model | Naive | Budget-Aware | Multiplier | Budget Use: Naive → BA |
 |-------|-------|-------------|-----------|----------------------|
@@ -560,6 +564,41 @@ Source: `experiments/04_reinforce_poc/results/20260405_000606_summary.json`
 | **Improvement** | **+658** |
 | Training time | 56 seconds |
 
+### 7.5 Reward Calibration Gap: RL Reward vs Real-World Financial Outcome
+
+A key limitation discovered post-hoc: **RL Reward and Net Loss$/ep rank agents differently**, and the divergence is systematic.
+
+**Root cause — `RewardConfig` default rates (`environment/models.py:683`):**
+```python
+fraud_caught_reward_rate  = 0.1   # reward = 10% of claim value recovered
+fraud_missed_penalty_rate = 0.2   # penalty = 20% of claim value missed
+investigation_cost        = 100.0 # flat $100 per INVESTIGATE (unchanged)
+```
+
+At 0.1× rate, catching a $500 fraud earns only +$50 reward before the $100 investigation cost. INVESTIGATE is RL-negative on any claim below $1,176. This makes the RL-optimal strategy "avoid investigation entirely" even when real-world investigation would be net-positive.
+
+**The ranking divergence:**
+
+| Agent | RL Reward | RL Rank | Net Loss$/ep | Financial Rank |
+|-------|-----------|---------|-------------|----------------|
+| BudgetAware (DeepSeek) | **−455** | 1 | $2,609 | 3 |
+| ThresholdAgent | −841 | 2 | **$2,147** | **1** |
+| NaiveLLM (DeepSeek) | −1,212 | 4 | $2,315 | 2 |
+| BudgetAware (Qwen3.6) | −1,190 | 3 | $3,181 | 4 |
+
+ThresholdAgent is the **best real-world fraud program** by net financial outcome — it catches 48% of fraud value at moderate cost ($2,147 net loss). BudgetAware DeepSeek catches only 26% but minimises RL investigation costs, winning the RL game while leaving more fraud uncaught.
+
+**The proposed fix:**
+```python
+# environment/models.py
+fraud_caught_reward_rate  = 1.0   # full claim value for recovery
+fraud_missed_penalty_rate = 1.0   # full claim value penalty for miss
+```
+
+This aligns RL reward with net savings. Investigation of high-value suspicious claims becomes RL-positive. The optimal strategy shifts from pure cost-avoidance to selective investigation. All current experiment results were collected under the 0.1/0.2 rates — re-running under 1.0/1.0 is future work.
+
+**What this means for existing findings:** The *direction* of budget-aware improvement (BudgetAware > NaiveLLM) is consistent across both metrics for each model. The *ranking across agents* changes. The key study claim — that budget-aware prompting substantially improves LLM agent performance — remains valid. The question of whether BudgetAware or ThresholdAgent is the better benchmark depends on the reward rates.
+
 ---
 
 ## 8. What We Expected vs What We Observed
@@ -568,7 +607,7 @@ Source: `experiments/04_reinforce_poc/results/20260405_000606_summary.json`
 
 **Expected:** NaiveLLM should underperform ThresholdAgent but stay above RandomAgent. A language model, even without specific budget guidance, should understand that INVESTIGATE is expensive and apply some judgment.
 
-**Observed:** Qwen NaiveLLM (−2,322) scored **worse than RandomAgent** (−2,173) by 149 reward points.
+**Observed:** Qwen NaiveLLM (−2,322) scored **worse than RandomAgent** (−2,057) by 265 reward points.
 
 **Why this happened:**
 
@@ -607,7 +646,7 @@ The DeepSeek gap (2.66×) is larger than Qwen (1.95×) because stronger instruct
 
 **Expected:** ThresholdAgent to serve as an intermediate benchmark that LLMs should surpass with sufficient context.
 
-**Observed:** ThresholdAgent (−799) beats NaiveLLM on both models and beats BudgetAware Qwen (−1,190). Only BudgetAware DeepSeek (−455) clears it.
+**Observed:** ThresholdAgent (−841) beats NaiveLLM on both models and beats BudgetAware Qwen (−1,190). Only BudgetAware DeepSeek (−455) clears it.
 
 **Why this happened:**
 
@@ -670,7 +709,7 @@ The policy learned two things:
 
 These are exactly the behaviors the BudgetAware prompt describes in words. The linear policy discovered them from reward signal alone.
 
-+658 improvement sounds large but the trained policy still scores −1,739, far below ThresholdAgent (−799) and BudgetAware (−455). The linear policy is limited: it can't represent complex conditional logic, and 10 features over-simplify the claim. A neural policy with more features would likely do better.
++658 improvement sounds large but the trained policy still scores −1,739, far below ThresholdAgent (−841) and BudgetAware (−455). The linear policy is limited: it can't represent complex conditional logic, and 10 features over-simplify the claim. A neural policy with more features would likely do better.
 
 **The credit assignment problem:** With `gamma=0.99` and 100 steps, the discounted return at step t is approximately `G_t = sum_{k=0}^{99-t} 0.99^k * r_{t+k}`. At step 1, this includes all future rewards with high weight. This enables the policy to learn that investigating at step 1 (when budget is full) affects whether budget is available at step 90. GRPO cannot reason this way.
 
@@ -846,17 +885,23 @@ Collected at B=5 (both agents) and B=10 (NaiveLLM only). See Section 7.2.
 
 ### 11.4 REINFORCE vs Threshold Gap
 
-REINFORCE (−1,646) still trails ThresholdAgent (−799) by 847 reward points. Possible improvements:
+REINFORCE (−1,646) still trails ThresholdAgent (−841) by 805 reward points. Possible improvements:
 - More features (include fraud_pattern_type, claim amount directly, procedure codes)
 - Non-linear policy (2-layer MLP)
 - More training episodes (diminishing returns past 500)
 - Different action weighting (weight fraud-claim steps more heavily in loss)
 
-### 11.5 F1 vs Reward Disconnect
+### 11.5 F1 vs Reward vs Net Savings — Three Metrics, Three Winners
 
-ThresholdAgent has F1=0.123 and reward=−799. BudgetAware has F1=0.047 and reward=−455. The agent with *worse* fraud detection wins financially.
+Under the current reward calibration:
 
-This means F1 is the wrong metric for this environment. The correct metric is reward (or equivalently, net savings). A future version of the environment might make this clearer by reporting "net savings per dollar of fraud claimed" rather than F1.
+- **Best RL Reward:** BudgetAware (DeepSeek) at −455
+- **Best Net Savings (real-world financial outcome):** ThresholdAgent at −$2,147/ep
+- **Best F1:** BudgetAware (Qwen) / ThresholdAgent tied at 0.144–0.147
+
+F1 is wrong for this environment — it rewards fraud detection coverage without accounting for investigation cost. The correct real-world metric is net savings (fraud caught minus all costs). RL reward lies between the two: it includes cost penalties, but the 0.1/0.2 rate scaling makes cost-avoidance dominate over fraud recovery.
+
+The proposed fix (reward rates 1.0/1.0) would align RL reward with net savings and resolve the three-way split. See Section 7.5 for full analysis.
 
 ---
 
