@@ -39,3 +39,20 @@ Thumbs.db
 *.swp
 evaluation/results/
 # experiment result JSONs are tracked for reproducibility — keep them in the repo
+
+# Dev / workspace artifacts (not part of submission)
+.claude/
+.sisyphus/
+.python-version
+AG1 analysis/
+Kimi analysis/
+fresh_analysis/
+FRESH_CONTEXT_PROMPT.md
+cycle*.jsonl
+grpo_trainer*.py
+healthcare-fraud-openenv/
+healthcare-openenv-challenge/
+run_with_env.py
+trl_repo/
+update_rewards.patch
+/uv.lock

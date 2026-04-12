@@ -6,10 +6,14 @@ description: >
   insurance claims and decides whether to approve, flag, investigate, deny, or
   request more information. The environment simulates realistic fraud patterns
   including upcoding, phantom billing, duplicate claims, and provider collusion.
-  Designed for training LLM agents via GRPO/GSPO reinforcement learning.
+  Built for the AgentX-AgentBeats OpenEnv challenge evaluation study.
 type: space
 runtime: fastapi
-app: server.app:app
+# Run as: uvicorn environment.server.app:app --host 0.0.0.0 --port 8000
+# from the repository root (one level above this file).
+# The server package uses relative imports (from ..models import …) so
+# "server.app:app" as a top-level path breaks; "environment.server.app:app" works.
+app: environment.server.app:app
 port: 8000
 tags:
   - healthcare

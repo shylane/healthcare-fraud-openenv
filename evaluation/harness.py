@@ -304,12 +304,26 @@ def run_agent(
                 if decision in ("FLAG_REVIEW", "DENY"):
                     budget_conservation_correct += 1
 
-            # Track memory reuse: when provider is known, should use FLAG_REVIEW not INVESTIGATE
+            # Track memory reuse: when provider is known, the correct action depends on
+            # what the memory says — FLAG_REVIEW/DENY for known fraud, APPROVE for known legit.
+            # Previously counted APPROVE-on-known-fraud as "correct" (bug).
             if provider_in_memory:
                 memory_reuse_opportunities += 1
-                if decision in ("FLAG_REVIEW", "DENY", "APPROVE"):
-                    # Didn't waste an investigation on a known provider
-                    memory_reuse_correct += 1
+                memory_entry = investigation_memory.get(current_provider, {})
+                provider_known_fraud = memory_entry.get("is_fraud", False)
+                if provider_known_fraud:
+                    # Memory says fraud → correct response is FLAG_REVIEW or DENY
+                    if decision in ("FLAG_REVIEW", "DENY"):
+                        memory_reuse_correct += 1
+                else:
+                    # Memory says legit → correct response is APPROVE
+                    if decision == "APPROVE":
+                        memory_reuse_correct += 1
+
+            # Save current claim's fraud label BEFORE step() advances to the next claim.
+            # Previously recorded env._current_is_fraud AFTER step(), which logged the
+            # *next* claim's label instead of the claim that was just decided (off-by-one).
+            current_step_is_fraud = env._current_is_fraud if hasattr(env, "_current_is_fraud") else False
 
             obs = env.step(action)
 
@@ -318,7 +332,7 @@ def run_agent(
                 step=step,
                 decision=decision,
                 reward=obs.reward or 0.0,
-                is_fraud=env._current_is_fraud if hasattr(env, "_current_is_fraud") else False,
+                is_fraud=current_step_is_fraud,
                 budget_remaining=budget_remaining,
                 investigation_memory_size=len(investigation_memory),
                 response_length=len(response),

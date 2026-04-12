@@ -24,10 +24,15 @@ from a2a.utils import new_agent_text_message
 
 from messenger import PurpleAgentClient
 
-# Environment is co-located in this image under /app/environment/
-sys.path.insert(0, "/app/environment")
-from server.environment import ClaimsFraudEnvironment, EnvironmentConfig  # noqa: E402
-from models import ClaimAction  # noqa: E402
+# Environment is co-located in this image under /app/environment/.
+# We insert /app (repo root) — NOT /app/environment — so that Python resolves the
+# package as `environment.*`.  Inserting /app/environment would make `server` the
+# top-level name, which collides with this file's own sibling `server.py` and also
+# breaks the relative imports inside environment/server/environment.py
+# (e.g. `from ..models import …` requires `environment` to be the root package).
+sys.path.insert(0, "/app")
+from environment.server.environment import ClaimsFraudEnvironment, EnvironmentConfig  # noqa: E402
+from environment.models import ClaimAction  # noqa: E402
 
 logger = logging.getLogger(__name__)
 
@@ -181,10 +186,14 @@ class HealthcareFraudGreenAgent:
             "episodes": episode_results,
         }
 
-        # F1 score as the primary leaderboard metric
+        # Primary leaderboard metric: mean_total_reward (the weighted RL objective).
+        # F1 is logged as secondary — the blog post explicitly explains why F1 is the
+        # wrong goal for this environment (Finding 4): it rewards coverage regardless of
+        # investigation cost, whereas mean_total_reward penalises wasteful investigations.
         p = agg["mean_precision"]
         r = agg["mean_recall"]
         agg["f1"] = 2 * p * r / max(p + r, 1e-9)
+        agg["primary_metric"] = agg["mean_total_reward"]  # higher = better
 
         result_json = json.dumps(agg, indent=2)
 
@@ -197,7 +206,8 @@ class HealthcareFraudGreenAgent:
         await updater.update_status(
             state=TaskState.working,
             message=new_agent_text_message(
-                f"Assessment complete. F1={agg['f1']:.3f}, "
-                f"MeanReward={agg['mean_total_reward']:.2f}"
+                f"Assessment complete. "
+                f"MeanReward={agg['mean_total_reward']:.2f} (primary), "
+                f"F1={agg['f1']:.3f} (secondary)"
             ),
         )

@@ -6,7 +6,7 @@ Run locally:
     uv run src/server.py --host 0.0.0.0 --port 9009
 
 In Docker:
-    docker run -p 9009:9009 healthcare-fraud-green:latest
+    docker run -p 9009:9009 ghcr.io/shylane/healthcare-fraud-openenv-evaluator:latest
 """
 
 import argparse

@@ -3,18 +3,25 @@
 # Or use Quick Submit on the AgentBeats leaderboard page.
 
 [green_agent]
-# Fill in after registering on agentbeats.dev
+# agentbeats_id format: "username/agent-slug" (assigned after registration on agentbeats.dev)
 agentbeats_id = ""
+# Fully qualified public image — used for local `agentbeats run` and leaderboard execution
+image = "ghcr.io/shylane/healthcare-fraud-openenv-evaluator:latest"
 # env = { HF_TOKEN = "${HF_TOKEN}" }   # uncomment if env data is gated
 
 [[participants]]
-# Fill in after registering on agentbeats.dev
+# agentbeats_id format: "username/agent-slug" (purple agent's registration ID)
 agentbeats_id = ""
+# Fully qualified public image of the purple agent being evaluated
+image = ""
 name = "healthcare-fraud-rl-agent"
 # env = { HF_TOKEN = "${HF_TOKEN}" }
 
 [config]
-num_episodes = 5
-claims_per_episode = 20
-fraud_rate = 0.15
+# Parameters aligned with the evaluation study (blog/hf_blog_post.md):
+# 20 episodes × 100 claims × 5% fraud rate, seed=42.
+# Previous placeholder used 5 eps / 20 claims / 15% fraud — wrong on all three.
+num_episodes = 20
+claims_per_episode = 100
+fraud_rate = 0.05
 seed = 42

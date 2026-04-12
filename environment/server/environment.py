@@ -137,6 +137,18 @@ class ClaimsFraudEnvironment(object):
         # Last reward components (for logging/debugging)
         self._last_reward_components: Optional[RewardComponents] = None
 
+        # Stochastic detection outcomes for the current step.
+        # Set inside _calculate_decision_reward() and consumed in
+        # _calculate_action_reward() to avoid passing is_fraud ground truth
+        # through to outcome strings and investigation memory.
+        self._last_investigation_caught: bool = True
+        self._last_flag_caught: bool = True
+
+        # The decision that was actually executed (may differ from parsed_decision
+        # when an over-budget INVESTIGATE is downgraded to FLAG_REVIEW).
+        # Set inside _calculate_action_reward() and read by step() for metadata.
+        self._last_executed_decision: str = ""
+
     def reset(self) -> ClaimObservation:
         """Reset the environment and start a new episode.
 
@@ -280,7 +292,10 @@ class ClaimsFraudEnvironment(object):
             self._current_observation.done = False
             self._current_observation.reward = reward
             self._current_observation.metadata = {
-                "action_taken": action.parsed_decision,
+                # Use the executed decision, not the requested one — they differ when
+                # an over-budget INVESTIGATE is silently downgraded to FLAG_REVIEW.
+                "action_taken": self._last_executed_decision,
+                "action_requested": action.parsed_decision,  # for debugging
                 "reward_breakdown": reward_components.to_dict(),
                 "step": self._step_count,
                 "budget_remaining": self._state.budget_remaining,
@@ -334,6 +349,11 @@ class ClaimsFraudEnvironment(object):
             decision = DecisionType.FLAG_REVIEW
             budget_penalty = -0.5  # penalty for attempted over-budget investigation
 
+        # Record executed decision so step() can report it accurately in metadata.
+        # Without this, metadata["action_taken"] would always show the *requested*
+        # action even when an over-budget downgrade silently changed it.
+        self._last_executed_decision = decision.value
+
         # Deduct budget if INVESTIGATE is (still) the decision
         if decision == DecisionType.INVESTIGATE:
             self._state.budget_remaining -= 1
@@ -358,10 +378,17 @@ class ClaimsFraudEnvironment(object):
         efficiency_reward = self._calculate_efficiency(decision, is_fraud, claim_amount, reward_cfg)
         components.efficiency_reward = efficiency_reward
 
-        # --- Determine outcome string for history ---
+        # --- Determine outcome string for history (uses stochastic detection result) ---
+        # Bug fix: previously hard-coded "Fraud caught ✓" for any fraud+INVESTIGATE/FLAG,
+        # ignoring the stochastic accuracy miss. Now uses the actual detection outcome
+        # stored in self._last_investigation_caught / self._last_flag_caught.
         if is_fraud:
-            if decision in (DecisionType.INVESTIGATE, DecisionType.FLAG_REVIEW, DecisionType.DENY):
-                outcome = "Fraud caught ✓"
+            if decision == DecisionType.INVESTIGATE:
+                outcome = "Fraud caught ✓" if self._last_investigation_caught else "Fraud MISSED ✗"
+            elif decision == DecisionType.FLAG_REVIEW:
+                outcome = "Fraud caught ✓" if self._last_flag_caught else "Fraud MISSED ✗"
+            elif decision == DecisionType.DENY:
+                outcome = "Fraud caught ✓"  # DENY is deterministic
             else:
                 outcome = "Fraud MISSED ✗"
         else:
@@ -370,8 +397,15 @@ class ClaimsFraudEnvironment(object):
             else:
                 outcome = "False alarm"
 
+        # For investigation memory: only record as fraud when it was actually DETECTED.
+        # Storing raw is_fraud ground truth would leak the correct label to agents via
+        # the memory section of the prompt on re-encounters.
+        memory_is_fraud = is_fraud
+        if decision == DecisionType.INVESTIGATE:
+            memory_is_fraud = is_fraud and self._last_investigation_caught
+
         # Record this decision in history + update memory
-        self._record_decision(decision, claim, is_fraud, outcome)
+        self._record_decision(decision, claim, memory_is_fraud, outcome)
 
         return components
 
@@ -404,6 +438,7 @@ class ClaimsFraudEnvironment(object):
 
             # Simulate review outcome using seeded RNG
             review_catches_fraud = self._rng.random() < self.config.flag_accuracy
+            self._last_flag_caught = review_catches_fraud
 
             if is_fraud:
                 if review_catches_fraud:
@@ -430,6 +465,7 @@ class ClaimsFraudEnvironment(object):
 
             # Simulate investigation outcome using seeded RNG
             investigation_catches_fraud = self._rng.random() < self.config.investigate_accuracy
+            self._last_investigation_caught = investigation_catches_fraud
 
             if is_fraud:
                 if investigation_catches_fraud:

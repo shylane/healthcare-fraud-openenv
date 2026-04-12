@@ -5,8 +5,8 @@ This server exposes the environment via HTTP endpoints following
 the OpenEnv specification, plus Green Agent A2A endpoints for
 AgentBeats compatibility.
 
-Run with:
-    uvicorn src.envs.healthcare_claims.server.app:app --host 0.0.0.0 --port 8000
+Run with (from repo root):
+    uvicorn environment.server.app:app --host 0.0.0.0 --port 8000
 """
 
 from fastapi import FastAPI, HTTPException
@@ -158,11 +158,19 @@ class StateResponse(BaseModel):
 
 
 class ConfigRequest(BaseModel):
-    """Request model for environment configuration."""
+    """Request model for environment configuration.
+
+    All fields are optional — unset fields use environment defaults.
+    Exposed via POST /reset so callers can reproduce budget and memory ablations
+    without needing direct Python access (e.g. from the HF Space or the green agent).
+    """
 
     claims_per_episode: int = 100
     fraud_rate: float = 0.05
     seed: Optional[int] = None
+    # Budget / memory fields for ablation reproducibility
+    investigation_budget: int = 15
+    memory_decay_halflife: int = 20
 
 
 # =============================================================================
@@ -252,6 +260,8 @@ async def reset(config: Optional[ConfigRequest] = None):
             claims_per_episode=config.claims_per_episode,
             fraud_rate=config.fraud_rate,
             seed=config.seed,
+            investigation_budget=config.investigation_budget,
+            memory_decay_halflife=config.memory_decay_halflife,
         )
         env = ClaimsFraudEnvironment(env_config)
 
@@ -592,6 +602,10 @@ async def generate_task():
 
     obs = env.reset()
 
+    # NOTE: ground_truth is intentionally excluded from this response.
+    # Exposing is_fraud here would allow any caller to trivially cheat the
+    # environment by reading the label before deciding. Scoring is done via
+    # /a2a/assess after the agent submits its response.
     return {
         "task_id": obs.claim_id,
         "prompt": obs.prompt,
@@ -602,10 +616,6 @@ async def generate_task():
             "diagnosis_codes": obs.diagnosis_codes,
             "provider_profile": obs.provider_profile,
             "member_profile": obs.member_profile,
-        },
-        "ground_truth": {
-            "is_fraud": env._current_is_fraud,
-            "decision": "FLAG_REVIEW" if env._current_is_fraud else "APPROVE",
         },
     }
 

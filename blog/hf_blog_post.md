@@ -1,14 +1,14 @@
 # When LLMs Lose to Coin Flips: Building a Healthcare Fraud Detection RL Environment
 
-*A rigorous evaluation study — across two models, six agent types, and 14,000 claim decisions — showing that prompt engineering beats model capability, and an open environment so you can prove us wrong.*
+*A rigorous evaluation study — across two models, seven agent configurations, and 14,000 claim decisions — showing that prompt engineering beats model capability, and an open environment so you can prove us wrong.*
 
 ---
 
-Healthcare insurance fraud costs the US system over **$100 billion per year**. Most detection systems are batch processes: flag suspicious claims at the end of the month, review manually, claw back if possible. By then the money is gone.
+Healthcare insurance fraud costs the US system an estimated **$100 billion per year** — roughly 3–10% of total health spending, per NHCAA estimates against $4.9T in CMS-reported 2023 expenditures. Most detection systems are batch processes: flag suspicious claims at the end of the month, review manually, claw back if possible. By then the money is gone.
 
 What if we treated fraud detection as a **sequential decision problem** under real constraints? An agent reviewing one claim at a time, with a limited investigation budget, building memory of provider history across the episode — just like a real claims adjudicator.
 
-We built exactly this environment, then ran a complete evaluation across six agents and two LLM models. The results were sharper than we expected.
+We built exactly this environment, then ran a complete evaluation across seven agent configurations and two LLM models. The results were sharper than we expected.
 
 **The short version:**
 - A naive LLM performs *worse than random*
@@ -39,15 +39,28 @@ For each claim, the agent picks one of 5 actions:
 | `DENY` | $0 | 100% — but penalises false denials |
 | `REQUEST_INFO` | $12.50 | 50% — deferred review |
 
-The **critical tension**: `INVESTIGATE` at $100 is only financially optimal for fraud claims above ~$3,000. For a typical $500 fraudulent claim, `FLAG_REVIEW` at $25 with 70% detection saves more money net. Most fraud is not high-value. Most agents don't figure this out.
+The **critical tension**: `INVESTIGATE` at $100 is RL-optimal only for suspected fraud above roughly **$1,000** at the current 0.1× fraud-recovery reward rate — a threshold well above the typical claim in this simulation. Below that, `FLAG_REVIEW` at $25 nets a better RL score. (In real-dollar terms the breakeven is ~$300 — see Finding 8 on reward calibration for why these diverge.)
 
 Fraud rate is **5%** — 5 out of every 100 claims. The investigation budget is **15** — meaning even a perfect agent can only deep-audit 15% of claims. The rest must be handled via cheaper signals.
 
+### Reward Architecture
+
+The reward is **multi-component**, not a single financial signal:
+
+| Component | Weight | What it measures |
+|-----------|--------|-----------------|
+| Decision correctness | **40%** | Financial outcome of the action choice |
+| Rationale quality | 30% | Coherence and length of the written explanation |
+| Evidence citation | 20% | Did the agent cite specific claim data? |
+| Efficiency | 10% | Cost-effectiveness of action given risk level |
+
+When we say "reward" throughout this post we mean the weighted sum. An agent can improve reward not only by making better financial decisions but by writing better rationales — which matters when comparing LLMs (which write prose) to rule-based agents (which emit minimal text). Finding 4 addresses this directly.
+
 ---
 
-## Six Agents, One Leaderboard
+## Seven Agents, One Leaderboard
 
-We evaluated six agents across 20 episodes each (2,000 claim decisions per agent, same seeds throughout):
+We evaluated seven agent configurations across 20 episodes each (2,000 claim decisions per agent, fixed seeds throughout):
 
 **RandomAgent** — weighted random decisions, no reasoning, no API calls. The absolute floor.
 
@@ -85,7 +98,7 @@ All results from 20 episodes × 100 claims each, fixed seeds (`seed=42`).
 
 ## Finding 1: A Naive LLM Is Worse Than Random
 
-Qwen NaiveLLM scored **−2,322** — worse than RandomAgent at **−2,173**, by 149 reward points.
+Qwen NaiveLLM scored **−2,322** — worse than RandomAgent at **−2,057**, by 265 reward points.
 
 This is not a model capability problem. The NaiveLLM *worked hard*:
 - 70% budget utilization (used most of its 15 investigation slots)
@@ -137,7 +150,7 @@ Prompt engineering is not a silver bullet — it requires a model that can actua
 
 ## Finding 3: Rule-Based Wins (Until a Strong Model Is Told the Rules)
 
-ThresholdAgent (−799) beats NaiveLLM on both models, and beats BudgetAware Qwen (−1,190). Only BudgetAware DeepSeek (−455) clears it.
+ThresholdAgent (−841) beats NaiveLLM on both models, and beats BudgetAware Qwen (−1,190). Only BudgetAware DeepSeek (−455) clears it.
 
 ThresholdAgent independently discovered the optimal strategy: never INVESTIGATE, use FLAG_REVIEW for anomalies, APPROVE otherwise. It executes this via 10 lines of regex and if-statements with zero API calls, zero latency, and zero cost.
 
@@ -153,7 +166,7 @@ else:
 
 The rule for INVESTIGATE barely fires because truly HIGH-risk claims are rare. In practice, ThresholdAgent is an optimised FLAG_REVIEW machine — which turns out to be nearly optimal.
 
-**The gap between ThresholdAgent (−799) and BudgetAware DeepSeek (−455) is meaningful:** 344 reward points. The LLM can reason about *which specific claims* warrant flagging with more nuance than a fixed threshold — when explicitly told what it's optimising for. That gap is the value that strong LLMs add over hand-coded rules: context-sensitive discrimination, not brute force.
+**The gap between ThresholdAgent (−841) and BudgetAware DeepSeek (−455) is meaningful:** 386 reward points. The LLM can reason about *which specific claims* warrant flagging with more nuance than a fixed threshold — when explicitly told what it's optimising for. That gap is the value that strong LLMs add over hand-coded rules: context-sensitive discrimination, not brute force.
 
 ---
 
@@ -163,9 +176,11 @@ Notice something counterintuitive in the results table: BudgetAware DeepSeek has
 
 Meanwhile, NaiveLLM Qwen has the highest recall (52%) and still loses to RandomAgent.
 
-The environment rewards **financially efficient** fraud detection, not raw classification. An agent that catches 100% of fraud by investigating every single claim would have perfect recall — and would be catastrophically expensive (100 × $150 false-positive cost on legitimate claims = $14,250/episode in investigation waste alone).
+The environment rewards **financially efficient** fraud detection (40% of the reward signal), not raw classification. An agent that catches 100% of fraud by investigating every single claim would have perfect recall — and would be catastrophically expensive (100 × $150 false-positive cost on legitimate claims = $14,250/episode in investigation waste alone).
 
 ThresholdAgent achieves F1=0.144 — highest alongside BudgetAware Qwen — with **zero** investigation budget used. Its rules flag correctly with moderate precision and never incur investigation costs at all. The BudgetAware DeepSeek's F1=0.047 looks terrible, but it's working in a completely different regime: FLAG_REVIEW only, minimal cost, accepting that most fraud slips through in exchange for near-zero investigation overhead.
+
+One nuance: the 30% rationale + 20% evidence components of the reward favour LLM agents (which write structured prose) over ThresholdAgent (which emits minimal text). ThresholdAgent's strong overall score comes *despite* near-zero rationale credit — its financial decision quality is that much better.
 
 **F1 measures fraud detection coverage. RL Reward measures fraud detection efficiency.** These diverge sharply when investigation is expensive and fraud is rare. Which of the two you should care about depends on what you're actually trying to do — and that's the subject of Finding 8.
 
@@ -254,7 +269,7 @@ fraud_missed_penalty_rate = 0.2   # missing $1,000 fraud  → -$200 penalty
 investigation_cost        = 100.0 # flat cost per INVESTIGATE
 ```
 
-This makes INVESTIGATE only worthwhile (in RL reward terms) on claims above ~$1,176 — a tight threshold that almost no individual claim exceeds in expectation. The result: the RL-optimal strategy is to avoid investigation almost entirely, not because investigation is wrong, but because the *rate* underprices the value of fraud recovery.
+This makes INVESTIGATE only worthwhile (in RL reward terms) for confirmed fraud above roughly ~$1,000 — a tight threshold almost no individual claim exceeds in expectation. The result: the RL-optimal strategy is to avoid investigation almost entirely, not because investigation is wrong, but because the *rate* underprices the value of fraud recovery.
 
 **The symptom: RL Reward and Net Savings rank agents differently.**
 
@@ -277,9 +292,9 @@ fraud_missed_penalty_rate = 1.0   # full claim value lost
 
 With equal rates (or rates calibrated to actual payer economics), the RL objective aligns with net savings. Investigation of genuinely high-value suspicious claims becomes worthwhile. The optimal strategy shifts toward selective investigation rather than pure cost-avoidance.
 
-**Why we're not re-running:** With 48 hours to deadline, re-running all 7 agents to produce a clean comparable dataset is out of scope. We're documenting the gap honestly instead.
+**Why we're not re-running:** With the submission deadline upon us, re-running all 7 agents to produce a clean comparable dataset is out of scope. We're documenting the gap honestly instead.
 
-**What this means for the evaluation study findings:** The core finding — budget-aware prompting improves the same LLM by 2.7× — holds regardless of which metric you use (BudgetAware DeepSeek is best on RL reward; NaiveLLM(DeepSeek) is 2nd on net savings but BudgetAware(DeepSeek) is 3rd). The direction is consistent: structured prompting helps. But the *magnitude* and *mechanism* change. Under correct reward scaling, an agent that catches more fraud dollars is explicitly rewarded for it, and the threshold for INVESTIGATE becomes much lower.
+**What this means for the evaluation study findings:** The core finding — budget-aware prompting improves the same LLM by 2.7× — holds regardless of which metric you use (BudgetAware DeepSeek is best on RL reward; the same direction holds for net savings within each model pair). The direction is consistent: structured prompting helps. But the *magnitude* and *mechanism* change. Under correct reward scaling, an agent that catches more fraud dollars is explicitly rewarded for it, and the threshold for INVESTIGATE becomes much lower.
 
 **The lesson for practitioners:** When designing RL environments for real business problems, verify that your reward rates reflect actual value at stake. A 10% recovery reward on a $1,000 fraud and a flat $100 investigation cost creates a regime where the optimal RL policy is "never investigate" — which may be optimal in the RL game while being poor real-world policy.
 
@@ -287,7 +302,7 @@ With equal rates (or rates calibrated to actual payer economics), the RL objecti
 
 ## What the Numbers Mean in Practice
 
-To make the reward numbers concrete: a −$455 RL reward means BudgetAware DeepSeek runs a fraud program that loses approximately **$455 per 100 claims** on the RL objective. But its real-world financial loss (net_savings) is **$2,609/episode** — because the 0.1× reward rate understates the actual fraud value in the RL signal.
+To make the reward numbers concrete: a −$455 RL reward means BudgetAware DeepSeek runs a fraud program that scores −$455 on the RL objective. Its real-world financial loss (net_savings metric) is **$2,609/episode** — because the 0.1× reward rate understates the actual fraud value in the RL signal.
 
 For a claims department processing 10,000 claims/day, using **net financial losses** as the metric:
 - NaiveLLM Qwen: **$564,500/day** in net fraud program losses
@@ -323,7 +338,9 @@ cd healthcare-fraud-openenv
 uvicorn environment.server.app:app --port 8000
 ```
 
-Seeds are fixed. Same claims, same fraud distribution, fully reproducible. Can you beat BudgetAware DeepSeek's −455?
+Seeds guarantee identical claim sequences for **deterministic agents** (LLMs). Agents that use Python's global `random` module (e.g. a random-action baseline) will see slightly different episode trajectories because their action draws interleave with lazy claim generation — see the Limitations section below. All LLM-vs-LLM comparisons in this study are clean.
+
+Can you beat BudgetAware DeepSeek's −455?
 
 ---
 
@@ -343,6 +360,28 @@ The environment is open. Every result here is reproducible from the JSON files i
 
 ---
 
+## Limitations and Caveats
+
+We're documenting these openly because they affect how you should interpret specific numbers, even though they don't change the directional findings.
+
+**RNG isolation.** Claims are generated lazily (one per step). The `ClaimsFraudEnvironment` uses a dedicated `random.Random(seed)` instance for its own stochastic decisions (investigation accuracy draws), but `ClaimsSimulator` uses Python's global `random` module for claim generation. `RandomAgent` and `ReinforceAgent` also draw from the global `random` module during action selection, meaning their action draws interleave with subsequent claim generation. This contaminates the "identical claim sequences" guarantee for those two agents.
+
+**Impact:** All LLM-vs-LLM comparisons (Findings 1, 2, 3) are unaffected — LLM agents make no Python `random` calls. The RandomAgent and REINFORCE results are reproducible across multiple runs with the same global seed, but their claim sequences differ slightly from those seen by LLM agents. The directional conclusions (NaiveLLM worse than random; BudgetAware better than NaiveLLM) hold by large enough margins to be robust to this effect.
+
+**Investigation memory records detected truth, not ground truth (post-fix).** Prior to this commit, investigation memory stored `is_fraud` as the claim's ground-truth label regardless of whether the investigation stochastically missed (5% miss rate at `investigate_accuracy=0.95`). This leaked the true label to agents on provider re-encounters. The code is now fixed: memory stores `is_fraud=False` when an investigation misses. At the default 0.95 accuracy, the practical impact on recorded results is small (~5% of fraud investigations), but the principle matters for environments with lower accuracy settings.
+
+**API fallback in ablation runs.** The OpenRouter client falls back to a parseable `FLAG_REVIEW` response on null-content API errors, keeping `valid_response_rate` high even when the model never reasoned. Precise status per budget level: B=5 NaiveLLM and BudgetAware are valid and cited; B=10 NaiveLLM is valid and cited (−1,192); B=10 BudgetAware was not run (credits exhausted); B=20 both agents were collected but show all-FLAG_REVIEW behaviour with response lengths matching the fallback string exactly — those results are excluded. Finding 5 cites only B=5, B=10 (NaiveLLM), and B=15.
+
+**Harness step-level logging (post-fix).** `StepRecord.is_fraud` was previously logged after `env.step()`, recording the *next* claim's label instead of the current one (off-by-one). This has been fixed. Episode-level metrics (total reward, F1, recall, budget utilisation) are computed from the environment's internal state and were never affected by this bug.
+
+**Memory reuse metric (post-fix).** `memory_reuse_rate` previously counted `APPROVE` on a known-fraud provider as "correct" (the agent didn't waste an investigation slot). The metric now correctly scores: FLAG_REVIEW/DENY as correct for known-fraud providers, APPROVE as correct for known-legit providers.
+
+**Multi-component reward vs financial outcome.** The RL reward is 40% financial decision quality, 30% rationale coherence, 20% evidence citation, and 10% efficiency. When comparing LLM agents (which write prose rationales) to ThresholdAgent or RandomAgent (which emit minimal text), the rationale/evidence components create a persistent headwind for rule-based agents. ThresholdAgent's strong overall ranking is despite near-zero rationale credit — its financial decisions are that dominant.
+
+**The $100B figure.** This is the commonly cited NHCAA estimate. The more rigorous range is 3–10% of health spending; at $4.9T (CMS 2023) that implies $147B–$490B in potential fraud exposure, not all of which is recoverable. We use $100B as a conservative anchor.
+
+---
+
 ## Links
 
 - **Environment**: [HF Space — shylane/healthcare-fraud-openenv](https://huggingface.co/spaces/shylane/healthcare-fraud-openenv)
@@ -353,4 +392,4 @@ The environment is open. Every result here is reproducible from the JSON files i
 ---
 
 *Built for the AgentX-AgentBeats OpenEnv Challenge (Berkeley RDI / Hugging Face, April 2026).
-6 agents × 2 models × 20 episodes × 100 claims = 14,000 decisions. All open source.*
+7 agent configurations × 20 episodes × 100 claims = 14,000 decisions. All open source.*

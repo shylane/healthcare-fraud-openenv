@@ -73,7 +73,9 @@ class EnvironmentConfig:
     seed: Optional[int] = None
 ```
 
-The `seed` is critical: all experiments use `seed=42` (training) or `seed=1042` (evaluation), ensuring every agent sees **identical claim sequences** — the comparison is pure prompt/policy, not luck of the draw.
+The `seed` is critical for LLM agents: all experiments use `seed=42` (training) or `seed=1042` (evaluation). Because LLM agents make no calls to Python's global `random` module during `act()`, their claim sequences are identical — the comparison between NaiveLLM and BudgetAwareAgent is pure prompt/policy, not luck.
+
+**Caveat — RNG isolation for non-LLM agents:** `ClaimsSimulator` uses Python's global `random` module for lazy claim generation (one claim per step). `RandomAgent.act()` also draws from the global `random` module, so each action draw shifts the global RNG state before the next claim is generated. This means RandomAgent and REINFORCE see slightly different claim trajectories than LLM agents do. The directional findings (LLM-vs-LLM comparisons) are unaffected, but absolute reward numbers for RandomAgent and REINFORCE have a small seed-contamination caveat.
 
 ### 3.2 What the Agent Sees
 
@@ -100,35 +102,49 @@ The prompt is fully text-based. There is no structured feature vector passed to 
 | `DENY` | $0 | Rejects claim; incurs `false_denial_penalty` if legitimate |
 | `REQUEST_INFO` | $12.50 | Defers; 50% detection rate for fraud |
 
-**The critical tradeoff:** `INVESTIGATE` ($100) is only financially optimal when the expected fraud amount exceeds the cost gap between investigate and flag:
+**The critical tradeoff:** `INVESTIGATE` ($100) is only worthwhile when the expected fraud recovery exceeds the cost premium over `FLAG_REVIEW`. The exact breakeven depends on whether you use real-dollar value (1.0 recovery rate) or the RL reward rate (0.1 — see Section 7.5).
 
+**Real-dollar breakeven** (1.0 recovery rate, on a confirmed fraud claim):
 ```
-Expected value of INVESTIGATE vs FLAG_REVIEW for a fraud claim:
-  INVESTIGATE: amount × 0.95 - $100
-  FLAG_REVIEW: amount × 0.70 - $25
+INVESTIGATE: amount × 0.95 - $100
+FLAG_REVIEW: amount × 0.70 - $25
 
 INVESTIGATE wins when: amount × (0.95 - 0.70) > $100 - $25
                        amount × 0.25 > $75
                        amount > $300
 ```
 
-But this ignores false positives. On legitimate claims, INVESTIGATE costs $100 + $50 false positive penalty = $150 pure loss. FLAG_REVIEW costs $25 + $50 = $75. Given that only 5% of claims are fraudulent, an agent that investigates randomly burns through its budget almost entirely on legitimate claims.
-
-The true breakeven for INVESTIGATE on **a random claim** (95% legitimate):
-
+**RL reward breakeven** (0.1 recovery rate, the actual code default — see RewardConfig):
 ```
-Expected cost per random INVESTIGATE:
-  = 0.95 × ($100 + $50) + 0.05 × ($100 - amount × 0.95)
-  ≈ $142.50 - $4.75/claim_amount
-```
+INVESTIGATE (fraud claim): 0.95 × (amount × 0.1 - $100) + 0.05 × (-amount × 0.2 - $100)
+                         = amount × 0.085 - $100
+FLAG_REVIEW (fraud claim): 0.70 × (amount × 0.1 - $25) + 0.30 × (-amount × 0.2 - $25)
+                         = amount × 0.01 - $25
 
-This is dominated by the false-positive cost on legitimate claims. FLAG_REVIEW on a random claim:
-```
-  = 0.95 × ($25 + $50) + 0.05 × ($25 - amount × 0.70)
-  ≈ $71.25 - $3.50/claim_amount
+INVESTIGATE wins when: amount × (0.085 - 0.01) > $100 - $25
+                       amount × 0.075 > $75
+                       amount > $1,000
 ```
 
-FLAG_REVIEW is always cheaper for average-value claims. **Optimal policy on most claims = FLAG_REVIEW when suspicious, APPROVE when not.** An agent that learns this without being told is genuinely intelligent. An agent that needs to be told is prompt-following.
+The 0.1 rate inflates the breakeven from $300 (real dollars) to $1,000 (RL reward). This is the root cause of the reward calibration gap documented in Section 7.5: the RL-optimal strategy (avoid investigation) diverges from the financially optimal strategy (investigate high-value suspected fraud).
+
+But this ignores false positives. On legitimate claims (95% of all claims), INVESTIGATE costs $100 + $50 false positive penalty = $150 pure loss. FLAG_REVIEW costs $25 + $50 = $75. Given that only 5% of claims are fraudulent, an agent that investigates randomly burns through its budget almost entirely on legitimate claims.
+
+The true net cost of INVESTIGATE on **a random claim** (95% legitimate) under the RL reward rates:
+```
+= 0.95 × (-$100 - $50)  [false positive on legit claim]
++ 0.05 × [0.95 × (amount × 0.1 - $100) + 0.05 × (-amount × 0.2 - $100)]
+≈ -$142.50 + 0.00425 × amount
+```
+
+FLAG_REVIEW on a random claim:
+```
+= 0.95 × (-$25 - $50)
++ 0.05 × [0.70 × (amount × 0.1 - $25) + 0.30 × (-amount × 0.2 - $25)]
+≈ -$71.25 + 0.0005 × amount
+```
+
+Under RL reward rates, INVESTIGATE is more costly than FLAG_REVIEW for all average-value claims. **Optimal RL policy on most claims = FLAG_REVIEW when suspicious, APPROVE when not.** An agent that learns this without being told is genuinely intelligent. An agent that needs to be told is prompt-following.
 
 ### 3.4 Investigation Memory
 
@@ -188,14 +204,18 @@ The dominant term. Computed by `_calculate_decision_reward()`:
 | DENY | `+claim_amount × fraud_caught_rate` | `-false_denial_penalty` (large) |
 | REQUEST_INFO | Variable (50% detection, half reward) | `-unnecessary_info_request_penalty` |
 
-The fraud penalty rate is `fraud_missed_penalty_rate=1.0` — missing fraud costs the full claim amount. The fraud caught reward rate is also `~1.0` — catching it recovers the full amount.
+**Important — actual defaults differ from the ideal rates described above.**
 
-This means the episode reward is approximately:
+The current `RewardConfig` defaults are `fraud_caught_reward_rate=0.1` and `fraud_missed_penalty_rate=0.2` (not 1.0/1.0). The financial component of the episode reward is therefore:
+
 ```
-Total Reward ≈ fraud_caught_amount - fraud_missed_amount - investigation_cost - false_positive_cost
+decision_reward ≈ fraud_caught_amount × 0.1 - fraud_missed_amount × 0.2
+                  - investigation_cost - false_positive_cost
 ```
 
-Which is essentially **net savings** from the fraud program. Negative reward means the fraud program is losing money (spending more on investigations + false positives than it catches in fraud).
+This is only 40% of the total reward (weighted by `decision_weight=0.4`). The remaining 60% measures rationale quality (30%), evidence citation (20%), and efficiency (10%). The reward is therefore **not** a simple net-savings calculation.
+
+Under the 0.1/0.2 rates, the RL-optimal strategy is "avoid investigation" — the 10% recovery rate makes even recovered fraud barely worth the $100 investigation cost. This divergence from real-world incentives is documented as the Reward Calibration Gap in Section 7.5. The fix (`fraud_caught_reward_rate=1.0`) is a one-line change in `environment/models.py`.
 
 ### 4.2 Rationale Quality
 
@@ -391,7 +411,7 @@ All experiments use `seed=42`, `claims_per_episode=100`, `fraud_rate=0.05`, `inv
 
 **File:** `experiments/01_baseline_comparison/run.py`
 
-**Design:** All 4 agents run the same 20 episodes. Same episode seeds → identical claim sequences per agent.
+**Design:** All 7 agent configurations run the same 20 episodes. Same episode seeds → identical claim sequences for deterministic (LLM and rule-based) agents. RandomAgent and REINFORCE share the global RNG with the simulator and may see slightly different sequences (see Section 3.1 caveat).
 
 ```bash
 python experiments/01_baseline_comparison/run.py --n-episodes 20
@@ -540,7 +560,9 @@ Source: `experiments/02_budget_ablation/results/20260408_095313_B5_comparison.js
 - BudgetAware advantage **compresses at tight budgets** (1.57× at B=5 vs 2.66× at B=15).
 - NaiveLLM **improves slightly at B=5** (−1,169) vs B=15 (−1,212). Fewer slots = less opportunity to waste budget.
 - BudgetAware remains dominant at all tested budget levels.
-- B=10 and B=20 LLM data not collected (credits exhausted after partial run).
+- **B=10 NaiveLLM (DeepSeek): collected and included** — result (−1,192) is valid and cited above.
+- **B=10 BudgetAware (DeepSeek): not run** — credits were exhausted during that batch.
+- **B=20 both agents: collected but excluded** — those runs in `20260408_095313_ablation_summary.json` show all-FLAG_REVIEW behaviour with mean response lengths matching the fallback string exactly, indicating the OpenRouter client silently substituted fallback responses. They are not cited.
 
 ### 7.3 Memory Ablation (Rule-Based Only)
 
@@ -881,7 +903,12 @@ Collected at B=5 (both agents) and B=10 (NaiveLLM only). See Section 7.2.
 
 **Key finding from partial data:** Budget-aware advantage compresses at tight budgets (1.57× at B=5 vs 2.66× at B=15). NaiveLLM improves slightly at B=5 because tight budgets limit how much damage over-investigation can cause.
 
-**Not collected:** B=10 BudgetAware and B=20 for all LLM agents. Credits ($8.98) were exhausted by a concurrent Qwen 3.6 Plus (paid) reasoning-model run that consumed ~$8.10 due to 300+ reasoning tokens per call at $1.95/M. The partial data is sufficient for the budget trend narrative.
+**Data status summary:**
+- B=10 NaiveLLM: valid, included (−1,192)
+- B=10 BudgetAware: not run — credits exhausted by a concurrent Qwen 3.6 Plus (paid) reasoning-model run (~$8.10 of the $8.98 budget at $1.95/M on 300+ reasoning tokens per call)
+- B=20 both agents: collected but excluded — all-FLAG_REVIEW responses with lengths matching the API fallback string; see Section 7.2 note
+
+The partial data is sufficient for the budget trend narrative.
 
 ### 11.4 REINFORCE vs Threshold Gap
 
@@ -911,7 +938,7 @@ The proposed fix (reward rates 1.0/1.0) would align RL reward with net savings a
 |------|---------|
 | `evaluation/agents.py` | All agent implementations (Random, Threshold, NaiveLLM, BudgetAware, DeepSeek) |
 | `evaluation/harness.py` | `run_agent()` — standard episode runner, metric aggregation, `EvalResults` |
-| `experiments/01_baseline_comparison/run.py` | 4-agent comparison experiment runner |
+| `experiments/01_baseline_comparison/run.py` | 7-agent comparison experiment runner |
 | `experiments/02_budget_ablation/run.py` | Budget sweep experiment runner |
 | `experiments/03_memory_ablation/run.py` | Memory half-life sweep experiment runner |
 | `experiments/04_reinforce_poc/run.py` | REINFORCE training loop + LinearPolicy |
@@ -921,4 +948,4 @@ The proposed fix (reward rates 1.0/1.0) would align RL reward with net savings a
 | `environment/models.py` | Pydantic models: `ClaimObservation`, `ClaimAction`, `ClaimState`, `RewardConfig` |
 | `notebooks/01_results_analysis.ipynb` | Analysis notebook: loads all JSON results, produces comparison tables and plots |
 | `blog/hf_blog_post.md` | HuggingFace blog post draft |
-| `experiments/*/results/*.json` | All raw experiment output (fully reproducible with fixed seeds) |
+| `experiments/*/results/*.json` | All raw experiment output (reproducible for LLM/rule-based agents with fixed seeds; RandomAgent and REINFORCE have a known RNG-isolation caveat — see Section 3.1) |

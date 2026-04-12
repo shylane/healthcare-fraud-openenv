@@ -1,0 +1,135 @@
+{
+  "timestamp": "2026-04-10T04:12:02.807151",
+  "experiment": "02_budget_ablation",
+  "n_episodes": 10,
+  "claims_per_episode": 100,
+  "fraud_rate": 0.05,
+  "budgets_tested": [
+    5,
+    10,
+    15,
+    20
+  ],
+  "by_budget": {
+    "5": [
+      {
+        "name": "RandomAgent",
+        "mean_reward": -1828.4472800000026,
+        "mean_f1": 0.08731641269458627,
+        "mean_budget_conservation_rate": 0.2875,
+        "mean_budget_utilization": 1.0
+      },
+      {
+        "name": "ThresholdAgent",
+        "mean_reward": -808.473879999999,
+        "mean_f1": 0.16353804050355775,
+        "mean_budget_conservation_rate": 0.0,
+        "mean_budget_utilization": 0.0
+      },
+      {
+        "name": "NaiveLLM(deepseek-v3.2)",
+        "mean_reward": -1168.9074999999998,
+        "mean_f1": 0.09055939385819013,
+        "mean_budget_conservation_rate": 0.0,
+        "mean_budget_utilization": 0.14
+      },
+      {
+        "name": "BudgetAware(deepseek-v3.2)",
+        "mean_reward": -742.7553000000001,
+        "mean_f1": 0.0907778183737263,
+        "mean_budget_conservation_rate": 0.0,
+        "mean_budget_utilization": 0.0
+      }
+    ],
+    "10": [
+      {
+        "name": "RandomAgent",
+        "mean_reward": -1961.333960000003,
+        "mean_f1": 0.09082290620107977,
+        "mean_budget_conservation_rate": 0.15833333333333333,
+        "mean_budget_utilization": 1.0
+      },
+      {
+        "name": "ThresholdAgent",
+        "mean_reward": -808.473879999999,
+        "mean_f1": 0.16353804050355775,
+        "mean_budget_conservation_rate": 0.0,
+        "mean_budget_utilization": 0.0
+      },
+      {
+        "name": "NaiveLLM(deepseek-v3.2)",
+        "mean_reward": -1191.68718,
+        "mean_f1": 0.08321216018024528,
+        "mean_budget_conservation_rate": 0.0,
+        "mean_budget_utilization": 0.04
+      },
+      {
+        "name": "BudgetAware(deepseek-v3.2)",
+        "mean_reward": -2358.6298600000055,
+        "mean_f1": 0.06003374708762197,
+        "mean_budget_conservation_rate": 0.0,
+        "mean_budget_utilization": 0.01
+      }
+    ],
+    "15": [
+      {
+        "name": "RandomAgent",
+        "mean_reward": -2068.6859600000034,
+        "mean_f1": 0.09082290620107977,
+        "mean_budget_conservation_rate": 0.0,
+        "mean_budget_utilization": 0.9066666666666666
+      },
+      {
+        "name": "ThresholdAgent",
+        "mean_reward": -808.473879999999,
+        "mean_f1": 0.16353804050355775,
+        "mean_budget_conservation_rate": 0.0,
+        "mean_budget_utilization": 0.0
+      },
+      {
+        "name": "NaiveLLM(deepseek-v3.2)",
+        "mean_reward": -2861.7836400000065,
+        "mean_f1": 0.06359836283613926,
+        "mean_budget_conservation_rate": 0.0,
+        "mean_budget_utilization": 0.0
+      },
+      {
+        "name": "BudgetAware(deepseek-v3.2)",
+        "mean_reward": -2861.7836400000065,
+        "mean_f1": 0.06359836283613926,
+        "mean_budget_conservation_rate": 0.0,
+        "mean_budget_utilization": 0.0
+      }
+    ],
+    "20": [
+      {
+        "name": "RandomAgent",
+        "mean_reward": -2113.4159600000035,
+        "mean_f1": 0.09082290620107977,
+        "mean_budget_conservation_rate": 0.0,
+        "mean_budget_utilization": 0.755
+      },
+      {
+        "name": "ThresholdAgent",
+        "mean_reward": -808.473879999999,
+        "mean_f1": 0.16353804050355775,
+        "mean_budget_conservation_rate": 0.0,
+        "mean_budget_utilization": 0.0
+      },
+      {
+        "name": "NaiveLLM(deepseek-v3.2)",
+        "mean_reward": -2861.7836400000065,
+        "mean_f1": 0.06359836283613926,
+        "mean_budget_conservation_rate": 0.0,
+        "mean_budget_utilization": 0.0
+      },
+      {
+        "name": "BudgetAware(deepseek-v3.2)",
+        "mean_reward": -2861.7836400000065,
+        "mean_f1": 0.06359836283613926,
+        "mean_budget_conservation_rate": 0.0,
+        "mean_budget_utilization": 0.0
+      }
+    ]
+  }
+}

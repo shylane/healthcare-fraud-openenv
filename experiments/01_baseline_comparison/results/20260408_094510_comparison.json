@@ -1,0 +1,21 @@
+{
+  "timestamp": "2026-04-09T01:05:37.505513",
+  "agents": [
+    {
+      "name": "BudgetAware(qwen3.6-plus)",
+      "model": "qwen/qwen3.6-plus",
+      "n_episodes": 20,
+      "mean_reward": -1944.753250000004,
+      "std_reward": 1228.8175753905568,
+      "mean_f1": 0.1448178432926009,
+      "mean_precision": 0.09534512848026702,
+      "mean_recall": 0.6545833333333333,
+      "mean_net_savings": -3583.1980000000003,
+      "mean_budget_utilization": 0.03,
+      "mean_budget_conservation_rate": 0.0,
+      "mean_memory_reuse_rate": 0.25,
+      "mean_valid_response_rate": 1.0,
+      "mean_latency_ms": 27610.821832597954
+    }
+  ]
+}
