@@ -296,6 +296,8 @@ fraud_missed_penalty_rate = 1.0   # full claim value lost
 
 With equal rates (or rates calibrated to actual payer economics), the RL objective aligns with net savings. Investigation of genuinely high-value suspicious claims becomes worthwhile. The optimal strategy shifts toward selective investigation rather than pure cost-avoidance.
 
+**Hypothesis: with correct reward scaling, BudgetAware DeepSeek would overtake ThresholdAgent.** Under `fraud_caught_reward_rate = 1.0`, a $3,000 fraud claim recovered nets +$3,000 in reward — making a $100 investigation obviously worthwhile. BudgetAware DeepSeek's context-sensitive reasoning ("this specific claim is $3,000 from a provider flagged twice this episode") can justify that cost claim-by-claim. ThresholdAgent's fixed thresholds cannot adapt at that granularity. The LLM's selective discrimination — currently unrewarded — would become its winning edge.
+
 **Why we're not re-running:** With the submission deadline upon us, re-running all 7 agents to produce a clean comparable dataset is out of scope. We're documenting the gap honestly instead.
 
 **What this means for the evaluation study findings:** The core finding — budget-aware prompting improves the same LLM by 2.7× — holds regardless of which metric you use (BudgetAware DeepSeek is best on RL reward; the same direction holds for net savings within each model pair). The direction is consistent: structured prompting helps. But the *magnitude* and *mechanism* change. Under correct reward scaling, an agent that catches more fraud dollars is explicitly rewarded for it, and the threshold for INVESTIGATE becomes much lower.

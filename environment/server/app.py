@@ -11,7 +11,7 @@ Run with (from repo root):
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import PlainTextResponse
+from fastapi.responses import PlainTextResponse, HTMLResponse
 from pydantic import BaseModel, Field
 from typing import Dict, Any, Optional, List
 import logging
@@ -250,6 +250,94 @@ async def openenv_manifest():
     with open(yaml_path, "r") as f:
         content = f.read()
     return PlainTextResponse(content=content, media_type="application/yaml")
+
+
+@app.get("/", response_class=HTMLResponse)
+async def landing_page():
+    """
+    HTML landing page — shown as the iframe content on the HF Space.
+    Summarises the evaluation study and links to resources.
+    """
+    return HTMLResponse(content="""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Healthcare Claims Fraud Detection — OpenEnv</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 860px; margin: 40px auto; padding: 0 24px; color: #1a1a1a; line-height: 1.6; }
+  h1 { font-size: 1.6rem; margin-bottom: 4px; }
+  .tagline { color: #555; margin-top: 0; font-style: italic; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 0.9rem; }
+  th { background: #f0f4ff; text-align: left; padding: 8px 10px; border: 1px solid #d0d8f0; }
+  td { padding: 7px 10px; border: 1px solid #e0e8f8; }
+  tr:hover td { background: #f8faff; }
+  code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-size: 0.88em; }
+  pre { background: #f4f4f4; padding: 14px; border-radius: 6px; overflow-x: auto; font-size: 0.85em; }
+  .links { display: flex; gap: 12px; flex-wrap: wrap; margin: 20px 0; }
+  .links a { background: #2563eb; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-size: 0.9rem; }
+  .links a.secondary { background: #64748b; }
+  .finding { background: #fffbeb; border-left: 3px solid #f59e0b; padding: 10px 14px; margin: 8px 0; border-radius: 0 4px 4px 0; font-size: 0.92rem; }
+  .note { background: #f0fdf4; border-left: 3px solid #22c55e; padding: 10px 14px; border-radius: 0 4px 4px 0; font-size: 0.88rem; margin-top: 20px; }
+  hr { border: none; border-top: 1px solid #e5e7eb; margin: 28px 0; }
+</style>
+</head>
+<body>
+
+<h1>Healthcare Claims Fraud Detection — OpenEnv</h1>
+<p class="tagline">7 agents · 14,000 decisions · 8 findings · AgentX-AgentBeats OpenEnv Challenge (April 2026)</p>
+
+<div class="links">
+  <a href="/docs">API Docs (Swagger)</a>
+  <a href="/.well-known/openenv.yaml" class="secondary">openenv.yaml</a>
+  <a href="https://github.com/shylane/healthcare-fraud-openenv" class="secondary">GitHub + Full Blog</a>
+</div>
+
+<p>A 100-step sequential RL environment where an LLM reviews healthcare insurance claims and decides:
+<code>APPROVE / FLAG_REVIEW / INVESTIGATE / DENY / REQUEST_INFO</code>.
+Investigation budget: 15 per episode. Fraud rate: 5%.</p>
+
+<hr>
+
+<h2>Key Findings</h2>
+
+<div class="finding">A <strong>naive LLM is worse than random</strong> — domain knowledge without cost calibration burns the investigation budget on low-value targets.</div>
+<div class="finding">A <strong>budget-aware prompt improves the same LLM by 2.7×</strong> — the entire gain comes from 3 lines of economics in the system prompt.</div>
+<div class="finding">A <strong>10-line rule-based heuristic beats naive LLMs</strong> with zero API calls and zero latency.</div>
+<div class="finding"><strong>High F1 is the wrong goal</strong> — the top RL-reward agent has the <em>lowest</em> F1 (0.047). Efficiency, not coverage, is what the environment rewards.</div>
+
+<hr>
+
+<h2>Agent Leaderboard</h2>
+<table>
+  <tr><th>Agent</th><th>RL Reward ↑</th><th>Net Loss$/ep ↓</th><th>Budget Use</th><th>Fraud Catch Rate</th></tr>
+  <tr><td><strong>BudgetAware (DeepSeek)</strong></td><td><strong>−455</strong></td><td>$2,609</td><td>0%</td><td>26%</td></tr>
+  <tr><td>ThresholdAgent</td><td>−841</td><td><strong>$2,147</strong></td><td>0%</td><td>48%</td></tr>
+  <tr><td>BudgetAware (Qwen3.6)</td><td>−1,190</td><td>$3,181</td><td>5%</td><td>46%</td></tr>
+  <tr><td>NaiveLLM (DeepSeek)</td><td>−1,212</td><td>$2,315</td><td>9%</td><td>61%</td></tr>
+  <tr><td>REINFORCE (trained)</td><td>−1,646</td><td>$5,352</td><td>79%</td><td>30%</td></tr>
+  <tr><td>RandomAgent</td><td>−2,057</td><td>$6,137</td><td>88%</td><td>34%</td></tr>
+  <tr><td>NaiveLLM (Qwen3.6)</td><td>−2,322</td><td>$5,645</td><td>70%</td><td>52%</td></tr>
+</table>
+<p style="font-size:0.82rem;color:#666">RL Reward and Net Loss$/ep rank agents differently — the reward function has a calibration gap (see Finding 8 in the blog).</p>
+
+<hr>
+
+<h2>Quick Start</h2>
+<pre>curl -X POST https://shylane-healthcare-fraud-openenv.hf.space/reset
+
+curl -X POST https://shylane-healthcare-fraud-openenv.hf.space/step \\
+  -H "Content-Type: application/json" \\
+  -d '{"response_text": "Decision: FLAG_REVIEW\\nRationale: Billing anomaly.\\nEvidence: claim=$4,200 vs avg=$480"}'</pre>
+
+<div class="note">
+  Full study (8 findings, ablations, reward calibration analysis):
+  <a href="https://github.com/shylane/healthcare-fraud-openenv">github.com/shylane/healthcare-fraud-openenv</a>
+  &nbsp;·&nbsp; Built for the <a href="https://rdi.berkeley.edu/agentx-agentbeats">AgentX-AgentBeats OpenEnv Challenge</a>.
+</div>
+
+</body>
+</html>""")
 
 
 @app.get("/health")
