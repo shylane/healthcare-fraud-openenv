@@ -568,9 +568,10 @@ async def assess_response(request: A2AAssessRequest):
         ]:
             decision_score = 0.7  # Partial credit for cautious decisions
 
-    # Overall score
+    # Overall score — weights match the main environment RewardComponents defaults:
+    # 40% decision correctness, 30% rationale quality, 20% evidence citation, 10% parse validity
     overall_score = (
-        0.3 * parse_score + 0.3 * decision_score + 0.2 * rationale_score + 0.2 * evidence_score
+        0.4 * decision_score + 0.3 * rationale_score + 0.2 * evidence_score + 0.1 * parse_score
     )
 
     # Generate feedback

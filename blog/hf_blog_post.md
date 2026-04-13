@@ -66,11 +66,15 @@ We evaluated seven agent configurations across 20 episodes each (2,000 claim dec
 
 **ThresholdAgent** — pure rule-based logic using regex over the prompt text. Flags claims above anomaly thresholds, approves the rest. Never uses INVESTIGATE. No LLM, zero latency.
 
-**NaiveLLMAgent** — sends each claim to an LLM with a minimal prompt: *"Review this claim and decide."* No mention of budget, investigation costs, or memory.
+**NaiveLLMAgent** — sends each claim to an LLM with a minimal prompt: *"Review this claim and decide."* No mention of budget, investigation costs, or memory. Run on two models:
+- *NaiveLLM (DeepSeek V3.2)* — state-of-the-art instruction-following, $0.26/M tokens
+- *NaiveLLM (Qwen 3.6 Plus)* — current-gen Alibaba model, run on free tier
 
-**BudgetAwareAgent** — same LLM, system prompt explicitly states the economics: INVESTIGATE costs $100, FLAG_REVIEW costs $25, budget limit is 15, switch strategy when budget falls below 20%.
+**BudgetAwareAgent** — same LLM, system prompt explicitly states the economics: INVESTIGATE costs $100, FLAG_REVIEW costs $25, budget limit is 15, switch strategy when budget falls below 20%. Same two models:
+- *BudgetAware (DeepSeek V3.2)*
+- *BudgetAware (Qwen 3.6 Plus)*
 
-For LLM experiments: **DeepSeek V3.2** (state-of-the-art instruction-following, $0.26/M tokens) and **Qwen 3.6 Plus** (current-gen Alibaba model, run on free tier). Each naive/budget-aware pair runs on the same model — the only difference is the system prompt.
+Each naive/budget-aware pair runs on the same model backbone — the only difference is the system prompt. This gives four LLM configurations total.
 
 **ReinforceAgent** — a linear policy trained for 500 episodes via REINFORCE policy gradient on 10 hand-crafted features.
 
@@ -199,7 +203,7 @@ Budget ablation across investigation budgets of 5, 10, 15, and 20 (rule-based ag
 
 **Giving RandomAgent more budget makes it worse.** More investigation slots → more random INVESTIGATE calls → more $150 false-positive costs on legitimate claims → deeper negative reward.
 
-ThresholdAgent is **perfectly flat** at −765 across all budget levels because it never uses INVESTIGATE — the budget is simply never binding.
+ThresholdAgent is **perfectly flat** at −765 across all budget levels because it never uses INVESTIGATE — the budget is simply never binding. (The −765 vs −841 difference from the main results table reflects fewer episodes: this ablation uses 10 episodes vs 20 in the main evaluation; variance at 10 episodes is higher but the direction holds.)
 
 This result has a clean interpretation: **investigation budget is only valuable to agents that can spend it wisely**. For agents that can't discriminate when to investigate, more budget is strictly harmful. The resource amplifies whatever decision-making quality (or lack thereof) the agent already has.
 
@@ -232,7 +236,7 @@ Training time: 56 seconds
 
 The policy learned — from reward signal alone — to weight `budget_frac` (feature 0) and `provider_in_mem` (feature 7) heavily. When budget depletes, INVESTIGATE probability drops. When a provider is in memory, FLAG_REVIEW/APPROVE probability rises. These are exactly the strategies the budget-aware prompt describes in words.
 
-The trained agent (−1,646) doesn't match ThresholdAgent (−841) yet — the linear policy over 10 features can't express full conditional logic. But it demonstrates that the environment contains learnable structure: RL can find policy improvements without any human-written rules.
+The trained agent (−1,646) doesn't match ThresholdAgent (−841) yet — the linear policy over 10 features can't express full conditional logic. (The −1,739 training mean is over the last 125 training episodes with the same env seed; −1,646 is the separate 20-episode held-out evaluation with `seed=42`, so the gap reflects the policy being evaluated on different claim sequences than it trained on.) But it demonstrates that the environment contains learnable structure: RL can find policy improvements without any human-written rules.
 
 ---
 
@@ -319,16 +323,17 @@ The API cost to run BudgetAware DeepSeek on 10,000 claims: roughly **$6/day** ($
 The environment is live on Hugging Face Hub:
 
 ```python
-from environment.client import FraudEnvClient
+from environment.client import HealthClaimEnv
+from environment.models import ClaimAction
 
-client = FraudEnvClient("https://huggingface.co/spaces/shylane/healthcare-fraud-openenv")
+client = HealthClaimEnv("https://shylane-healthcare-fraud-openenv.hf.space")
 obs = client.reset()
 
-while not obs["done"]:
-    response = your_agent.act(obs["prompt"])
-    obs = client.step(response)
+while not obs.done:
+    response = your_agent.act(obs.prompt)
+    obs = client.step(ClaimAction(response_text=response))
 
-print(f"Episode reward: {obs['total_reward']}")
+print(f"Episode reward: {obs.metadata.get('cumulative_reward', 0)}")
 ```
 
 Or run locally:
@@ -346,7 +351,7 @@ Can you beat BudgetAware DeepSeek's −455?
 
 ## Open Threads
 
-Three questions remain open:
+Four questions remain open:
 
 **LLM memory ablation.** The memory ablation only ran on rule-based agents — both were flat because neither builds memory (ThresholdAgent never investigates, RandomAgent ignores the prompt). The interesting case is BudgetAware DeepSeek, which explicitly relies on memory to avoid re-investigating known providers. Does its reward degrade when `memory_decay_halflife` drops to 0? Hypothesis: yes, because providers seen early in the episode would no longer be recognised later, forcing redundant FLAG_REVIEW calls. Remains unrun.
 

@@ -138,4 +138,4 @@ See `scenario.toml` for leaderboard submission config (requires AgentBeats regis
 - [OpenEnv SDK](https://github.com/meta-pytorch/OpenEnv)
 - [AgentBeats](https://docs.agentbeats.dev/)
 - [Competition](https://rdi.berkeley.edu/agentx-agentbeats)
-- [HF Blog Post](https://huggingface.co/blog/shylane/healthcare-fraud-openenv)
+- [HF Blog Post](https://huggingface.co/shylane/healthcare-fraud-openenv-blog)

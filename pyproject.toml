@@ -1,0 +1,12 @@
+[project]
+name = "rlenv"
+version = "0.1.0"
+description = "Healthcare Claims Fraud Detection — OpenEnv evaluation study (AgentX-AgentBeats)"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "huggingface-hub>=0.23.0",
+    "ipykernel>=6.0.0",
+    "numpy>=1.26.0",
+    "torch>=2.0.0",
+]
