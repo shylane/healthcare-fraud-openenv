@@ -11,9 +11,11 @@ Run with (from repo root):
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import PlainTextResponse
 from pydantic import BaseModel, Field
 from typing import Dict, Any, Optional, List
 import logging
+import os
 from datetime import datetime
 
 from .environment import ClaimsFraudEnvironment, EnvironmentConfig
@@ -228,6 +230,26 @@ async def startup():
     logger.info("Initializing Claims Fraud Detection Environment (LLM-native)...")
     env = ClaimsFraudEnvironment()
     logger.info("Environment initialized successfully")
+
+
+# =============================================================================
+# OpenEnv Manifest Endpoint
+# =============================================================================
+
+@app.get("/.well-known/openenv.yaml", response_class=PlainTextResponse)
+async def openenv_manifest():
+    """
+    OpenEnv manifest — required by the OpenEnv specification.
+    Discoverable at /.well-known/openenv.yaml so the hub can index this Space.
+    """
+    # Resolve path relative to this file so it works both locally and in Docker
+    yaml_path = os.path.join(os.path.dirname(__file__), "..", "openenv.yaml")
+    yaml_path = os.path.abspath(yaml_path)
+    if not os.path.exists(yaml_path):
+        raise HTTPException(status_code=404, detail="openenv.yaml not found")
+    with open(yaml_path, "r") as f:
+        content = f.read()
+    return PlainTextResponse(content=content, media_type="application/yaml")
 
 
 @app.get("/health")
