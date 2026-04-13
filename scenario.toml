@@ -3,14 +3,14 @@
 # Or use Quick Submit on the AgentBeats leaderboard page.
 
 [green_agent]
-# agentbeats_id format: "username/agent-slug" (assigned after registration on agentbeats.dev)
-agentbeats_id = ""
+# agentbeats_id: UUID assigned after registration on agentbeats.dev
+agentbeats_id = "019d84d9-6ee6-70b0-9a21-49338626e967"
 # Fully qualified public image — used for local `agentbeats run` and leaderboard execution
 image = "ghcr.io/shylane/healthcare-fraud-openenv-evaluator:latest"
 # env = { HF_TOKEN = "${HF_TOKEN}" }   # uncomment if env data is gated
 
 [[participants]]
-# agentbeats_id format: "username/agent-slug" (purple agent's registration ID)
+# agentbeats_id: UUID assigned to the purple agent after their registration
 agentbeats_id = ""
 # Fully qualified public image of the purple agent being evaluated
 image = ""
