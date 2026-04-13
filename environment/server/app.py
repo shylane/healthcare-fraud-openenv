@@ -289,8 +289,9 @@ async def landing_page():
 
 <div class="links">
   <a href="/docs">API Docs (Swagger)</a>
+  <a href="https://huggingface.co/shylane/healthcare-fraud-openenv-blog" class="secondary">Full Blog Post</a>
+  <a href="https://github.com/shylane/healthcare-fraud-openenv" class="secondary">GitHub</a>
   <a href="/.well-known/openenv.yaml" class="secondary">openenv.yaml</a>
-  <a href="https://github.com/shylane/healthcare-fraud-openenv" class="secondary">GitHub + Full Blog</a>
 </div>
 
 <p>A 100-step sequential RL environment where an LLM reviews healthcare insurance claims and decides:
@@ -332,7 +333,8 @@ curl -X POST https://shylane-healthcare-fraud-openenv.hf.space/step \\
 
 <div class="note">
   Full study (8 findings, ablations, reward calibration analysis):
-  <a href="https://github.com/shylane/healthcare-fraud-openenv">github.com/shylane/healthcare-fraud-openenv</a>
+  <a href="https://huggingface.co/shylane/healthcare-fraud-openenv-blog">HF Model Card blog post</a>
+  &nbsp;·&nbsp; Code + experiments: <a href="https://github.com/shylane/healthcare-fraud-openenv">GitHub</a>
   &nbsp;·&nbsp; Built for the <a href="https://rdi.berkeley.edu/agentx-agentbeats">AgentX-AgentBeats OpenEnv Challenge</a>.
 </div>
 

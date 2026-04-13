@@ -392,6 +392,7 @@ We're documenting these openly because they affect how you should interpret spec
 ## Links
 
 - **Environment**: [HF Space — shylane/healthcare-fraud-openenv](https://huggingface.co/spaces/shylane/healthcare-fraud-openenv)
+- **This blog post**: [HF Model Card — shylane/healthcare-fraud-openenv-blog](https://huggingface.co/shylane/healthcare-fraud-openenv-blog)
 - **Code + experiments**: [github.com/shylane/healthcare-fraud-openenv](https://github.com/shylane/healthcare-fraud-openenv)
 - **Study documentation**: `docs/study_documentation.md` — full technical write-up with code citations
 - **Competition**: [AgentX-AgentBeats OpenEnv Track](https://rdi.berkeley.edu/agentx-agentbeats)

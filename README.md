@@ -6,7 +6,7 @@ A rigorous evaluation study: *does budget/memory-aware prompting make LLM agents
 
 We built a 100-step RL environment, ran seven agent configurations across 14,000 claim decisions, and measured the results. The short answer: yes — by up to **2.7×** — but a 10-line rule-based agent beats every LLM that isn't told the economics first.
 
-> **Blog post:** [HF Space — shylane/healthcare-fraud-openenv](https://huggingface.co/spaces/shylane/healthcare-fraud-openenv)
+> **Blog post:** [HF Space — shylane/healthcare-fraud-openenv](https://huggingface.co/shylane/healthcare-fraud-openenv-blog)
 
 ---
 
@@ -138,4 +138,4 @@ See `scenario.toml` for leaderboard submission config (requires AgentBeats regis
 - [OpenEnv SDK](https://github.com/meta-pytorch/OpenEnv)
 - [AgentBeats](https://docs.agentbeats.dev/)
 - [Competition](https://rdi.berkeley.edu/agentx-agentbeats)
-- [HF Blog Post](https://huggingface.co/spaces/shylane/healthcare-fraud-openenv)
+- [HF Blog Post](https://huggingface.co/shylane/healthcare-fraud-openenv-blog)
